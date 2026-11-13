@@ -8,9 +8,14 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ελληνικά Προξενεία στη Γερμανία">
 <meta property="og:description" content="Βρείτε το αρμόδιο προξενείο με τον ΤΚ σας και υποβάλετε την αίτησή σας online μέσω e-proxeneio.">
+<meta property="og:url" content="https://kts26.github.io/conspl/">
+<meta property="og:image" content="https://kts26.github.io/conspl/img/og-image-el.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Χάρτης της Γερμανίας με τις περιοχές αρμοδιότητας των ελληνικών προξενείων">
 <meta property="og:locale" content="el_GR">
 <meta property="og:locale:alternate" content="de_DE">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' file:; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; connect-src 'none'; form-action 'none'; base-uri 'none'">
 <link rel="stylesheet" href="lib/leaflet.css">
 <script src="lib/leaflet.js"></script>
@@ -286,6 +291,10 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
   const MOBILE = window.matchMedia('(max-width: 760px)');
   const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  // Month of the postal-code table. update.html writes it into data/plz-data.js together with the table;
+  // a file without it is the table of November 2026.
+  const DATA_DATE = (typeof plzDataDate === 'object' && plzDataDate) || { el: 'Νοεμβρίου 2026', de: 'November 2026' };
+
   // ---- Texts (ΕΛ / DE)
   const TEXT = {
     el: {
@@ -318,7 +327,7 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
       step1: 'Βρείτε το αρμόδιο προξενείο με τον ταχυδρομικό σας κώδικα.',
       step2: 'Μεταβείτε στο e-proxeneio του προξενείου σας.',
       step3: 'Υποβάλετε την αίτησή σας online· αν χρειάζεται αυτοπρόσωπη παρουσία, το ραντεβού κλείνεται μέσα από την αίτηση.',
-      dataLead: 'Ταχυδρομικοί κώδικες (ενημέρωση Νοεμβρίου 2026):',
+      dataLead: 'Ταχυδρομικοί κώδικες (ενημέρωση ' + DATA_DATE.el + '):',
       via: 'μέσω',
       dataLicense: 'Ο πίνακας ΤΚ της σελίδας διατίθεται με άδεια ODbL.',
       jurisdictionSource: 'Επίσημες προξενικές περιφέρειες (ΥΠΕΞ)',
@@ -355,7 +364,7 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
       step1: 'Finden Sie das zuständige Konsulat über Ihre Postleitzahl.',
       step2: 'Öffnen Sie e-proxeneio für Ihr Konsulat.',
       step3: 'Stellen Sie Ihren Antrag online; ist persönliches Erscheinen nötig, wird der Termin über den Antrag vereinbart.',
-      dataLead: 'Postleitzahlen (Stand: November 2026):',
+      dataLead: 'Postleitzahlen (Stand: ' + DATA_DATE.de + '):',
       via: 'über',
       dataLicense: 'Die Postleitzahlen-Tabelle dieser Seite steht unter der ODbL.',
       jurisdictionSource: 'Offizielle Konsularbezirke (Außenministerium)',
