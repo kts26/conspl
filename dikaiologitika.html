@@ -412,9 +412,8 @@ thead th { background: var(--green-light); color: var(--green-dark); font-size: 
 
 <!-- Το περιεχόμενο (κατηγορίες, αιτήσεις, δικαιολογητικά, κόστος) βρίσκεται μόνο εδώ: -->
 <script src="data/dikaiologitika-data.js"></script>
-<!-- Όταν ετοιμαστεί η γερμανική μετάφραση, αρκεί να ενεργοποιηθεί η επόμενη γραμμή:
+<!-- Η γερμανική μετάφραση. Αν λείπει αυτό το αρχείο, η σελίδα δείχνει τα ελληνικά. -->
 <script src="data/dikaiologitika-data-de.js"></script>
--->
 
 <script>
 (function () {
@@ -563,7 +562,7 @@ thead th { background: var(--green-light); color: var(--green-dark); font-size: 
      κατηγορία, στις πράξεις του πίνακα κόστους και σε ένα προαιρετικό πεδίο
      «keywords» της αίτησης (λέξεις που γράφει ο κόσμος, π.χ. «παιδί»). */
   function norm(text) {
-    return String(text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ς/g, 'σ');
+    return String(text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ς/g, 'σ').replace(/ß/g, 'ss');
   }
   function stems(query) {
     return norm(query).split(/[^a-zα-ω0-9]+/).filter(Boolean).map(word => {
