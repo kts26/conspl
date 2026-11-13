@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ελληνικά Προξενεία στη Γερμανία</title>
+<meta name="description" content="Βρείτε με τον ταχυδρομικό σας κώδικα το αρμόδιο ελληνικό προξενείο στη Γερμανία και υποβάλετε την αίτησή σας online μέσω e-proxeneio.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ελληνικά Προξενεία στη Γερμανία">
+<meta property="og:description" content="Βρείτε το αρμόδιο προξενείο με τον ΤΚ σας και υποβάλετε την αίτησή σας online μέσω e-proxeneio.">
+<meta property="og:locale" content="el_GR">
+<meta property="og:locale:alternate" content="de_DE">
+<meta name="twitter:card" content="summary">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' file:; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<link rel="stylesheet" href="lib/leaflet.css">
+<script src="lib/leaflet.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif; background: #eef1f6; color: #222; display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+  a { color: #003476; }
+  [hidden] { display: none !important; }
+  .ic { flex-shrink: 0; }
+
+  header { flex: none; background: #003476; color: white; box-shadow: 0 2px 8px rgba(0,0,0,0.2); position: relative; z-index: 20; }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; max-width: 1320px; margin: 0 auto; padding: 14px 28px; }
+  header h1 { font-size: 1.15rem; font-weight: 700; }
+  header p { font-size: 0.85rem; opacity: 0.88; margin-top: 2px; }
+  .lang-switch { flex: none; display: flex; border: 1px solid rgba(255,255,255,0.55); border-radius: 6px; overflow: hidden; }
+  .lang-switch button { background: none; border: none; color: white; font: inherit; font-size: 0.82rem; font-weight: 600; padding: 5px 11px; cursor: pointer; opacity: 0.8; }
+  .lang-switch button:hover { opacity: 1; }
+  .lang-switch button[aria-pressed="true"] { background: white; color: #003476; opacity: 1; }
+
+  /* Desktop: information column and map share the screen 50/50, capped overall width */
+  .container { flex: 1; min-height: 0; display: flex; width: 100%; max-width: 1320px; margin: 0 auto; background: white; box-shadow: 0 0 12px rgba(0,0,0,0.06); }
+  .sidebar { flex: 0 0 50%; min-width: 360px; padding: 24px 28px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+  .map-pane { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  #map { flex: 1; min-width: 0; min-height: 0; z-index: 1; background: #e8ecf0; }
+
+  .intro { font-size: 0.93rem; line-height: 1.55; color: #444; }
+
+  .field-label { display: block; font-size: 0.88rem; font-weight: 600; color: #333; margin-bottom: 6px; }
+  .search-row { display: flex; gap: 8px; }
+  .search-row input { flex: 1; min-width: 0; padding: 10px 12px; border: 2px solid #dde1ea; border-radius: 8px; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+  .search-row input:focus { border-color: #003476; }
+  .search-row button { display: flex; align-items: center; justify-content: center; padding: 0 16px; background: #003476; color: white; border: none; border-radius: 8px; cursor: pointer; }
+  .search-row button:hover { background: #0055aa; }
+  .plz-hint { font-size: 0.8rem; color: #777; margin-top: 6px; }
+  .plz-hint a { text-decoration: none; }
+  .plz-hint a:hover { text-decoration: underline; }
+
+  .error-msg { display: none; background: #fff0f0; border-left: 4px solid #e53935; padding: 12px 14px; font-size: 0.9rem; color: #c62828; }
+  .error-msg.visible { display: block; }
+  .disambiguation { display: none; background: #fff8e1; border-left: 4px solid #f9a825; padding: 14px; }
+  .disambiguation.visible { display: block; }
+  .disambiguation p { font-size: 0.88rem; color: #555; margin-bottom: 10px; font-weight: 600; }
+  .choice-btn { display: block; width: 100%; text-align: left; padding: 9px 12px; margin-bottom: 6px; background: white; border: 2px solid #dde1ea; border-radius: 8px; cursor: pointer; font: inherit; font-size: 0.88rem; transition: all 0.15s; }
+  .choice-btn:hover { border-color: #003476; background: #f0f4ff; }
+
+  /* Result card: e-proxeneio is the one strong action, contact details stay quiet */
+  .result-card { display: none; background: #f7f9fc; border: 1px solid #dfe5ef; border-left: 4px solid #003476; padding: 16px 18px; scroll-margin-top: 12px; }
+  .result-card.visible { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  .place-label { font-size: 0.82rem; font-weight: 600; color: #555; margin-bottom: 3px; }
+  .place-label:empty { display: none; }
+  .more-btn { font: inherit; color: #1a5fb4; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+  .more-btn:hover, .more-btn:focus-visible { color: #0d3d7a; }
+  .consulate-name { font-size: 1.12rem; font-weight: 700; color: #003476; }
+  .bundesland-label { font-size: 0.82rem; color: #666; margin-top: 2px; }
+  .bundesland-label:empty { display: none; }
+  .eprox-btn { display: flex; align-items: center; gap: 12px; margin: 14px 0 8px; padding: 12px 14px; background: #003476; color: white; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+  .eprox-btn:hover { background: #0055aa; }
+  .eprox-btn .txt { flex: 1; }
+  .eprox-btn strong { display: block; font-size: 0.98rem; }
+  .eprox-btn small { display: block; font-size: 0.78rem; opacity: 0.9; margin-top: 1px; }
+  .guide a { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; text-decoration: none; }
+  .guide a:hover { text-decoration: underline; }
+  .contact { margin-top: 14px; padding-top: 12px; border-top: 1px solid #e3e7ef; display: grid; gap: 7px; font-size: 0.86rem; color: #444; }
+  .detail { display: flex; gap: 8px; align-items: flex-start; }
+  .detail .ic { color: #6b7686; margin-top: 2px; }
+  .detail a { word-break: break-all; }
+  .contact-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 2px; }
+  .contact-links a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font-size: 0.85rem; }
+  .contact-links a:hover { text-decoration: underline; }
+  .note { display: flex; gap: 6px; align-items: flex-start; margin-top: 12px; font-size: 0.78rem; color: #777; }
+  .note .ic { margin-top: 1px; }
+
+  /* "How it works": fills the place where the result card will appear */
+  .steps { background: #f7f9fc; border: 1px solid #e3e7ef; border-radius: 8px; padding: 16px 18px; }
+  .steps h2 { font-size: 0.88rem; font-weight: 600; color: #333; margin-bottom: 10px; }
+  .steps ol { list-style: none; display: grid; gap: 10px; }
+  .steps li { display: flex; gap: 10px; align-items: flex-start; font-size: 0.88rem; color: #444; line-height: 1.45; }
+  .steps .num { flex: none; width: 22px; height: 22px; border-radius: 50%; background: #003476; color: white; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+
+  /* Consulate shortcuts (also the colour legend of the map), at the bottom of the column */
+  .consulates { margin-top: auto; margin-bottom: auto; }   /* centred in the free space of the column */
+  .consulates h2 { font-size: 0.88rem; font-weight: 600; color: #333; margin-bottom: 8px; }
+  .consulate-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .cons-btn { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: white; border: 1px solid #dde1ea; border-radius: 8px; font: inherit; font-size: 0.86rem; color: #222; text-align: left; cursor: pointer; transition: all 0.15s; }
+  .cons-btn:hover { border-color: #003476; background: #f0f4ff; }
+  .cons-btn[aria-pressed="true"] { border-color: #003476; background: #eaf0fb; font-weight: 600; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; opacity: 0.85; }
+  .data-note a { color: #888; }
+  .data-note { padding-top: 0; font-size: 0.72rem; color: #999; line-height: 1.4; }
+
+  /* Map */
+  #map .leaflet-interactive { cursor: pointer; }
+  .map-reset { display: flex; align-items: center; gap: 6px; background: white; border: 2px solid rgba(0,0,0,0.2); border-radius: 6px; background-clip: padding-box; padding: 5px 10px; font: inherit; font-size: 0.82rem; font-weight: 600; color: #003476; cursor: pointer; }
+  .map-reset:hover { background: #f0f4ff; }
+  .reset-row { display: flex; }
+  .reset-row[hidden] { display: none; }
+  /* A solid chip, not glowing text: a browser's forced dark mode recolours
+     background and text together, but leaves text-shadow untouched. */
+  /* A heading above the map, not an overlay: nothing can ever cover the country,
+     at any window shape, and the browser's forced dark mode recolours it like any
+     other text. */
+  .map-title { flex: none; margin: 0; padding: 12px 16px 10px; font-size: clamp(0.95rem, 1.5vw, 1.05rem); font-weight: 700; color: #003476; text-align: center; letter-spacing: 0.01em; }
+  .consulate-tooltip { background: rgba(0,52,118,0.92); color: white; border: none; border-radius: 6px; padding: 6px 10px; font-size: 0.85rem; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.25); white-space: nowrap; }
+  .consulate-tooltip::before { border-top-color: rgba(0,52,118,0.92); }
+  .consulate-pin { background: none; border: none; }
+  .consulate-pin svg { display: block; overflow: visible; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.35)); transition: transform 0.2s; transform-origin: 50% 100%; }
+  .consulate-pin .pin-label { position: absolute; left: 29px; top: 6px; background: rgba(255,255,255,0.92); color: #003476; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+  .consulate-pin.dim { opacity: 0.4; }
+  .consulate-pin.active svg { transform: scale(1.35); }
+  .consulate-pin.active .pin-label { background: #003476; color: white; }
+  .city-label { background: none; border: none; pointer-events: none; }
+  .city-label .city-dot { position: absolute; left: 1px; top: 1px; width: 4px; height: 4px; border-radius: 50%; background: #5f6b7a; opacity: 0.6; }
+  /* A faint backing rather than a white glow: a browser's forced dark mode recolours
+     background and text together, but leaves text-shadow white. */
+  .city-label .city-name { position: absolute; left: 5px; top: -6px; font-size: 10.5px; color: #5a6673; white-space: nowrap; background: rgba(255,255,255,0.72); padding: 0 3px; border-radius: 3px; }
+
+  button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #f2a900; outline-offset: 2px; }
+
+  /* Secondary call to action: the guide, in a new tab */
+  .source-note { margin-top: 0; line-height: 1.5; }
+  .guide-cta { display: flex; align-items: center; gap: 12px; margin: 0 0 8px; padding: 12px 14px; background: white; color: #185fa5; border: 1.5px solid #003476; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+  .guide-cta:hover { background: #eef3fa; }
+  .guide-cta .txt { flex: 1; }
+  .guide-cta strong { display: block; font-size: 0.98rem; font-weight: 600; }
+  .guide-cta small { display: block; font-size: 0.78rem; color: #555; margin-top: 1px; }
+  /* Στο steps δεν προηγείται το μπλε κουμπί, άρα θέλει δικό του κενό από πάνω. */
+  .steps .guide-cta { margin: 16px 0 0; }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+  /* Print: the result card is what people put on paper – map and buttons are not */
+  @media print {
+    html, body { height: auto; background: white; }
+    body { display: block; }
+    .container { display: block; max-width: none; box-shadow: none; }
+    .sidebar { display: block; width: 100%; min-width: 0; padding: 0; overflow: visible; }
+    .map-pane, .lang-switch, .search-box, .steps, .reset-row, .consulates,
+    .disambiguation, .error-msg { display: none !important; }
+    header { box-shadow: none; }
+    .header-inner { padding: 0 0 10px; }
+    .result-card { display: none !important; }
+    .result-card.visible { display: block !important; border: 1px solid #999; page-break-inside: avoid; }
+    .eprox-btn { background: none !important; color: #000 !important; border: 1px solid #999; }
+    .eprox-btn .ic, .guide-cta { display: none; }
+    .detail a, .contact-links a { color: #000; text-decoration: none; }
+    .data-note { font-size: 0.65rem; }
+    a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.7em; word-break: break-all; }
+  }
+
+  /* Phones and narrow screens: one scrolling page – search, card, consulates, map, data note */
+  @media (max-width: 760px) {
+    html, body { height: auto; }
+    body { min-height: 100vh; min-height: 100dvh; }
+    .header-inner { padding: 12px 16px; }
+    .container { flex-direction: column; gap: 14px; padding-top: 16px; max-width: none; box-shadow: none; }
+    .sidebar { display: contents; }
+    .sidebar > * { margin-left: 16px; margin-right: 16px; }
+    .consulate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .consulates { order: 1; margin-top: 0; margin-bottom: 0; }
+    .map-pane { order: 2; }
+    #map { flex: none; height: 55vh; height: 55dvh; min-height: 300px; }
+    .map-title { padding: 10px 16px 8px; line-height: 1.3; }
+    .data-note { order: 3; margin-top: 0; padding: 0 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <h1 data-i18n="title">Ελληνικά Προξενεία στη Γερμανία</h1>
+      <p data-i18n="subtitle">Βρείτε το αρμόδιο προξενείο και υποβάλετε την αίτησή σας online</p>
+    </div>
+    <div class="lang-switch" role="group" aria-label="Γλώσσα / Sprache">
+      <button type="button" data-lang="el" lang="el" aria-label="Ελληνικά" aria-pressed="true">ΕΛ</button>
+      <button type="button" data-lang="de" lang="de" aria-label="Deutsch" aria-pressed="false">DE</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="sidebar">
+    <p class="intro" data-i18n="intro">Οι προξενικές υπηρεσίες ξεκινούν πλέον online μέσω e-proxeneio. Βρείτε το προξενείο σας για να μεταβείτε στη σωστή σελίδα.</p>
+
+    <div class="search-box">
+      <label class="field-label" for="plzInput" data-i18n="inputLabel">Ταχυδρομικός κώδικας κατοικίας</label>
+      <div class="search-row">
+        <input type="text" id="plzInput" placeholder="π.χ. 80331" data-i18n-placeholder="placeholder" maxlength="5" inputmode="numeric" autocomplete="postal-code" aria-describedby="plzHint"/>
+        <button type="button" id="plzBtn" aria-label="Αναζήτηση" data-i18n-aria="searchAria"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 21l-4.35-4.35"/><circle cx="11" cy="11" r="7"/></svg></button>
+      </div>
+      <p class="plz-hint" id="plzHint"><span data-i18n="hint">Δεν γνωρίζετε τον ΤΚ σας;</span> <a href="https://www.postdirekt.de/plzserver/" target="_blank" rel="noopener noreferrer" data-i18n="hintLink">Βρείτε τον εδώ ↗</a></p>
+    </div>
+
+    <div class="error-msg" id="errorMsg" role="alert"></div>
+
+    <div class="disambiguation" id="disambigBox">
+      <p data-i18n="disambig">Ο κωδικός αυτός ανήκει σε δύο κρατίδια. Επιλέξτε την πόλη σας:</p>
+      <div id="disambigChoices"></div>
+    </div>
+
+    <div class="steps" id="stepsBox">
+      <h2 data-i18n="stepsTitle">Πώς λειτουργεί</h2>
+      <ol>
+        <li><span class="num">1</span><span data-i18n="step1">Βρείτε το αρμόδιο προξενείο με τον ταχυδρομικό σας κώδικα.</span></li>
+        <li><span class="num">2</span><span data-i18n="step2">Μεταβείτε στο e-proxeneio του προξενείου σας.</span></li>
+        <li><span class="num">3</span><span data-i18n="step3">Υποβάλετε την αίτησή σας online· αν χρειάζεται αυτοπρόσωπη παρουσία, το ραντεβού κλείνεται μέσα από την αίτηση.</span></li>
+      </ol>
+      <a class="guide-cta" data-guide-link href="odigos-e-proxeneio.html?lang=el" target="_blank" rel="noopener noreferrer"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M4 19.5A2 2 0 0 1 6 18h13"/><path d="M8 7h7"/><path d="M8 11h5"/></svg><span class="txt"><strong data-i18n="guideCtaTitle">Πώς υποβάλλετε αίτηση στο e-proxeneio</strong><small data-i18n="guideCtaSub">Αναλυτικός οδηγός με εικόνες · αποθήκευση ως PDF</small></span><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+    </div>
+
+    <div class="result-card" id="resultCard" aria-live="polite">
+      <div class="place-label" id="resultPlace"></div>
+      <div class="consulate-name" id="resultName"></div>
+      <div class="bundesland-label" id="resultBundesland"></div>
+
+      <a class="eprox-btn" id="btnEproxeneio" href="#" target="_blank" rel="noopener noreferrer">
+        <svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>
+        <span class="txt"><strong data-i18n="eproxTitle">Μετάβαση στο e-proxeneio</strong><small data-i18n="eproxSub">Υποβολή αιτήσεων online· το ραντεβού κλείνεται μέσα από την αίτηση</small></span>
+        <svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="guide-cta" data-guide-link href="odigos-e-proxeneio.html?lang=el" target="_blank" rel="noopener noreferrer"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M4 19.5A2 2 0 0 1 6 18h13"/><path d="M8 7h7"/><path d="M8 11h5"/></svg><span class="txt"><strong data-i18n="guideCtaTitle">Πώς υποβάλλετε αίτηση στο e-proxeneio</strong><small data-i18n="guideCtaSub">Αναλυτικός οδηγός με εικόνες · αποθήκευση ως PDF</small></span><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+
+      <div class="contact">
+        <div class="detail"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span id="resultAddress"></span></div>
+        <div class="detail"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><div id="resultPhones"></div></div>
+        <div class="detail"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><a id="resultEmail" href="#"></a></div>
+        <div class="contact-links">
+          <a id="btnNav" href="#" target="_blank" rel="noopener noreferrer"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l18-8-8 18-2-8z"/></svg><span data-i18n="nav">Οδηγίες μετάβασης</span></a>
+          <a id="btnWeb" href="#" target="_blank" rel="noopener noreferrer"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span data-i18n="website">Ιστοσελίδα προξενείου</span></a>
+        </div>
+      </div>
+      <p class="note"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg><span data-i18n="note">Σε περίπτωση αμφιβολίας για την αρμοδιότητα, επικοινωνήστε με το προξενείο.</span></p>
+    </div>
+
+    <div class="reset-row" id="resetRow" hidden>
+      <button type="button" class="map-reset" id="resetBtn" aria-label="Επαναφορά σελίδας" data-i18n-aria="resetAria"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span data-i18n="reset">Επαναφορά</span></button>
+    </div>
+
+    <div class="consulates">
+      <h2 data-i18n="consulatesTitle">Γνωρίζετε ήδη το προξενείο σας;</h2>
+      <div class="consulate-grid" id="consulateButtons"></div>
+    </div>
+
+    <p class="data-note"><span data-i18n="dataLead">Ταχυδρομικοί κώδικες (ενημέρωση Νοεμβρίου 2026):</span> <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a> (ODbL) <span data-i18n="via">μέσω</span> <a href="https://github.com/openpotato/openplzapi.data" target="_blank" rel="noopener noreferrer">OpenPLZ API</a>, <a href="https://www.geonames.org" target="_blank" rel="noopener noreferrer">GeoNames</a> (CC BY 4.0). <span data-i18n="dataLicense">Ο πίνακας ΤΚ της σελίδας διατίθεται με άδεια ODbL.</span> <span data-i18n="bordersLead">Όρια κρατιδίων:</span> © GeoBasis-DE / <a href="https://www.bkg.bund.de" target="_blank" rel="noopener noreferrer">BKG</a> (2026), <a href="https://www.govdata.de/dl-de/by-2-0" target="_blank" rel="noopener noreferrer">dl-de/by-2-0</a> (Daten verändert).</p>
+    <p class="data-note source-note"><a href="https://www.mfa.gr/germany/eservices/consulates/" target="_blank" rel="noopener noreferrer" data-i18n="jurisdictionSource">Επίσημες προξενικές περιφέρειες (ΥΠΕΞ)</a><br><span data-i18n="jurisdictionChecked">Αντιπαραβολή περιφερειών: 06/11/2026. Για τα τρέχοντα στοιχεία επικοινωνίας, συμβουλευτείτε την ιστοσελίδα του προξενείου.</span></p>
+  </div>
+
+  <div class="map-pane">
+    <h2 class="map-title" data-i18n="mapTitle">Περιοχές αρμοδιότητας προξενείων</h2>
+    <div id="map"></div>
+  </div>
+</div>
+
+<script src="data/plz-data.js"></script>
+<script src="data/bundeslaender.js"></script>
+<script id="app-data">
+const consulateInfo = {"Βερολίνο":{"full":"Προξενικό Γραφείο Βερολίνου","city":"Βερολίνο","address":"Hiroshimastr. 11-15, 10785 Berlin","nav":"Hiroshimastr. 11-15, 10785 Berlin, Germany","phones":["+49 30 208387200"],"email":"grcon.ber@mfa.gr","eproxeneio":"https://e-proxeneio.mfa.gr/ypex/consulate-request-categories/110","color":"#1a73e8","latlng":[52.50848,13.35852],"de":{"full":"Konsularabteilung in Berlin","city":"Berlin","web":"https://www.mfa.gr/germany/de/contact/contact-our-missions-in-germany/konsularabteilung-berlin.html"},"web":"https://www.mfa.gr/germany/presveia/sections/proxeniko-grapheio.html"},"Αμβούργο":{"full":"Γενικό Προξενείο Αμβούργου","city":"Αμβούργο","address":"Neue ABC Str. 10, 20354 Hamburg","nav":"Neue ABC Str. 10, 20354 Hamburg, Germany","phones":["+49 40 4132430"],"email":"grgencon.ham@mfa.gr","eproxeneio":"https://e-proxeneio.mfa.gr/ypex/consulate-request-categories/112","color":"#e53935","latlng":[53.55525,9.98622],"de":{"full":"Griechisches Generalkonsulat Hamburg","city":"Hamburg","web":"https://www.mfa.gr/germany/de/das-generalkonsulat-in-hamburg/"},"web":"https://www.mfa.gr/germany/geniko-proxeneio-amvourgou/"},"Ντύσσελντορφ":{"full":"Γενικό Προξενείο Ντύσσελντορφ","city":"Ντύσσελντορφ","address":"Willi Becker Allee 11, 40227 Düsseldorf","nav":"Willi Becker Allee 11, 40227 Düsseldorf, Germany","phones":["+49 211 6878500"],"email":"grgencon.ddf@mfa.gr","eproxeneio":"https://e-proxeneio.mfa.gr/ypex/consulate-request-categories/115","color":"#43a047","latlng":[51.21848,6.79639],"de":{"full":"Griechisches Generalkonsulat Düsseldorf","city":"Düsseldorf","web":"https://www.mfa.gr/germany/de/das-generalkonsulat-in-dusseldorf/"},"web":"https://www.mfa.gr/germany/geniko-proxeneio-ntusselntorf/"},"Φραγκφούρτη":{"full":"Γενικό Προξενείο Φραγκφούρτης","city":"Φραγκφούρτη","address":"Zeppelinallee 43, 60325 Frankfurt am Main","nav":"Zeppelinallee 43, 60325 Frankfurt am Main, Germany","phones":["+49 69 97991211","+49 69 97991215"],"email":"grgencon.fra@mfa.gr","eproxeneio":"https://e-proxeneio.mfa.gr/ypex/consulate-request-categories/116","color":"#fb8c00","latlng":[50.12372,8.65234],"de":{"full":"Griechisches Generalkonsulat Frankfurt am Main","city":"Frankfurt","web":"https://www.mfa.gr/germany/de/das-generalkonsulat-in-frankfurt/"},"web":"https://www.mfa.gr/germany/geniko-proxeneio-fragfourtis/"},"Στουτγάρδη":{"full":"Γενικό Προξενείο Στουτγάρδης","city":"Στουτγάρδη","address":"Leuschnerstr. 12 (2ος όροφος), 70174 Stuttgart","nav":"Leuschnerstr. 12, 70174 Stuttgart, Germany","phones":["+49 711 22298713","+49 711 22298714"],"email":"grgencon.stu@mfa.gr","eproxeneio":"https://e-proxeneio.mfa.gr/ypex/consulate-request-categories/74","color":"#8e24aa","latlng":[48.77819,9.16965],"de":{"full":"Griechisches Generalkonsulat Stuttgart","city":"Stuttgart","address":"Leuschnerstr. 12 (2. OG), 70174 Stuttgart","web":"https://www.mfa.gr/germany/de/das-generalkonsulat-in-stuttgart/"},"web":"https://www.mfa.gr/germany/geniko-proxeneio-stoutgardis/"},"Μόναχο":{"full":"Γενικό Προξενείο Μονάχου","city":"Μόναχο","address":"Möhlstr. 22, 81675 München","nav":"Möhlstr. 22, 81675 München, Germany","phones":["+49 89 99886722","+49 89 99886723","+49 89 99886710"],"email":"grgencon.mun@mfa.gr","eproxeneio":"https://e-proxeneio.mfa.gr/ypex/consulate-request-categories/113","color":"#00897b","latlng":[48.14411,11.60069],"de":{"full":"Griechisches Generalkonsulat München","city":"München","web":"https://www.mfa.gr/germany/de/das-generalkonsulat-in-munchen/"},"web":"https://www.mfa.gr/germany/geniko-proxeneio-monahou/"}};
+const blGreek = {"Hamburg":"Αμβούργο (Hamburg)","Bremen":"Βρέμη (Bremen)","Niedersachsen":"Κάτω Σαξωνία (Niedersachsen)","Schleswig-Holstein":"Σλέσβιχ-Χόλσταϊν (Schleswig-Holstein)","Bayern":"Βαυαρία (Bayern)","Nordrhein-Westfalen":"Βόρεια Ρηνανία-Βεστφαλία (Nordrhein-Westfalen)","Baden-Württemberg":"Βάδη-Βυρτεμβέργη (Baden-Württemberg)","Rheinland-Pfalz":"Ρηνανία-Παλατινάτο (Rheinland-Pfalz)","Hessen":"Έσση (Hessen)","Saarland":"Σάαρλαντ (Saarland)","Berlin":"Βερολίνο (Berlin)","Brandenburg":"Βρανδεμβούργο (Brandenburg)","Mecklenburg-Vorpommern":"Μεκλεμβούργο-Πομερανία (Mecklenburg-Vorpommern)","Sachsen":"Σαξωνία (Sachsen)","Sachsen-Anhalt":"Σαξωνία-Άνχαλτ (Sachsen-Anhalt)","Thüringen":"Θουριγγία (Thüringen)"};
+const blConsulate = {"Hamburg":"Αμβούργο","Bremen":"Αμβούργο","Niedersachsen":"Αμβούργο","Schleswig-Holstein":"Αμβούργο","Bayern":"Μόναχο","Nordrhein-Westfalen":"Ντύσσελντορφ","Baden-Württemberg":"Στουτγάρδη","Rheinland-Pfalz":"Φραγκφούρτη","Hessen":"Φραγκφούρτη","Saarland":"Φραγκφούρτη","Berlin":"Βερολίνο","Brandenburg":"Βερολίνο","Mecklenburg-Vorpommern":"Βερολίνο","Sachsen":"Βερολίνο","Sachsen-Anhalt":"Βερολίνο","Thüringen":"Βερολίνο"};
+const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachsen"},{"ort":"Bleckede","bl":"Niedersachsen"},{"ort":"Brahlstorf","bl":"Mecklenburg-Vorpommern"},{"ort":"Teldau","bl":"Mecklenburg-Vorpommern"}],"src":"OpenPLZ (zahlreiche Straßen in beiden Ländern)"},"34355":{"choices":[{"ort":"Staufenberg","bl":"Niedersachsen"},{"ort":"Kassel (Wolfsanger/Hasenhecke)","bl":"Hessen"}],"src":"Deutsche Post PLZ-Suche (Kassel Wolfsanger/Hasenhecke), 10/2026"},"37194":{"choices":[{"ort":"Bodenfelde","bl":"Niedersachsen"},{"ort":"Wesertal (Lippoldsberg, Vernawahlshausen)","bl":"Hessen"}],"src":"Wikipedia (Wahlsburg, seit 2020 Wesertal)"},"59969":{"choices":[{"ort":"Hallenberg","bl":"Nordrhein-Westfalen"},{"ort":"Bromskirchen","bl":"Hessen"}],"src":"Wikipedia, GeoNames"},"63928":{"choices":[{"ort":"Eichenbühl","bl":"Bayern"},{"ort":"Walldürn (Spritzenmühle)","bl":"Baden-Württemberg"}],"src":"Wikipedia (Walldürn: PLZ 63928 Spritzenmühle)"},"64754":{"choices":[{"ort":"Eberbach (Badisch Schöllenbach)","bl":"Baden-Württemberg"},{"ort":"Oberzent (Hesseneck)","bl":"Hessen"}],"src":"Wikipedia (Hesseneck, Eberbach)"},"69412":{"choices":[{"ort":"Eberbach","bl":"Baden-Württemberg"},{"ort":"Hirschhorn (Hessisch-Igelsbach)","bl":"Hessen"}],"src":"Deutsche Post PLZ-Suche (Igelsbach), Wikipedia (Hirschhorn: 69412 Igelsbach)"},"69434":{"choices":[{"ort":"Hirschhorn","bl":"Hessen"},{"ort":"Heddesbach","bl":"Baden-Württemberg"},{"ort":"Eberbach (Brombach)","bl":"Baden-Württemberg"}],"src":"OpenPLZ (zahlreiche Straßen in beiden Ländern)"},"89081":{"choices":[{"ort":"Ulm","bl":"Baden-Württemberg"},{"ort":"Elchingen (Seligweiler)","bl":"Bayern"}],"src":"Deutsche Post PLZ-Suche (Seligweiler), Wikipedia (Elchingen)"},"97896":{"choices":[{"ort":"Freudenberg","bl":"Baden-Württemberg"},{"ort":"Collenberg","bl":"Bayern"},{"ort":"Eichenbühl","bl":"Bayern"}],"src":"OpenPLZ (zahlreiche Straßen in beiden Ländern)"},"32825":{"single":"Nordrhein-Westfalen","src":"Nur Blomberg (Lippe); Blomberg (Ostfriesland) hat PLZ 26487"},"74731":{"single":"Baden-Württemberg","src":"Deutsche Post PLZ-Suche: Storchhof gehört zu Walldürn"},"64646":{"single":"Hessen","src":"Deutsche Post: Laudenbach Kirchstraße = 69514 (Randrauschen in OpenPLZ)"},"57319":{"single":"Nordrhein-Westfalen","src":"Deutsche Post: Straßen in Allendorf (Eder) nicht unter 57319 (Randrauschen in OpenPLZ)"},"32361":{"single":"Nordrhein-Westfalen","src":"Deutsche Post: Bad Essen Im Glanetal = 49152 (Randrauschen in OpenPLZ)"},"25867":{"single":"Schleswig-Holstein","ort":["Langeneß"],"src":"Hallig Langeneß; fehlt in OpenPLZ und GeoNames"}};
+</script>
+
+<script id="app-logic">
+(function () {
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+  const LANG_KEY = 'consulates-map-lang';
+  const UNKNOWN_COLOR = '#9e9e9e';
+  const MOBILE = window.matchMedia('(max-width: 760px)');
+  const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  // ---- Texts (ΕΛ / DE)
+  const TEXT = {
+    el: {
+      title: 'Ελληνικά Προξενεία στη Γερμανία',
+      subtitle: 'Βρείτε το αρμόδιο προξενείο και υποβάλετε την αίτησή σας online',
+      intro: 'Οι προξενικές υπηρεσίες ξεκινούν πλέον online μέσω e-proxeneio. Βρείτε το προξενείο σας για να μεταβείτε στη σωστή σελίδα.',
+      inputLabel: 'Ταχυδρομικός κώδικας κατοικίας',
+      placeholder: 'π.χ. 80331',
+      searchAria: 'Αναζήτηση',
+      hint: 'Δεν γνωρίζετε τον ΤΚ σας;',
+      hintLink: 'Βρείτε τον εδώ ↗',
+      reset: 'Επαναφορά',
+      resetAria: 'Επαναφορά σελίδας',
+      mapTitle: 'Περιοχές αρμοδιότητας προξενείων',
+      disambig: 'Ο κωδικός αυτός ανήκει σε δύο κρατίδια. Επιλέξτε την πόλη σας:',
+      errFormat: 'Παρακαλώ εισάγετε έναν 5ψήφιο ΤΚ (π.χ. 80331).',
+      errNotFound: 'Ο ΤΚ {plz} δεν βρέθηκε. Εισάγετε τον ΤΚ της διεύθυνσης κατοικίας σας (όχι θυρίδας ή εταιρείας).',
+      stateOne: 'Κρατίδιο: ',
+      stateMany: 'Κρατίδια: ',
+      more: '+{n} ακόμη',
+      eproxTitle: 'Μετάβαση στο e-proxeneio',
+      eproxSub: 'Υποβολή αιτήσεων online· το ραντεβού κλείνεται μέσα από την αίτηση',
+      guideCtaTitle: 'Πώς υποβάλλετε αίτηση στο e-proxeneio',
+      guideCtaSub: 'Αναλυτικός οδηγός με εικόνες · αποθήκευση ως PDF',
+      nav: 'Οδηγίες μετάβασης',
+      website: 'Ιστοσελίδα προξενείου',
+      note: 'Σε περίπτωση αμφιβολίας για την αρμοδιότητα, επικοινωνήστε με το προξενείο.',
+      consulatesTitle: 'Γνωρίζετε ήδη το προξενείο σας;',
+      stepsTitle: 'Πώς λειτουργεί',
+      step1: 'Βρείτε το αρμόδιο προξενείο με τον ταχυδρομικό σας κώδικα.',
+      step2: 'Μεταβείτε στο e-proxeneio του προξενείου σας.',
+      step3: 'Υποβάλετε την αίτησή σας online· αν χρειάζεται αυτοπρόσωπη παρουσία, το ραντεβού κλείνεται μέσα από την αίτηση.',
+      dataLead: 'Ταχυδρομικοί κώδικες (ενημέρωση Νοεμβρίου 2026):',
+      via: 'μέσω',
+      dataLicense: 'Ο πίνακας ΤΚ της σελίδας διατίθεται με άδεια ODbL.',
+      jurisdictionSource: 'Επίσημες προξενικές περιφέρειες (ΥΠΕΞ)',
+      jurisdictionChecked: 'Αντιπαραβολή περιφερειών: 06/11/2026. Για τα τρέχοντα στοιχεία επικοινωνίας, συμβουλευτείτε την ιστοσελίδα του προξενείου.',
+      bordersLead: 'Όρια κρατιδίων:'
+    },
+    de: {
+      title: 'Griechische Konsulate in Deutschland',
+      subtitle: 'Finden Sie Ihr zuständiges Konsulat und stellen Sie Ihren Antrag online',
+      intro: 'Konsularische Dienstleistungen beginnen heute online über e-proxeneio. Finden Sie Ihr Konsulat, um direkt zur richtigen Seite zu gelangen.',
+      inputLabel: 'Postleitzahl Ihres Wohnorts',
+      placeholder: 'z. B. 80331',
+      searchAria: 'Suchen',
+      hint: 'Sie kennen Ihre Postleitzahl nicht?',
+      hintLink: 'Hier nachschlagen ↗',
+      reset: 'Zurücksetzen',
+      resetAria: 'Seite zurücksetzen',
+      mapTitle: 'Zuständigkeitsbereiche der Konsulate',
+      disambig: 'Diese Postleitzahl gehört zu zwei Bundesländern. Bitte wählen Sie Ihren Ort:',
+      errFormat: 'Bitte geben Sie eine fünfstellige Postleitzahl ein (z. B. 80331).',
+      errNotFound: 'Die Postleitzahl {plz} wurde nicht gefunden. Bitte geben Sie die Postleitzahl Ihrer Wohnadresse ein (nicht die eines Postfachs oder einer Firma).',
+      stateOne: 'Bundesland: ',
+      stateMany: 'Bundesländer: ',
+      more: '+{n} weitere',
+      eproxTitle: 'Weiter zu e-proxeneio',
+      eproxSub: 'Anträge online stellen – Termine werden über den Antrag vereinbart',
+      guideCtaTitle: 'So stellen Sie einen Antrag bei e-proxeneio',
+      guideCtaSub: 'Ausführliche Anleitung mit Bildern · als PDF',
+      nav: 'Route planen',
+      website: 'Website des Konsulats',
+      note: 'Bei Fragen zur Zuständigkeit wenden Sie sich bitte an das Konsulat.',
+      consulatesTitle: 'Kennen Sie Ihr Konsulat bereits?',
+      stepsTitle: 'So funktioniert es',
+      step1: 'Finden Sie das zuständige Konsulat über Ihre Postleitzahl.',
+      step2: 'Öffnen Sie e-proxeneio für Ihr Konsulat.',
+      step3: 'Stellen Sie Ihren Antrag online; ist persönliches Erscheinen nötig, wird der Termin über den Antrag vereinbart.',
+      dataLead: 'Postleitzahlen (Stand: November 2026):',
+      via: 'über',
+      dataLicense: 'Die Postleitzahlen-Tabelle dieser Seite steht unter der ODbL.',
+      jurisdictionSource: 'Offizielle Konsularbezirke (Außenministerium)',
+      jurisdictionChecked: 'Abgleich der Konsularbezirke: 06.11.2026. Aktuelle Kontaktdaten finden Sie auf der Webseite des Konsulats.',
+      bordersLead: 'Ländergrenzen:'
+    }
+  };
+
+  let lang = initialLang();
+  const linkedPLZ = initialPLZ();
+  // mode: null | 'error' | 'disambig' | 'result' (postal code) | 'consulate' (button) | 'state' (map click)
+  let state = { mode: null };
+  let activePin = null;
+  let lastBounds = null;
+
+  function initialLang() {
+    let l = null;
+    try { l = new URLSearchParams(window.location.search).get('lang'); } catch (e) { /* ignore */ }
+    if (!l) { try { l = window.localStorage.getItem(LANG_KEY); } catch (e) { /* ignore */ } }
+    return (l === 'de' || l === 'el') ? l : 'el';
+  }
+
+  /* Ένας σύνδεσμος της μορφής ?plz=47051 ανοίγει τη σελίδα με το
+     αποτέλεσμα ήδη εμφανισμένο, ώστε να μπορεί να σταλεί σε κάποιον. */
+  function initialPLZ() {
+    let p = null;
+    try { p = new URLSearchParams(window.location.search).get('plz'); } catch (e) { /* ignore */ }
+    return /^\d{5}$/.test(p || '') ? p : null;
+  }
+
+  /* Η διεύθυνση ακολουθεί πάντα το τι δείχνει η σελίδα, ώστε ό,τι
+     αντιγράψει ο χρήστης από τη γραμμή διευθύνσεων να είναι σωστό. */
+  function syncURL() {
+    const plz = ['result', 'disambig'].includes(state.mode) ? state.plz : null;
+    try {
+      const url = new URL(window.location.href);
+      if (plz) url.searchParams.set('plz', plz); else url.searchParams.delete('plz');
+      if (url.href !== window.location.href) window.history.replaceState(null, '', url);
+    } catch (e) { /* π.χ. file:// — ο σύνδεσμος απλώς δεν ενημερώνεται */ }
+  }
+
+  function t(key, vars) {
+    let s = TEXT[lang][key];
+    if (s === undefined) { console.warn('Λείπει κείμενο: ' + key); return ''; }   // a missing text must never stop the page
+    if (vars) Object.keys(vars).forEach(v => { s = s.split('{' + v + '}').join(vars[v]); });
+    return s.split('e-proxeneio').join('e-\u2060proxeneio');   // never break the name after the hyphen
+  }
+
+  // Consulate data in the current language (German overrides live in info.de)
+  function info(key) {
+    const base = consulateInfo[key];
+    return lang === 'de' && base.de ? Object.assign({}, base, base.de) : base;
+  }
+
+  function stateName(bl) {
+    return lang === 'el' ? (blGreek[bl] || bl) : bl;
+  }
+
+  // State -> consulate. An unknown name is reported, never silently mapped.
+  const warned = new Set();
+  function consulateOf(bundesland) {
+    const c = blConsulate[bundesland];
+    if (!c && !warned.has(bundesland)) {
+      warned.add(bundesland);
+      console.warn('Κρατίδιο χωρίς αντιστοίχιση σε προξενείο: "' + bundesland + '"');
+    }
+    return c || null;
+  }
+
+  // ---- Map (no base map: states, pins and faint city names only)
+  const map = L.map('map', {
+    center: [51.1657, 10.4515], zoom: 6, minZoom: 4, maxZoom: 12,
+    zoomSnap: 0.25, zoomDelta: 0.5,
+    scrollWheelZoom: false      // the map is a companion, not a navigation tool
+  });
+
+  // ---- State-name tooltip (mouse and touch)
+  const tooltip = L.tooltip({ permanent: false, direction: 'top', className: 'consulate-tooltip' });
+  function showTip(feature, latlng) {
+    tooltip.setContent(stateName(feature.properties.name));
+    tooltip.setLatLng(latlng);
+    tooltip.addTo(map);
+  }
+  map.on('click', () => tooltip.remove());
+
+  // ---- Bundesländer layer: colour = responsible consulate; click = show that consulate
+  function baseStyle(feature) {
+    const c = consulateOf(feature.properties.name);
+    return { fillColor: c ? consulateInfo[c].color : UNKNOWN_COLOR, fillOpacity: 0.45, color: 'white', weight: 1.5 };
+  }
+
+  const blLayer = L.geoJSON(bundeslaenderData, {
+    style: baseStyle,
+    onEachFeature: (feature, layer) => {
+      layer.on({
+        mouseover: e => showTip(feature, e.latlng),
+        mousemove: e => tooltip.setLatLng(e.latlng),
+        mouseout: () => tooltip.remove(),
+        click: e => {
+          L.DomEvent.stopPropagation(e);
+          showTip(feature, e.latlng);
+          selectState(feature.properties.name);
+        }
+      });
+    }
+  }).addTo(map);
+
+  // Germany fills the map frame on every screen size
+  const HOME_BOUNDS = blLayer.getBounds();
+  // Like fitBounds with equal padding: the area is centred in the pane at the largest
+  // zoom that still fits it. It used to be pushed down to clear the old floating map
+  // title; the title is a heading above the map now, so nothing has to make room.
+  function fitArea(bounds, pad) {
+    const zoom = map.getBoundsZoom(bounds, false, L.point(pad * 2, pad * 2));
+    const nw = map.project(bounds.getNorthWest(), zoom);
+    const se = map.project(bounds.getSouthEast(), zoom);
+    const centre = nw.add(se).divideBy(2);
+    map.setView(map.unproject(centre, zoom), zoom);
+  }
+  function fitHome() { lastBounds = null; fitArea(HOME_BOUNDS, 12); }
+  fitHome();
+  map.on('resize', () => {
+    if (lastBounds) fitArea(lastBounds, 30);
+    else fitArea(HOME_BOUNDS, 12);
+  });
+
+  // ---- Map title, top centre (not clickable, does not block the map)
+  const mapTitle = document.querySelector('.map-title');
+
+  // ---- Pins at the consulates' street addresses (not clickable)
+  const pins = {};
+  function pinIcon(key) {
+    const i = info(key);
+    const svg = '<svg viewBox="0 0 24 34" width="26" height="36" aria-hidden="true">' +
+      '<path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 22 12 22s12-13 12-22C24 5.4 18.6 0 12 0z" fill="' + i.color + '" stroke="#fff" stroke-width="1.5"/>' +
+      '<circle cx="12" cy="12" r="4.5" fill="#fff"/></svg>';
+    return L.divIcon({
+      className: 'consulate-pin',
+      html: svg + '<span class="pin-label">' + i.city + '</span>',
+      iconSize: [26, 36],
+      iconAnchor: [13, 36]
+    });
+  }
+  Object.keys(consulateInfo).forEach(key => {
+    pins[key] = L.marker(consulateInfo[key].latlng, { icon: pinIcon(key), interactive: false, keyboard: false }).addTo(map);
+  });
+
+  // ---- Faint reference cities (the six consulate cities already have pins)
+  // [Greek name, German name, lat, lon, zoom from which the name is shown].
+  // The first 24 are always visible; the rest appear on zoom, each from the level at which its label
+  // fits without covering another label or a consulate pin (computed from the real label widths).
+  const CITIES = [
+    ['Κίελο','Kiel',54.3233,10.1228], ['Φλένσμπουργκ','Flensburg',54.7937,9.4470],
+    ['Ρόστοκ','Rostock',54.0924,12.0991], ['Σβερίν','Schwerin',53.6355,11.4012],
+    ['Βρέμη','Bremen',53.0793,8.8017], ['Ανόβερο','Hannover',52.3759,9.7320],
+    ['Μαγδεμβούργο','Magdeburg',52.1205,11.6276], ['Μύνστερ','Münster',51.9607,7.6261],
+    ['Ντόρτμουντ','Dortmund',51.5136,7.4653], ['Κολωνία','Köln',50.9375,6.9603],
+    ['Κάσσελ','Kassel',51.3127,9.4797], ['Λειψία','Leipzig',51.3397,12.3731],
+    ['Δρέσδη','Dresden',51.0504,13.7373], ['Κέμνιτς','Chemnitz',50.8278,12.9214],
+    ['Κότμπους','Cottbus',51.7563,14.3329], ['Έρφουρτ','Erfurt',50.9848,11.0299],
+    ['Κόμπλεντς','Koblenz',50.3569,7.5890], ['Τρίερ','Trier',49.7490,6.6371],
+    ['Σααρβρύκη','Saarbrücken',49.2402,6.9969], ['Βίρτσμπουργκ','Würzburg',49.7913,9.9534],
+    ['Νυρεμβέργη','Nürnberg',49.4521,11.0767], ['Ρέγκενσμπουργκ','Regensburg',49.0134,12.1016],
+    ['Πασσάου','Passau',48.5667,13.4319], ['Φράιμπουργκ','Freiburg',47.9990,7.8421],
+    ['Έσσεν','Essen',51.4556,7.0116,7.5], ['Βόννη','Bonn',50.7374,7.0982,7],
+    ['Μάνχαϊμ','Mannheim',49.4875,8.466,7], ['Καρλσρούη','Karlsruhe',49.0069,8.4037,7.5],
+    ['Άουγκσμπουργκ','Augsburg',48.3705,10.8978,7.5], ['Ντούισμπουργκ','Duisburg',51.4344,6.7623,9.5],
+    ['Μπίλεφελντ','Bielefeld',52.0302,8.5325,7], ['Βισμπάντεν','Wiesbaden',50.0782,8.2398,8],
+    ['Μπόχουμ','Bochum',51.4818,7.2162,8.5], ['Βούπερταλ','Wuppertal',51.2562,7.1508,9.5],
+    ['Μπράουνσβαϊγκ','Braunschweig',52.2689,10.5268,7], ['Χάλλε','Halle',51.4825,11.9697,7],
+    ['Λύμπεκ','Lübeck',53.8655,10.6866,7], ['Πότσδαμ','Potsdam',52.3906,13.0645,7],
+    ['Μάιντς','Mainz',49.9929,8.2473,7], ['Άαχεν','Aachen',50.7753,6.0839,7],
+    ['Χαϊδελβέργη','Heidelberg',49.3988,8.6724,7.5], ['Μένχενγκλάντμπαχ','Mönchengladbach',51.1805,6.4428,8],
+    ['Γκελζενκίρχεν','Gelsenkirchen',51.5177,7.0857,9], ['Όλντενμπουργκ','Oldenburg',53.1435,8.2146,8],
+    ['Όσναμπρυκ','Osnabrück',52.2799,8.0472,7], ['Ίνγκολσταντ','Ingolstadt',48.7665,11.4258,7],
+    ['Ντάρμσταντ','Darmstadt',49.8728,8.6512,7], ['Ουλμ','Ulm',48.4011,9.9876,7],
+    ['Ζίγκεν','Siegen',50.8748,8.0243,6.25]
+  ];
+  const BASE_CITY_ZOOM = 5.5;   // below this, even the base cities are hidden to stay readable
+  function cityIcon(city) {
+    const name = lang === 'el' ? city[0] : city[1];
+    return L.divIcon({ className: 'city-label', html: '<span class="city-dot"></span><span class="city-name">' + name + '</span>', iconSize: [6, 6], iconAnchor: [3, 3] });
+  }
+  const cityMarkers = CITIES.map(city =>
+    L.marker([city[2], city[3]], { icon: cityIcon(city), interactive: false, keyboard: false, zIndexOffset: -1000 }));
+  // ---- A consulate always wins: a city name that lands on a pin or its label is hidden
+  // until there is room again. Widths are measured on a canvas with the page's own font,
+  // so a name can be measured while its marker is off the map. The boxes below mirror the
+  // CSS: a city name sits at left 5 / top -6 of a 6x6 icon anchored at its centre, a pin
+  // label at left 29 / top 6 of a 26x36 icon anchored at the point.
+  const textWidth = (() => {
+    const ctx = document.createElement('canvas').getContext('2d');
+    const cache = new Map();
+    return (text, font) => {
+      const key = font + '\n' + text;
+      let w = cache.get(key);
+      if (w === undefined) { ctx.font = font; w = ctx.measureText(text).width; cache.set(key, w); }
+      return w;
+    };
+  })();
+  function labelFonts() {
+    const family = getComputedStyle(document.body).fontFamily || 'Arial, sans-serif';
+    return { city: '10.5px ' + family, pin: 'bold 11px ' + family };
+  }
+  function consulateBoxes(font) {
+    const boxes = [];
+    Object.keys(consulateInfo).forEach(key => {
+      const i = info(key);
+      const p = map.latLngToLayerPoint(i.latlng);
+      const w = textWidth(i.city, font) + 12;
+      boxes.push({ x1: p.x - 13, y1: p.y - 36, x2: p.x + 13, y2: p.y });
+      boxes.push({ x1: p.x + 16, y1: p.y - 30, x2: p.x + 16 + w, y2: p.y - 15 });
+    });
+    return boxes;
+  }
+  function cityBox(city, font) {
+    const p = map.latLngToLayerPoint([city[2], city[3]]);
+    const w = textWidth(lang === 'el' ? city[0] : city[1], font) + 6;
+    return { x1: p.x + 2, y1: p.y - 9, x2: p.x + 2 + w, y2: p.y + 4 };
+  }
+  // Strict: two chips that merely touch are fine, each has its own padding. A margin
+  // here costs real names — a 1px graze used to cost Köln and Kassel on a phone.
+  function overlaps(a, b) {
+    return a.x1 < b.x2 && b.x1 < a.x2 && a.y1 < b.y2 && b.y1 < a.y2;
+  }
+  function updateCityVisibility() {
+    const z = map.getZoom();
+    const fonts = labelFonts();
+    const taken = consulateBoxes(fonts.pin);
+    cityMarkers.forEach((m, i) => {
+      let show = z >= (CITIES[i][4] || BASE_CITY_ZOOM);
+      if (show) {
+        const box = cityBox(CITIES[i], fonts.city);
+        show = !taken.some(b => overlaps(box, b));
+      }
+      if (show && !map.hasLayer(m)) m.addTo(map);
+      else if (!show && map.hasLayer(m)) map.removeLayer(m);
+    });
+  }
+  map.on('zoomend', updateCityVisibility);
+  updateCityVisibility();
+
+  function setPinState(activeKey) {
+    activePin = activeKey;
+    Object.keys(pins).forEach(key => {
+      const el = pins[key].getElement();
+      if (!el) return;
+      el.classList.toggle('active', key === activeKey);
+      el.classList.toggle('dim', activeKey !== null && key !== activeKey);
+    });
+  }
+
+  // ---- The centre point of a postal code (older tables have none: then nothing is drawn)
+  let plzMarker = null;
+  function showPoint(point) {
+    if (!point) {
+      if (plzMarker) { map.removeLayer(plzMarker); plzMarker = null; }
+      return;
+    }
+    if (!plzMarker) {
+      plzMarker = L.circleMarker(point, {
+        radius: 7, color: '#fff', weight: 2, fillColor: '#c0392b', fillOpacity: 1,
+        interactive: false, className: 'plz-point'
+      }).addTo(map);
+    } else {
+      plzMarker.setLatLng(point);
+    }
+    plzMarker.bringToFront();
+  }
+
+  // ---- Map highlighting
+  function clearHighlight() {
+    blLayer.eachLayer(layer => blLayer.resetStyle(layer));
+    setPinState(null);
+    showPoint(null);
+  }
+
+  function highlight(key, flashBl, point) {
+    let bounds = null;
+    const targetBls = flashBl ? [].concat(flashBl) : [];
+    blLayer.eachLayer(layer => {
+      const name = layer.feature.properties.name;
+      if (consulateOf(name) === key) {
+        const isTarget = targetBls.includes(name);
+        layer.setStyle({ fillOpacity: 0.75, weight: isTarget ? 6 : 2.5, color: isTarget ? '#f9d800' : '#333' });
+        const b = layer.getBounds();
+        if (bounds) { bounds.extend(b); } else { bounds = L.latLngBounds(b.getSouthWest(), b.getNorthEast()); }
+      } else {
+        layer.setStyle({ fillOpacity: 0.15, weight: 1, color: 'white' });
+      }
+    });
+    setPinState(key);
+    showPoint(point || null);
+    // The point always lies inside the consulate's area, except on the few codes split between two
+    // states; extending the bounds keeps it visible there too.
+    if (point) { if (bounds) bounds.extend(point); else bounds = L.latLngBounds(point, point); }
+    if (bounds) { lastBounds = bounds; fitArea(bounds, 30); }
+  }
+
+  // ---- Result card
+  function bundeslandLabel(bundesland) {
+    if (!bundesland) return '';
+    const names = [].concat(bundesland).map(stateName);
+    return (names.length > 1 ? t('stateMany') : t('stateOne')) + names.join(' / ');
+  }
+
+  // "80331 München" / "14715 Havelaue, Kotzen, Märkisch Luch [+5 ακόμη]"
+  // The table holds every place name of a code; only the first few are shown, the rest on request.
+  // Older tables held only the first three plus a count in `n`: then there is nothing to reveal.
+  const SHOWN_NAMES = 3;
+  function fillPlace(el) {
+    el.textContent = '';
+    if (state.choice) { el.textContent = state.plz + ' ' + state.choice.ort; return; }
+    const e = state.entry;
+    if (!e || !e.o) return;
+    const names = e.o;
+    if (names.length <= SHOWN_NAMES) {
+      el.textContent = state.plz + ' ' + names.join(', ') +
+        (e.n > names.length ? ' ' + t('more', { n: e.n - names.length }) : '');
+      return;
+    }
+    el.textContent = state.plz + ' ' + names.slice(0, SHOWN_NAMES).join(', ') + ' ';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'more-btn';
+    btn.textContent = t('more', { n: names.length - SHOWN_NAMES });
+    btn.addEventListener('click', () => { el.textContent = state.plz + ' ' + names.join(', '); });
+    el.appendChild(btn);
+  }
+
+  function renderCard(key, bundesland) {
+    const i = info(key);
+    fillPlace($('resultPlace'));
+    $('resultName').textContent = i.full;
+    $('resultBundesland').textContent = bundeslandLabel(bundesland);
+    $('btnEproxeneio').href = i.eproxeneio;
+    $('resultAddress').textContent = i.address;
+
+    const phones = $('resultPhones');
+    phones.textContent = '';
+    i.phones.forEach(p => {
+      const line = document.createElement('div');
+      const call = document.createElement('a');
+      call.href = 'tel:' + p.replace(/[^+\d]/g, '');
+      call.textContent = p;
+      line.appendChild(call);
+      phones.appendChild(line);
+    });
+
+    const email = $('resultEmail');
+    email.textContent = i.email;
+    email.href = 'mailto:' + i.email;
+
+    $('btnNav').href = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(i.nav);
+    $('btnWeb').href = i.web;
+
+    const card = $('resultCard');
+    card.style.borderLeftColor = i.color;
+    card.classList.add('visible');
+  }
+
+  function buildChoices() {
+    const box = $('disambigChoices');
+    const plz = state.plz, point = state.entry.p;
+    box.textContent = '';
+    state.entry.choices.forEach(choice => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'choice-btn';
+      btn.textContent = choice.ort + ' – ' + stateName(choice.bl);
+      btn.addEventListener('click', () => {
+        state = { mode: 'result', key: choice.c, bl: choice.bl, plz: plz, choice: choice };
+        render();
+        highlight(choice.c, choice.bl, point);
+        revealResult();
+      });
+      box.appendChild(btn);
+    });
+  }
+
+  // Draws the side panel from `state` in the current language (never moves the map)
+  function render() {
+    $('errorMsg').classList.remove('visible');
+    $('disambigBox').classList.remove('visible');
+    $('resultCard').classList.remove('visible');
+
+    if (state.mode === 'error') {
+      const box = $('errorMsg');
+      box.textContent = t(state.err, { plz: state.plz });
+      box.classList.add('visible');
+    } else if (state.mode === 'disambig') {
+      buildChoices();
+      $('disambigBox').classList.add('visible');
+    } else if (state.mode === 'result') {
+      renderCard(state.key, state.bl);
+    } else if (state.mode === 'consulate') {
+      renderCard(state.key, '');
+    } else if (state.mode === 'state') {
+      renderCard(state.key, state.bl);
+    }
+
+    $('plzInput').setAttribute('aria-invalid', String(state.mode === 'error'));
+    const shownKey = ['result', 'consulate', 'state'].includes(state.mode) ? state.key : null;
+    $('stepsBox').hidden = shownKey !== null;
+    $('resetRow').hidden = state.mode === null;   // nothing to reset on a fresh page   // the card takes the place of "How it works"
+    Object.keys(consulateButtons).forEach(key => consulateButtons[key].setAttribute('aria-pressed', String(key === shownKey)));
+    syncURL();
+  }
+
+  // On phones the card sits above the map: bring it into view
+  function revealResult() {
+    if (!MOBILE.matches) return;
+    $('resultCard').scrollIntoView({ behavior: REDUCED_MOTION.matches ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  // ---- "Do you already know your consulate?" buttons (also the colour legend)
+  const consulateButtons = {};
+  const consulateLabels = {};
+  Object.keys(consulateInfo).forEach(key => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'cons-btn';
+    btn.setAttribute('aria-pressed', 'false');
+    const dot = document.createElement('span');
+    dot.className = 'legend-dot';
+    dot.style.background = consulateInfo[key].color;
+    const label = document.createElement('span');
+    btn.appendChild(dot);
+    btn.appendChild(label);
+    btn.addEventListener('click', () => {
+      state = { mode: 'consulate', key: key };
+      render();
+      highlight(key);
+      revealResult();
+    });
+    consulateButtons[key] = btn;
+    consulateLabels[key] = label;
+    $('consulateButtons').appendChild(btn);
+  });
+
+  // ---- Click on a state of the map
+  function selectState(name) {
+    const key = consulateOf(name);
+    if (!key) return;
+    state = { mode: 'state', key: key, bl: name };
+    render();
+    highlight(key, name);
+    revealResult();
+  }
+
+  // ---- Postal code search (button or Enter only)
+  function searchPLZ() {
+    const value = $('plzInput').value.replace(/\s+/g, '');
+    clearHighlight();
+
+    if (!/^\d{5}$/.test(value)) {
+      state = { mode: 'error', err: 'errFormat' };
+      render();
+      return;
+    }
+    const entry = plzMap[value];
+    if (!entry) {
+      state = { mode: 'error', err: 'errNotFound', plz: value };
+      render();
+      return;
+    }
+    if (entry.ambiguous) {
+      state = { mode: 'disambig', plz: value, entry: entry };
+      render();
+      return;
+    }
+    // The consulate follows from the state (all states of one code share a consulate)
+    const key = consulateOf([].concat(entry.b)[0]);
+    if (!key) {
+      state = { mode: 'error', err: 'errNotFound', plz: value };
+      render();
+      return;
+    }
+    state = { mode: 'result', key: key, bl: entry.b, plz: value, entry: entry };
+    render();
+    highlight(key, entry.b, entry.p);
+    revealResult();
+  }
+
+  function resetAll() {
+    clearHighlight();
+    fitHome();
+    tooltip.remove();
+    $('plzInput').value = '';
+    state = { mode: null };
+    render();
+  }
+
+  // ---- Language
+  function applyLanguage() {
+    document.documentElement.lang = lang;
+    document.title = t('title');
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+    document.querySelectorAll('.lang-switch button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    document.querySelectorAll('[data-guide-link]').forEach(a => { a.href = 'odigos-e-proxeneio.html?lang=' + lang; });
+    Object.keys(consulateLabels).forEach(key => { consulateLabels[key].textContent = info(key).city; });
+    Object.keys(pins).forEach(key => pins[key].setIcon(pinIcon(key)));
+    cityMarkers.forEach((m, i) => m.setIcon(cityIcon(CITIES[i])));
+    updateCityVisibility();   // the names changed width, so the collisions changed too
+    setPinState(activePin);   // new pin elements need their state again
+    mapTitle.textContent = t('mapTitle');
+    tooltip.remove();
+    render();
+    document.dispatchEvent(new CustomEvent('eprox-language', { detail: lang }));
+  }
+
+  function setLang(l) {
+    if (l === lang) return;
+    lang = l;
+    try { window.localStorage.setItem(LANG_KEY, l); } catch (e) { /* ignore */ }
+    applyLanguage();
+  }
+
+  document.querySelectorAll('.lang-switch button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  $('plzBtn').addEventListener('click', searchPLZ);
+  $('resetBtn').addEventListener('click', resetAll);
+  $('plzInput').addEventListener('keydown', e => { if (e.key === 'Enter') searchPLZ(); });
+
+  applyLanguage();
+  document.addEventListener('DOMContentLoaded', applyLanguage, { once: true });
+
+  if (linkedPLZ) {
+    $('plzInput').value = linkedPLZ;
+    searchPLZ();
+  }
+})();
+</script>
+</body>
+</html>

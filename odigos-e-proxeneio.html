@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Οδηγός e-proxeneio | Leitfaden e-proxeneio</title>
+<style>
+
+:root {
+  --green-dark:   #003476;
+  --green-mid:    #0055aa;
+  --green-light:  #e8f0f8;
+  --blue-soft:    #e8f0f8;
+  --orange:       #e65c00;
+  --orange-bg:    #fff4ec;
+  --text:         #1a1a1a;
+  --text-muted:   #555;
+  --border:       #cdd5de;
+  --white:        #ffffff;
+  --page-bg:      #f2f5f8;
+  --section-gap:  2.5rem;
+  --content-width:1040px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--page-bg);
+}
+
+/* ===== PRINT BUTTON ===== */
+.print-btn {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 13px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--green-dark);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.10);
+  transition: background 0.15s, box-shadow 0.15s;
+}
+.print-btn:hover {
+  background: var(--green-light);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.13);
+}
+.print-btn svg { flex-shrink: 0; }
+
+/* ===== HEADER ===== */
+.doc-header-wrap {
+  background: var(--green-dark);
+  padding: 0 1.5rem;
+}
+.doc-header {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 1.8rem 0 1.5rem;
+  color: var(--white);
+  text-align: center;
+}
+.doc-header .site-label {
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  opacity: 0.72;
+  margin-bottom: 0.4rem;
+}
+.doc-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.doc-header .subtitle {
+  font-size: 0.9rem;
+  opacity: 0.78;
+  margin-top: 0.4rem;
+}
+
+/* ===== LANG TABS ===== */
+.lang-tabs-wrap {
+  background: var(--green-mid);
+  border-bottom: 3px solid var(--green-dark);
+}
+.lang-tabs {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  display: flex;
+  padding: 0 1.5rem;
+}
+.lang-tab {
+  flex: 0 0 auto;
+  padding: 0.65rem 1.4rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.72);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: background 0.15s, color 0.15s;
+  font-family: inherit;
+}
+.lang-tab:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.lang-tab.active {
+  background: var(--page-bg);
+  color: var(--green-dark);
+  font-weight: 700;
+  border-top: 3px solid var(--orange);
+  margin-top: -3px;
+}
+
+/* ===== PAGE WRAP ===== */
+.page-wrap {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.lang-pane { display: none; padding-top: 2rem; }
+.lang-pane.active { display: block; }
+
+/* ===== SECTION ===== */
+.section-header {
+  background: var(--green-dark);
+  color: var(--white);
+  padding: 0.55rem 1.1rem;
+  border-radius: 4px 4px 0 0;
+  margin-top: var(--section-gap);
+}
+.section-header h2 { font-size: 1rem; font-weight: 700; }
+.section-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--orange);
+  color: #fff;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+.section-body {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  padding: 1.3rem 1.5rem 1.5rem;
+}
+.section-body p { margin-bottom: 0.8rem; }
+.section-body p:last-child { margin-bottom: 0; }
+
+/* ===== STEPS ===== */
+.step {
+  display: flex;
+  gap: 0.85rem;
+  margin-bottom: 0.9rem;
+  align-items: flex-start;
+}
+.step-num {
+  flex-shrink: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+  background: var(--green-mid);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  margin-top: 0.15rem;
+}
+.step-text strong { color: var(--green-dark); }
+
+/* ===== WARNING / INFO BOXES ===== */
+.warning-box {
+  background: var(--orange-bg);
+  border-left: 4px solid var(--orange);
+  border-radius: 0 4px 4px 0;
+  padding: 0.85rem 1.1rem;
+  margin: 1.1rem 0;
+}
+.warning-box .w-label {
+  font-weight: 700;
+  color: var(--orange);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+.warning-box p { margin: 0; font-size: 0.93rem; }
+.warning-box p + p { margin-top: 0.35rem; }
+.warning-box strong { color: var(--orange); }
+
+.info-box {
+  background: var(--blue-soft);
+  border-left: 4px solid #4a80b8;
+  border-radius: 0 4px 4px 0;
+  padding: 0.85rem 1.1rem;
+  margin: 1.1rem 0;
+  font-size: 0.93rem;
+}
+
+/* ===== SCREENSHOTS ===== */
+.screenshot-wrap {
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+  max-width: 85%;
+}
+.screenshot-wrap.narrow { max-width: 300px; }
+.screenshot-wrap.medium { max-width: 65%; }
+.screenshot-wrap.full   { max-width: 100%; }
+.screenshot {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.screenshot-caption {
+  background: var(--green-light);
+  border-top: 1px solid var(--border);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.screenshot-row {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.screenshot-row .screenshot-wrap { flex: 1; min-width: 140px; max-width: 220px; }
+
+/* ===== CALLOUTS ===== */
+.callout-group { margin: 0.9rem 0; }
+.callout-item {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+.callout-dot {
+  flex-shrink: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  margin-top: 0.42rem;
+}
+.callout-dot.green  { background: var(--green-dark); }
+.callout-dot.red    { background: #c0392b; }
+.callout-dot.blue   { background: #2563eb; }
+.callout-dot.purple { background: #7c3aed; }
+.callout-dot.brown  { background: #92400e; }
+
+/* ===== CHOICE BOXES ===== */
+.choice-row {
+  display: flex;
+  gap: 1rem;
+  margin: 0.9rem 0;
+  flex-wrap: wrap;
+}
+.choice-box {
+  flex: 1;
+  min-width: 180px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  background: var(--white);
+}
+.choice-box .cb-label { font-size: 0.76rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+.choice-box .cb-title { font-weight: 700; font-size: 0.92rem; color: var(--green-dark); margin-bottom: 0.15rem; }
+.choice-box p { font-size: 0.85rem; margin: 0; }
+
+hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 1.3rem 0; }
+
+/* ===== FOOTER ===== */
+.doc-footer {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--green-dark);
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ===== ARROW REFERENCES ===== */
+.callout-dot.arrow-green { background: #2e9e3e; }
+.callout-dot.arrow-red   { background: #d62828; }
+.callout-dot { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.arrow-tag { display: inline-block; font-size: 0.76rem; font-weight: 600; padding: 0 0.5rem; border: 1.5px solid currentColor; border-radius: 999px; white-space: nowrap; vertical-align: 1px; }
+.arrow-tag.green  { color: #2e9e3e; }
+.arrow-tag.red    { color: #d62828; }
+.arrow-tag.brown  { color: #a0522d; }
+.arrow-tag.purple { color: #7c3aed; }
+
+/* ===== PRINT ===== */
+@page { margin: 1.4cm 1.2cm; }
+@media print {
+  .print-btn, .print-hint { display: none !important; }
+  body { background: #fff; font-size: 11pt; }
+  .lang-tabs-wrap, .lang-tabs { display: none !important; }
+  .doc-header-wrap { background: none !important; border-bottom: 2pt solid #000; padding: 0; }
+  .doc-header { color: #000 !important; padding: 0 0 0.3cm; }
+  .doc-header .site-label, .doc-header .subtitle { color: #555 !important; opacity: 1 !important; }
+  .lang-pane { display: none !important; padding-top: 0.4cm; }
+  .lang-pane.active { display: block !important; }
+  .page-wrap { padding: 0; max-width: 100%; }
+  .section-header { background: none !important; color: #000 !important; border-left: 4pt solid #003476; border-radius: 0; padding: 0.15cm 0.4cm; break-after: avoid; page-break-after: avoid; margin-top: 0.7cm; }
+  .section-num { background: none !important; color: #000 !important; border: 1.5pt solid #000; }
+  .section-body { border: 1pt solid #ccc; border-top: none; padding: 0.3cm 0.4cm; }
+  .step-num { background: none !important; color: #000 !important; border: 1.5pt solid #000; }
+  .step-text strong { color: #000 !important; }
+  .step { break-inside: avoid; page-break-inside: avoid; }
+  .warning-box { background: none !important; border: 1pt solid #bbb; border-left: 4pt solid #000; break-inside: avoid; page-break-inside: avoid; }
+  .warning-box .w-label { color: #000 !important; }
+  .warning-box strong { color: #000 !important; }
+  .info-box { background: none !important; border: 1pt solid #bbb; break-inside: avoid; page-break-inside: avoid; }
+  .screenshot-wrap { border: 0.5pt solid #ccc; break-inside: avoid; page-break-inside: avoid; max-width: 100% !important; }
+  .screenshot-wrap.narrow { max-width: 45% !important; }
+  .screenshot-wrap.medium { max-width: 80% !important; }
+  .screenshot { max-height: 15cm; width: auto; max-width: 100%; margin: 0 auto; }
+  .screenshot-caption { background: none !important; }
+  .choice-box { border: 1pt solid #bbb; }
+  .choice-box .cb-title { color: #000 !important; }
+  .callout-item, .choice-row { break-inside: avoid; page-break-inside: avoid; }
+  .doc-footer { border-top: 1pt solid #000; margin-top: 0.5cm; }
+  a { color: #000; text-decoration: none; }
+}
+</style>
+<style>
+  [hidden] { display: none !important; }
+  a { color: #003476; text-underline-offset: 3px; }
+  button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 3px solid #f2a900; outline-offset: 3px; }
+  .doc-header-wrap, .lang-tabs-wrap { padding-left: 16px; padding-right: 16px; }
+  .doc-header { padding-top: 1.5rem; }
+  .print-btn { position: static; margin: 12px 16px 12px auto; min-height: 44px; max-width: calc(100% - 32px); justify-content: center; }
+  .print-hint { margin-top: 1rem; font-size: .82rem; color: #555; }
+  .guide-toc { background: #e8f0f8; border: 1px solid #cdd5de; border-radius: 8px; padding: 16px 20px; }
+  .guide-toc ol { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 8px 0 0 20px; }
+  .guide-toc a { display: inline-block; padding: 6px 0; }
+  .section-header h2 { scroll-margin-top: 16px; }
+  .translation-note { margin-top: 16px; font-size: .9rem; color: #444; }
+  .image-zoom { display: block; width: 100%; padding: 0; background: white; border: 0; cursor: zoom-in; }
+  .image-zoom:focus-visible { outline-offset: -4px; }
+  .translated-badge { padding: 3px 10px; background: #eef1f6; font-size: .75rem; color: #444; border-top: 1px solid #cdd5de; }
+  #imageViewer { position: fixed; inset: 0; margin: auto; width: calc(100% - 24px); max-width: 1400px; height: 90vh; height: 90dvh; max-height: calc(100% - 24px); padding: 0; border: 0; border-radius: 10px; color: #222; background: white; }
+  #imageViewer[open] { display: flex; flex-direction: column; }
+  #imageViewer::backdrop { background: rgba(0,0,0,.7); }
+  .zoom-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 12px 16px; background: #003476; color: white; }
+  .zoom-header h2 { font-size: 1rem; flex: 1 1 220px; }
+  .zoom-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+  .zoom-controls button { min-height: 44px; padding: 8px 12px; border: 1px solid #cdd5de; border-radius: 6px; background: white; color: #003476; font: inherit; cursor: pointer; }
+  .zoom-scroll { flex: 1; min-height: 0; overflow: auto; padding: 12px; background: #eef1f6; touch-action: pan-x pan-y; overscroll-behavior: contain; }
+  #zoomImage { display: block; height: auto; max-width: none; }
+  #zoomTranslation { padding: 6px 16px; background: #e8f0f8; font-size: .85rem; }
+  #zoomHint { display: none; }
+  /* Η υπόδειξη εμφανίζεται μόνο σε συσκευές αφής. */
+  @media (pointer: coarse) {
+    #zoomHint { display: block; padding: 6px 16px; background: #f4f6f9; color: #555; font-size: .82rem; }
+  }
+  @media (max-width: 600px) {
+    .page-wrap { padding-left: 16px; padding-right: 16px; }
+    .section-body { padding: 16px; }
+    .screenshot-wrap, .screenshot-wrap.medium, .screenshot-wrap.narrow { max-width: 100%; }
+    .choice-box { min-width: 0; flex-basis: 100%; }
+    .lang-tabs { padding: 0; }
+    .doc-header h1 { font-size: 1.3rem; }
+    .section-body a { overflow-wrap: anywhere; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+  @media print {
+    #imageViewer, .guide-toc { display: none !important; }
+    .image-zoom { cursor: default; }
+    .translation-note { font-size: 9pt; }
+    .translated-badge { background: none; font-size: 8pt; }
+    .doc-header-wrap { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<button class="print-btn" title="Συμβουλή: στον διάλογο εκτύπωσης απενεργοποιήστε «Κεφαλίδες και υποσέλιδα» για καθαρότερο PDF.">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+  <span>Εκτύπωση / Αποθήκευση ως PDF</span>
+</button>
+
+<div class="doc-header-wrap">
+  <div class="doc-header">
+    <div class="site-label">e-proxeneio.mfa.gr/ypex</div>
+    <h1>Οδηγός Χρήσης e-proxeneio<br>
+    <span style="font-weight:400;font-size:1.15rem">Leitfaden zur Nutzung des e-proxeneio</span></h1>
+    <div class="subtitle">Ελληνικά Προξενεία στη Γερμανία &nbsp;·&nbsp; Griechische Konsulate in Deutschland</div>
+  </div>
+</div>
+
+<div class="lang-tabs-wrap">
+  <div class="lang-tabs" role="tablist" aria-label="Γλώσσα / Sprache">
+    <button type="button" class="lang-tab active" id="tab-el" data-lang="el" lang="el" role="tab" aria-controls="pane-el" aria-selected="true">🇬🇷 Ελληνικά</button>
+    <button type="button" class="lang-tab" id="tab-de" data-lang="de" lang="de" role="tab" aria-controls="pane-de" aria-selected="false" tabindex="-1">🇩🇪 Deutsch</button>
+  </div>
+</div>
+
+<div class="page-wrap">
+<p class="print-hint"></p>
+
+<!-- ===== GREEK ===== -->
+<div id="pane-el" class="lang-pane active" lang="el" role="tabpanel" aria-labelledby="tab-el" tabindex="0">
+<nav class="guide-toc" aria-label="Περιεχόμενα οδηγού"><strong>Περιεχόμενα οδηγού</strong><ol><li><a href="#el-section-1">Υποβολή αίτησης</a></li><li><a href="#el-section-2">Ραντεβού</a></li><li><a href="#el-section-3">Διόρθωση αίτησης</a></li></ol></nav>
+
+  <div class="section-header"><h2 id="el-section-1" tabindex="-1"><span class="section-num">1</span>Υποβολή Αίτησης</h2></div>
+  <div class="section-body">
+
+    <p>Στη διεύθυνση <strong><a href="https://e-proxeneio.mfa.gr/ypex">https://e-proxeneio.mfa.gr/ypex</a></strong> επιλέγετε καταρχάς <strong>το προξενείο</strong> στο οποίο θέλετε να απευθύνετε την αίτησή σας.</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="01" width="1200" height="533" alt="Λίστα προξενικών αρχών ανά χώρα"><div class="screenshot-caption">Επιλογή προξενείου</div></div>
+
+    <div class="info-box">Αν μπήκατε στο e-proxeneio μέσω του συνδέσμου της ιστοσελίδας μας, <strong>το προξενείο σας έχει ήδη επιλεγεί</strong>. Σε αυτή την περίπτωση δεν θα σας ζητηθεί εκ νέου και προχωράτε κατευθείαν στην επόμενη εικόνα.</div>
+
+    <p>Κατόπιν επιλέγετε <strong>το είδος του αιτήματος</strong> για το οποίο θέλετε να αιτηθείτε.</p>
+    <div class="screenshot-wrap medium"><img class="screenshot" data-shot="02" width="973" height="786" alt="Κατηγορίες και είδη αιτημάτων"><div class="screenshot-caption">Αριστερά η κατηγορία, δεξιά το είδος της αίτησης</div></div>
+
+    <hr class="section-rule">
+
+    <p>Στη συνέχεια, όταν φτάσετε στο σημείο όπου θα πρέπει να συμπληρώσετε τα στοιχεία σας, θα σας ζητηθεί να επιλέξετε <strong>τρόπο εισόδου</strong>:</p>
+    <div class="screenshot-wrap medium"><img class="screenshot" data-shot="03" width="686" height="405" alt="Επιλογή τρόπου εισόδου"><div class="screenshot-caption">Επιλογή τρόπου εισόδου</div></div>
+    <div class="choice-row">
+      <div class="choice-box"><div class="cb-label">Αν <strong>δεν υπάρχουν</strong> κωδικοί TaxisNet</div><div class="cb-title">«Είσοδος με κωδικό μίας χρήσης μέσω email»</div></div>
+      <div class="choice-box"><div class="cb-label">Αν <strong>υπάρχουν</strong> κωδικοί TaxisNet</div><div class="cb-title">«Είσοδος με κωδικούς TaxisNet»</div></div>
+    </div>
+
+    <div class="warning-box">
+      <div class="w-label">⚠ Προσοχή</div>
+      <p>Στην περίπτωση που η αίτηση γίνεται <strong>για κάποιον τρίτο</strong> (π.χ. για ανήλικο), <strong>δεν</strong> μπαίνετε με κωδικούς TaxisNet, γιατί τότε τα στοιχεία συμπληρώνονται αυτόματα με τα δικά σας.</p>
+    </div>
+
+    <p>Αφού κάνετε την είσοδο, συνεχίζετε τη συμπλήρωση της αίτησης μέχρι και την υποβολή της.</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="04" width="1200" height="654" alt="Φόρμα συμπλήρωσης στοιχείων"><div class="screenshot-caption">Συμπλήρωση των στοιχείων σας</div></div>
+
+    <p>Στη συνέχεια ανεβάζετε στο σύστημα <strong>τα δικαιολογητικά σας</strong>. Αυτά χωρίζονται σε <strong>απαραίτητα</strong> — χωρίς αυτά η αίτηση δεν μπορεί να ολοκληρωθεί, και έχουν δίπλα τους ένα αστεράκι <strong>(*)</strong> — και σε <strong>προαιρετικά</strong>.</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="05" width="1200" height="747" alt="Προσθήκη δικαιολογητικών"><div class="screenshot-caption">Προσθήκη δικαιολογητικών — τα απαραίτητα φέρουν αστερίσκο (*)</div></div>
+    <div class="info-box">Καλή πρακτική είναι να ανεβάζετε <strong>όλα</strong> τα δικαιολογητικά που χρειάζονται, ανεξάρτητα από το αν το σύστημα τα κρίνει απαραίτητα — έτσι διευκολύνεται και επιταχύνεται η διαδικασία. Σε κάθε περίπτωση, πάντως, η αίτηση μπορεί να ολοκληρωθεί και μόνο με τα απαραίτητα.</div>
+
+    <p>Τέλος, σε κάθε διαδικασία πατάτε πάντα <strong>«Υποβολή»</strong>, ώστε η όποια μεταβολή να μεταφερθεί στην Αρχή.</p>
+    <div class="screenshot-wrap medium"><img class="screenshot" data-shot="06" width="1070" height="351" alt="Το κουμπί Υποβολή"><div class="screenshot-caption">Το κουμπί «Υποβολή», στο κάτω μέρος της σελίδας</div></div>
+
+    <hr class="section-rule">
+
+    <div class="warning-box">
+      <div class="w-label">⚠ Προσοχή</div>
+      <p>Από τη στιγμή που υποβάλετε την αίτηση, μπαίνετε πάντα <strong>με τον ίδιο τρόπο εισόδου</strong> στον λογαριασμό σας και ελέγχετε τόσο την αίτηση (στο σημείο <strong>Ιστορικό αίτησης</strong>) όσο και τα <strong>μηνύματα</strong>. Εκεί περιγράφονται η εξέλιξη και τυχόν διορθώσεις ή συμπληρώσεις που πρέπει να κάνετε στην αίτησή σας.</p>
+    </div>
+
+    <p>Από τις <strong>«Αιτήσεις μου»</strong>, με το <strong>ματάκι</strong> ανοίγετε την αίτησή σας.</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="07" width="1200" height="257" alt="Η λίστα Οι αιτήσεις μου"><div class="screenshot-caption">«Οι αιτήσεις μου» — αριστερά σε κάθε γραμμή το ματάκι</div></div>
+
+    <p>Ανοίγοντας την αίτηση βλέπετε τα στοιχεία της:</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="08" width="1200" height="573" alt="Τα στοιχεία μιας αίτησης"><div class="screenshot-caption">Τα στοιχεία της αίτησης</div></div>
+    <div class="callout-group"><div class="callout-item"><span class="callout-dot green"></span><span>Στη <strong>δεξιά στήλη</strong> βρίσκονται όλα τα στοιχεία της επεξεργασίας της από την Αρχή: κατάσταση αίτησης, ιστορικό, εκτυπώσεις κ.λπ.</span></div><div class="callout-item"><span class="callout-dot green"></span><span>Στην επιλογή <strong>«Μηνύματα»</strong> του μενού βλέπετε τυχόν λάθη ή επιπλέον απαιτήσεις που προέκυψαν κατά την επεξεργασία της αίτησης.</span></div></div>
+  </div>
+
+  <div class="section-header"><h2 id="el-section-2" tabindex="-1"><span class="section-num">2</span>Ραντεβού</h2></div>
+  <div class="section-body">
+    <p>Για να κλείσετε ραντεβού θα πρέπει απαραιτήτως <strong>πρώτα</strong> να συμπληρώσετε και να αποστείλετε την αίτησή σας στο e-proxeneio. Αν η αίτηση δεν μπορεί να ολοκληρωθεί εξ αποστάσεως και για τη διεκπεραίωσή της απαιτείται <strong>αυτοπρόσωπη παρουσία</strong>, θα σας δοθεί μέσα από αυτήν, κατά το στάδιο της επεξεργασίας της από την Αρχή, η δυνατότητα να κλείσετε ραντεβού. Σε αυτή την περίπτωση θα εμφανιστεί στην αίτησή σας ένα κουμπί, όπως δείχνει η εικόνα.</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="09" width="1200" height="533" alt="Το κουμπί ΝΕΟ ΡΑΝΤΕΒΟΥ μέσα στην αίτηση"><div class="screenshot-caption">Στη δεξιά στήλη της αίτησης εμφανίζεται το κουμπί «ΝΕΟ ΡΑΝΤΕΒΟΥ»</div></div>
+
+    <div class="warning-box">
+      <div class="w-label">⚠ Προσοχή</div>
+      <p>Το ραντεβού εμφανίζεται <strong>μέσα στην αίτησή σας</strong> και όχι στην επιλογή <strong>«Ραντεβού»</strong> του αρχικού μενού.</p>
+    </div>
+
+    <p>Πατώντας το θα εμφανιστεί η επόμενη εικόνα, με τις <strong>ημερομηνίες και τις ώρες που είναι διαθέσιμες</strong>:</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="10" width="1167" height="397" alt="Ημερολόγιο και διαθέσιμες ώρες"><div class="screenshot-caption">Επιλέγετε ημερομηνία και, δεξιά, μία από τις διαθέσιμες ώρες</div></div>
+
+    <hr class="section-rule">
+
+    <p>Αν για οποιονδήποτε λόγο χρειαστείτε κάποια <strong>διευκρίνιση</strong>, μπορείτε — μέσα από την αίτησή σας και πάλι — να αποστείλετε το αίτημά σας προς την υπηρεσία που τη διεκπεραιώνει. Θα απαντηθεί είτε μέσα από την αίτηση είτε στο email που δηλώσατε σε αυτήν.</p>
+    <div class="screenshot-wrap medium"><img class="screenshot" data-shot="11" width="1059" height="714" alt="Το πεδίο Σχόλια πολίτη"><div class="screenshot-caption">Γράφετε το αίτημά σας στο πεδίο «Σχόλια πολίτη» και πατάτε «Υποβολή»</div></div>
+  </div>
+
+  <div class="section-header"><h2 id="el-section-3" tabindex="-1"><span class="section-num">3</span>Διόρθωση Αίτησης</h2></div>
+  <div class="section-body">
+    <p>Στην περίπτωση που η αίτησή σας χρειάζεται διόρθωση, θα σας αποσταλεί μήνυμα το οποίο θα φαίνεται:</p>
+    <div class="callout-group"><div class="callout-item"><span class="callout-dot green"></span><span>στο <strong>email</strong> σας,</span></div><div class="callout-item"><span class="callout-dot green"></span><span>στα <strong>μηνύματα</strong> του προσωπικού σας χώρου στο e-proxeneio,</span></div><div class="callout-item"><span class="callout-dot green"></span><span>στο <strong>ιστορικό</strong> της αίτησής σας, στη δεξιά στήλη της αίτησης.</span></div></div>
+    <div class="warning-box">
+      <div class="w-label">⚠ Προσοχή</div>
+      <p>Παρακαλούμε να ελέγχετε κατά περιόδους <strong>και τα τρία</strong>, γιατί ορισμένες φορές τα email μπορεί να καθυστερήσουν ή και να τοποθετηθούν στα <strong>ανεπιθύμητα (spam)</strong> από τον πάροχο του ηλεκτρονικού σας ταχυδρομείου.</p>
+    </div>
+
+    <p>Το μήνυμα στον χώρο του e-proxeneio θα είναι όπως στην εικόνα, και θα μπορείτε να ανοίξετε την αίτησή σας πατώντας το <strong>ματάκι</strong> <span class="arrow-tag green">πράσινο βελάκι</span>:</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="12" width="1200" height="82" alt="Γραμμή μηνύματος με βέλη"></div>
+    <div class="callout-group"><div class="callout-item"><span class="callout-dot arrow-green"></span><span>Το <strong>ματάκι</strong>: ανοίγει την αίτησή σας.</span></div><div class="callout-item"><span class="callout-dot arrow-red"></span><span>Η <strong>κατάσταση</strong> («Διόρθωση αίτησης») και το <strong>μήνυμα</strong> της υπηρεσίας με ό,τι πρέπει να διορθώσετε.</span></div></div>
+
+    <p>Μέσα στην αίτησή σας, στο κάτω μέρος, θα βρείτε:</p>
+    <div class="steps"><div class="step"><div class="step-num">1</div><div class="step-text">τα έως τώρα επισυναπτόμενα, η <strong>κατάστασή τους</strong> (αποδεκτά κ.λπ.), καθώς και η δυνατότητα <strong>επανυποβολής</strong> τους <span class="arrow-tag brown">καφέ βέλος</span></div></div><div class="step"><div class="step-num">2</div><div class="step-text">ο δείκτης <strong>(+)</strong> για την επισύναψη νέου εγγράφου <span class="arrow-tag purple">μωβ βέλος</span></div></div><div class="step"><div class="step-num">3</div><div class="step-text">το κουμπί <strong>«Υποβολή»</strong>, για να υποβάλετε στην Αρχή οποιαδήποτε αλλαγή κάνατε <span class="arrow-tag red">κόκκινο βέλος</span></div></div></div>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="13" width="1052" height="702" alt="Επανυποβολή δικαιολογητικών και υποβολή διόρθωσης"></div>
+
+    <div class="warning-box">
+      <div class="w-label">⚠ Προσοχή</div>
+      <p>Αν δεν πατήσετε το κουμπί <strong>«Υποβολή»</strong>, δεν θα γίνει <strong>καμία διόρθωση</strong> στην αίτησή σας και δεν θα μπορεί να προχωρήσει η διαδικασία από την πλευρά της Αρχής.</p>
+    </div>
+  </div>
+
+</div><!-- end pane-el -->
+
+<!-- ===== GERMAN ===== -->
+<div id="pane-de" class="lang-pane" lang="de" role="tabpanel" aria-labelledby="tab-de" tabindex="0" hidden>
+<nav class="guide-toc" aria-label="Inhalt der Anleitung"><strong>Inhalt der Anleitung</strong><ol><li><a href="#de-section-1">Antrag stellen</a></li><li><a href="#de-section-2">Termin</a></li><li><a href="#de-section-3">Antrag korrigieren</a></li></ol></nav><p class="translation-note">Die Bilder sind übersetzte Darstellungen zu Informationszwecken. In der tatsächlichen Anwendung können die deutschen Beschriftungen etwas anders formuliert oder in einer anderen Reihenfolge angeordnet sein.</p>
+
+  <div class="section-header"><h2 id="de-section-1" tabindex="-1"><span class="section-num">1</span>Antrag stellen</h2></div>
+  <div class="section-body">
+
+    <p>Rufen Sie <strong><a href="https://e-proxeneio.mfa.gr/ypex">https://e-proxeneio.mfa.gr/ypex</a></strong> auf und wählen Sie zunächst <strong>das Konsulat</strong>, an das Sie Ihren Antrag richten möchten.</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="01" width="1400" height="599" alt="Liste der konsularischen Behörden nach Ländern"><div class="screenshot-caption">Auswahl des Konsulats</div></div>
+
+    <div class="info-box">Wenn Sie das e-proxeneio über den Link auf unserer Webseite aufgerufen haben, ist <strong>Ihr Konsulat bereits ausgewählt</strong>. In diesem Fall wird es nicht erneut abgefragt und Sie gelangen direkt zum nächsten Schritt.</div>
+
+    <p>Wählen Sie anschließend <strong>die Art des Anliegens</strong>, für das Sie einen Antrag stellen möchten.</p>
+    <div class="screenshot-wrap medium"><img class="screenshot" data-shot="02" width="1396" height="981" alt="Kategorien und Antragsarten"><div class="screenshot-caption">Links die Kategorie, rechts die Art des Antrags</div></div>
+
+    <hr class="section-rule">
+
+    <p>Sobald Sie an die Stelle gelangen, an der Sie Ihre persönlichen Angaben eintragen, werden Sie gebeten, die <strong>Anmeldeart</strong> zu wählen:</p>
+    <div class="screenshot-wrap medium"><img class="screenshot" data-shot="03" width="1400" height="637" alt="Auswahl der Anmeldeart"><div class="screenshot-caption">Auswahl der Anmeldeart</div></div>
+    <div class="choice-row">
+      <div class="choice-box"><div class="cb-label">Wenn Sie <strong>keine</strong> TaxisNet-Zugangsdaten haben</div><div class="cb-title">„Είσοδος με κωδικό μίας χρήσης μέσω email"</div><p>(Anmeldung mit Einmalcode per E-Mail)</p></div>
+      <div class="choice-box"><div class="cb-label">Wenn Sie TaxisNet-Zugangsdaten <strong>haben</strong></div><div class="cb-title">„Είσοδος με κωδικούς TaxisNet"</div><p>(Anmeldung mit TaxisNet-Zugangsdaten)</p></div>
+    </div>
+
+    <div class="warning-box">
+      <div class="w-label">⚠ Wichtig</div>
+      <p>Wenn Sie den Antrag <strong>für eine andere Person</strong> stellen (z. B. für Ihr Kind), melden Sie sich <strong>nicht</strong> mit TaxisNet-Zugangsdaten an, da die Angaben dann automatisch mit Ihren eigenen Daten ausgefüllt werden.</p>
+    </div>
+
+    <p>Nach der Anmeldung füllen Sie den Antrag weiter aus, bis Sie ihn einreichen können.</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="04" width="1400" height="763" alt="Formular zur Eingabe der Angaben"><div class="screenshot-caption">Eingabe Ihrer Angaben</div></div>
+
+    <p>Anschließend laden Sie <strong>Ihre Unterlagen</strong> hoch. Diese sind unterteilt in <strong>erforderliche</strong> Unterlagen — ohne sie kann der Antrag nicht abgeschlossen werden; sie sind mit einem Sternchen <strong>(*)</strong> gekennzeichnet — und <strong>optionale</strong>.</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="05" width="1400" height="871" alt="Hochladen der Unterlagen"><div class="screenshot-caption">Hochladen der Unterlagen — die erforderlichen sind mit (*) gekennzeichnet</div></div>
+    <div class="info-box">Es empfiehlt sich, <strong>alle</strong> benötigten Unterlagen hochzuladen, unabhängig davon, ob das System sie als erforderlich einstuft — das erleichtert und beschleunigt das Verfahren. Der Antrag kann allerdings auch allein mit den erforderlichen Unterlagen abgeschlossen werden.</div>
+
+    <p>Klicken Sie bei jedem Schritt zum Schluss stets auf <strong>„Υποβολή"</strong> (Einreichen), damit die jeweilige Änderung an die Behörde übermittelt wird.</p>
+    <div class="screenshot-wrap medium"><img class="screenshot" data-shot="06" width="1400" height="425" alt="Die Schaltfläche Einreichen"><div class="screenshot-caption">Die Schaltfläche „Υποβολή" (Einreichen) am Ende der Seite</div></div>
+
+    <hr class="section-rule">
+
+    <div class="warning-box">
+      <div class="w-label">⚠ Wichtig</div>
+      <p>Nach der Einreichung melden Sie sich immer <strong>auf dieselbe Weise</strong> in Ihrem Konto an und prüfen sowohl den Antrag (unter <strong>„Ιστορικό αίτησης"</strong> – Antragsverlauf) als auch die <strong>Nachrichten</strong>. Dort werden der Bearbeitungsstand sowie etwaige Korrekturen oder Ergänzungen beschrieben, die Sie an Ihrem Antrag vornehmen müssen.</p>
+    </div>
+
+    <p>Unter <strong>„Οι αιτήσεις μου"</strong> (Meine Anträge) öffnen Sie Ihren Antrag über das <strong>Augensymbol</strong>.</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="07" width="1400" height="318" alt="Die Liste Meine Anträge"><div class="screenshot-caption">„Οι αιτήσεις μου" (Meine Anträge) — links in jeder Zeile das Augensymbol</div></div>
+
+    <p>Wenn Sie den Antrag öffnen, sehen Sie seine Angaben:</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="08" width="1400" height="669" alt="Die Angaben eines Antrags"><div class="screenshot-caption">Die Angaben des Antrags</div></div>
+    <div class="callout-group"><div class="callout-item"><span class="callout-dot green"></span><span>In der <strong>rechten Spalte</strong> finden Sie alle Angaben zur Bearbeitung durch die Behörde: Antragsstatus, Verlauf, Ausdrucke usw.</span></div><div class="callout-item"><span class="callout-dot green"></span><span>Unter <strong>„Μηνύματα"</strong> (Nachrichten) im Menü sehen Sie etwaige Fehler oder zusätzliche Anforderungen, die bei der Bearbeitung aufgetreten sind.</span></div></div>
+  </div>
+
+  <div class="section-header"><h2 id="de-section-2" tabindex="-1"><span class="section-num">2</span>Termin</h2></div>
+  <div class="section-body">
+    <p>Um einen Termin zu vereinbaren, müssen Sie unbedingt <strong>zuerst</strong> Ihren Antrag im e-proxeneio ausfüllen und absenden. Kann der Antrag nicht aus der Ferne abgeschlossen werden und ist <strong>persönliches Erscheinen</strong> erforderlich, erhalten Sie im Laufe der Bearbeitung durch die Behörde über den Antrag selbst die Möglichkeit, einen Termin zu buchen. In diesem Fall erscheint in Ihrem Antrag eine Schaltfläche, wie die Abbildung zeigt.</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="09" width="1400" height="625" alt="Die Schaltfläche NEUER TERMIN im Antrag"><div class="screenshot-caption">In der rechten Spalte des Antrags erscheint die Schaltfläche „ΝΕΟ ΡΑΝΤΕΒΟΥ" (Neuer Termin)</div></div>
+
+    <div class="warning-box">
+      <div class="w-label">⚠ Wichtig</div>
+      <p>Der Termin erscheint <strong>innerhalb Ihres Antrags</strong> und nicht unter dem Menüpunkt <strong>„Ραντεβού"</strong> (Termine) im Hauptmenü.</p>
+    </div>
+
+    <p>Wenn Sie darauf klicken, erscheint die folgende Ansicht mit den <strong>verfügbaren Tagen und Uhrzeiten</strong>:</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="10" width="1400" height="520" alt="Kalender und verfügbare Uhrzeiten"><div class="screenshot-caption">Sie wählen ein Datum und rechts eine der verfügbaren Uhrzeiten</div></div>
+
+    <hr class="section-rule">
+
+    <p>Falls Sie aus irgendeinem Grund eine <strong>Rückfrage</strong> haben, können Sie – ebenfalls über Ihren Antrag – Ihr Anliegen an die bearbeitende Stelle senden. Die Antwort erhalten Sie entweder im Antrag selbst oder an die dort angegebene E-Mail-Adresse.</p>
+    <div class="screenshot-wrap medium"><img class="screenshot" data-shot="11" width="1400" height="953" alt="Das Feld Bürgerkommentare"><div class="screenshot-caption">Schreiben Sie Ihr Anliegen in das Feld „Σχόλια πολίτη" (Bürgerkommentare) und klicken Sie auf „Υποβολή" (Einreichen)</div></div>
+  </div>
+
+  <div class="section-header"><h2 id="de-section-3" tabindex="-1"><span class="section-num">3</span>Antrag korrigieren</h2></div>
+  <div class="section-body">
+    <p>Muss Ihr Antrag korrigiert werden, erhalten Sie eine Nachricht, die angezeigt wird:</p>
+    <div class="callout-group"><div class="callout-item"><span class="callout-dot green"></span><span>per <strong>E-Mail</strong>,</span></div><div class="callout-item"><span class="callout-dot green"></span><span>in den <strong>Nachrichten</strong> Ihres persönlichen Bereichs im e-proxeneio,</span></div><div class="callout-item"><span class="callout-dot green"></span><span>im <strong>Verlauf</strong> Ihres Antrags, in der rechten Spalte.</span></div></div>
+    <div class="warning-box">
+      <div class="w-label">⚠ Wichtig</div>
+      <p>Bitte prüfen Sie regelmäßig <strong>alle drei Stellen</strong>, da sich E-Mails manchmal verzögern oder von Ihrem E-Mail-Anbieter in den <strong>Spam-Ordner</strong> verschoben werden können.</p>
+    </div>
+
+    <p>Im e-proxeneio sieht die Nachricht wie in der Abbildung aus. Sie öffnen Ihren Antrag über das <strong>Augensymbol</strong> <span class="arrow-tag green">grüner Pfeil</span>:</p>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="12" width="1400" height="99" alt="Nachrichtenzeile mit Pfeilen"></div>
+    <div class="callout-group"><div class="callout-item"><span class="callout-dot arrow-green"></span><span>Das <strong>Augensymbol</strong>: öffnet Ihren Antrag.</span></div><div class="callout-item"><span class="callout-dot arrow-red"></span><span>Der <strong>Status</strong> („Διόρθωση αίτησης" – Antrag korrigieren) und die <strong>Nachricht</strong> der Behörde mit dem, was zu korrigieren ist.</span></div></div>
+
+    <p>In Ihrem Antrag finden Sie unten:</p>
+    <div class="steps"><div class="step"><div class="step-num">1</div><div class="step-text">die bisher hochgeladenen Unterlagen, ihren <strong>Status</strong> (akzeptiert usw.) und die Möglichkeit, sie <strong>erneut einzureichen</strong> <span class="arrow-tag brown">brauner Pfeil</span></div></div><div class="step"><div class="step-num">2</div><div class="step-text">das Symbol <strong>(+)</strong> zum Hinzufügen eines neuen Dokuments <span class="arrow-tag purple">violetter Pfeil</span></div></div><div class="step"><div class="step-num">3</div><div class="step-text">die Schaltfläche <strong>„Υποβολή"</strong> (Einreichen), mit der Sie alle Änderungen an die Behörde übermitteln <span class="arrow-tag red">roter Pfeil</span></div></div></div>
+    <div class="screenshot-wrap full"><img class="screenshot" data-shot="13" width="1368" height="919" alt="Erneutes Einreichen von Unterlagen und Übermittlung der Korrektur"></div>
+
+    <div class="warning-box">
+      <div class="w-label">⚠ Wichtig</div>
+      <p>Wenn Sie nicht auf <strong>„Υποβολή"</strong> klicken, wird <strong>keine Korrektur</strong> an Ihrem Antrag vorgenommen und die Behörde kann das Verfahren nicht fortsetzen.</p>
+    </div>
+  </div>
+
+</div><!-- end pane-de -->
+
+<footer class="doc-footer">
+  <p>Ελληνική Πρεσβεία Βερολίνου — Προξενικό Τμήμα &nbsp;|&nbsp; Griechische Botschaft Berlin — Konsularabteilung</p>
+</footer>
+
+</div><!-- end page-wrap -->
+
+<dialog id="imageViewer" aria-labelledby="zoomTitle">
+  <div class="zoom-header">
+    <h2 id="zoomTitle"></h2>
+    <div class="zoom-controls"><button type="button" id="zoomSize">Πραγματικό μέγεθος</button><button type="button" id="zoomClose">Κλείσιμο εικόνας</button></div>
+  </div>
+  <p id="zoomTranslation" lang="de" hidden>Die Bilder sind übersetzte Darstellungen zu Informationszwecken. In der tatsächlichen Anwendung können die deutschen Beschriftungen etwas anders formuliert oder in einer anderen Reihenfolge angeordnet sein.</p>
+  <p id="zoomHint"></p>
+  <div class="zoom-scroll" id="zoomScroll" tabindex="0"><img id="zoomImage" alt=""></div>
+</dialog>
+
+<script>
+/* Οι εικόνες βρίσκονται ως αρχεία WebP στον φάκελο img/odigos/
+   (el-NN.webp για τα ελληνικά, de-NN.webp για τα γερμανικά). */
+const SHOTS = {
+"01": "img/odigos/el-01.webp",
+"02": "img/odigos/el-02.webp",
+"03": "img/odigos/el-03.webp",
+"04": "img/odigos/el-04.webp",
+"05": "img/odigos/el-05.webp",
+"06": "img/odigos/el-06.webp",
+"07": "img/odigos/el-07.webp",
+"08": "img/odigos/el-08.webp",
+"09": "img/odigos/el-09.webp",
+"10": "img/odigos/el-10.webp",
+"11": "img/odigos/el-11.webp",
+"12": "img/odigos/el-12.webp",
+"13": "img/odigos/el-13.webp"
+};
+
+const SHOTS_DE = {
+"01": "img/odigos/de-01.webp",
+"02": "img/odigos/de-02.webp",
+"03": "img/odigos/de-03.webp",
+"04": "img/odigos/de-04.webp",
+"05": "img/odigos/de-05.webp",
+"06": "img/odigos/de-06.webp",
+"07": "img/odigos/de-07.webp",
+"08": "img/odigos/de-08.webp",
+"09": "img/odigos/de-09.webp",
+"10": "img/odigos/de-10.webp",
+"11": "img/odigos/de-11.webp",
+"12": "img/odigos/de-12.webp",
+"13": "img/odigos/de-13.webp"
+};
+(function () {
+  'use strict';
+  const tabs = Array.from(document.querySelectorAll('.lang-tab'));
+  const panes = Array.from(document.querySelectorAll('.lang-pane'));
+  const printButton = document.querySelector('.print-btn');
+  const viewer = document.getElementById('imageViewer');
+  const zoomImage = document.getElementById('zoomImage');
+  const sizeButton = document.getElementById('zoomSize');
+  const zoomScroll = document.getElementById('zoomScroll');
+  const words = {
+    el: { print: 'Εκτύπωση / Αποθήκευση ως PDF', printHint: 'Στον διάλογο εκτύπωσης επιλέξτε αποθήκευση ως PDF. Για καθαρότερο αποτέλεσμα απενεργοποιήστε κεφαλίδες και υποσέλιδα.', printing: 'Προετοιμασία εκτύπωσης…', zoom: 'Μεγέθυνση εικόνας: ', close: 'Κλείσιμο εικόνας', natural: 'Πραγματικό μέγεθος', fit: 'Προσαρμογή στο παράθυρο', scroll: 'Μεγεθυμένη εικόνα. Χρησιμοποιήστε κύλιση για μετακίνηση.', pinch: 'Μεγεθύνετε με δύο δάκτυλα ή με διπλό άγγιγμα. Σύρετε για μετακίνηση.' },
+    de: { print: 'Drucken / Als PDF speichern', printHint: 'Wählen Sie im Druckdialog „Als PDF speichern“. Deaktivieren Sie für eine übersichtliche Ausgabe Kopf- und Fußzeilen.', printing: 'Druck wird vorbereitet…', zoom: 'Bild vergrößern: ', close: 'Bild schließen', natural: 'Originalgröße', fit: 'An Fenster anpassen', scroll: 'Vergrößertes Bild. Zum Verschieben scrollen.', pinch: 'Mit zwei Fingern oder per Doppeltippen vergrößern. Zum Verschieben ziehen.' }
+  };
+  let lang = 'el';
+  let natural = false;
+  let zoomWidth = 0;
+  let imageOpener = null;
+  let printing = false;
+
+  function language(value) { return value === 'de' ? 'de' : 'el'; }
+
+  /* ── Μεγέθυνση εικόνας ──────────────────────────────────────────────
+     Το πλάτος της εικόνας κρατιέται σε pixel (zoomWidth) αντί για 100%,
+     ώστε να μπορεί να κλιμακωθεί συνεχόμενα από το pinch. Η μετακίνηση
+     γίνεται με την κανονική κύλιση του .zoom-scroll. */
+  function fitWidth() {
+    const box = getComputedStyle(zoomScroll);
+    return Math.max(1, zoomScroll.clientWidth - parseFloat(box.paddingLeft) - parseFloat(box.paddingRight));
+  }
+
+  function applyWidth(width, anchorX, anchorY) {
+    const min = fitWidth();
+    const max = Math.max(zoomImage.naturalWidth || min, min) * 4;
+    const next = Math.round(Math.min(Math.max(width, min), max));
+    const ratio = zoomWidth ? next / zoomWidth : 1;
+    const left = zoomScroll.scrollLeft;
+    const top = zoomScroll.scrollTop;
+    zoomWidth = next;
+    zoomImage.style.width = next + 'px';
+    if (anchorX !== undefined) {
+      zoomScroll.scrollLeft = (left + anchorX) * ratio - anchorX;
+      zoomScroll.scrollTop = (top + anchorY) * ratio - anchorY;
+    }
+    natural = next > min * 1.02;
+    sizeButton.textContent = words[lang][natural ? 'fit' : 'natural'];
+  }
+
+  function resetZoom() {
+    zoomWidth = 0;
+    applyWidth(fitWidth());
+    zoomScroll.scrollTo(0, 0);
+  }
+
+  function toggleSize() {
+    if (natural) resetZoom();
+    else applyWidth(zoomImage.naturalWidth || fitWidth() * 2);
+  }
+
+  function setLanguage(value, focusTab) {
+    lang = language(value);
+    document.documentElement.lang = lang;
+    panes.forEach(pane => {
+      const active = pane.id === 'pane-' + lang;
+      pane.classList.toggle('active', active);
+      pane.hidden = !active;
+    });
+    tabs.forEach(tab => {
+      const active = tab.dataset.lang === lang;
+      tab.classList.toggle('active', active);
+      tab.setAttribute('aria-selected', String(active));
+      tab.tabIndex = active ? 0 : -1;
+      if (active && focusTab) tab.focus();
+    });
+    printButton.querySelector('span').textContent = words[lang].print;
+    printButton.title = words[lang].printHint;
+    document.querySelector('.print-hint').textContent = words[lang].printHint;
+    document.getElementById('zoomClose').textContent = words[lang].close;
+    zoomScroll.setAttribute('aria-label', words[lang].scroll);
+    document.getElementById('zoomHint').textContent = words[lang].pinch;
+    sizeButton.textContent = words[lang].natural;
+    document.querySelectorAll('.image-zoom').forEach(button => {
+      const image = button.querySelector('img');
+      const imageLang = button.closest('.lang-pane').lang;
+      button.setAttribute('aria-label', words[imageLang].zoom + image.alt);
+    });
+    if (viewer.open) viewer.close();
+    try { localStorage.setItem('consulates-map-lang', lang); } catch (_) { /* file/private mode */ }
+    try {
+      const url = new URL(location.href);
+      url.searchParams.set('lang', lang);
+      history.replaceState(null, '', url);
+    } catch (_) { /* Some browsers restrict history changes on file: URLs. */ }
+  }
+
+  document.querySelectorAll('img[data-shot]').forEach(image => {
+    const imageLang = image.closest('.lang-pane').lang;
+    image.src = imageLang === 'de' ? SHOTS_DE[image.dataset.shot] : SHOTS[image.dataset.shot];
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'image-zoom';
+    image.replaceWith(button);
+    button.appendChild(image);
+    button.addEventListener('click', () => {
+      imageOpener = button;
+      natural = false;
+      zoomImage.src = image.src;
+      zoomImage.alt = image.alt;
+      document.getElementById('zoomTitle').textContent = image.alt;
+      document.getElementById('zoomTranslation').hidden = imageLang !== 'de';
+      viewer.showModal();
+      resetZoom();
+      document.getElementById('zoomClose').focus();
+    });
+    if (imageLang === 'de') {
+      const badge = document.createElement('div');
+      badge.className = 'translated-badge';
+      badge.textContent = 'Übersetzte Darstellung';
+      button.after(badge);
+    }
+  });
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => setLanguage(tab.dataset.lang, false));
+    tab.addEventListener('keydown', event => {
+      let next;
+      if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') next = tabs[1 - index];
+      if (event.key === 'Home') next = tabs[0];
+      if (event.key === 'End') next = tabs[tabs.length - 1];
+      if (next) { event.preventDefault(); setLanguage(next.dataset.lang, true); }
+    });
+  });
+  viewer.addEventListener('close', () => {
+    if (imageOpener && !imageOpener.closest('.lang-pane').hidden) imageOpener.focus();
+    imageOpener = null;
+  });
+  viewer.addEventListener('click', event => { if (event.target === viewer) viewer.close(); });
+  document.getElementById('zoomClose').addEventListener('click', () => viewer.close());
+  sizeButton.addEventListener('click', toggleSize);
+  window.addEventListener('resize', () => { if (viewer.open && !natural) resetZoom(); });
+
+  /* Δύο δάκτυλα: κλιμάκωση γύρω από το μέσο των δύο σημείων επαφής. */
+  const touches = new Map();
+  let pinchStart = 0;
+  let pinchBase = 0;
+  let pinched = false;
+  let lastTap = 0;
+
+  function spread() {
+    const [a, b] = Array.from(touches.values());
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
+  function centre() {
+    const [a, b] = Array.from(touches.values());
+    const box = zoomScroll.getBoundingClientRect();
+    return { x: (a.x + b.x) / 2 - box.left, y: (a.y + b.y) / 2 - box.top };
+  }
+
+  zoomScroll.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'mouse') return;
+    if (!touches.size) pinched = false;
+    touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (touches.size === 2) { pinchStart = spread(); pinchBase = zoomWidth; pinched = true; }
+  });
+  zoomScroll.addEventListener('pointermove', event => {
+    if (!touches.has(event.pointerId)) return;
+    touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (touches.size !== 2 || !pinchStart) return;
+    event.preventDefault();
+    const middle = centre();
+    applyWidth(pinchBase * (spread() / pinchStart), middle.x, middle.y);
+  });
+  function lift(event) {
+    if (!touches.delete(event.pointerId)) return;
+    if (touches.size < 2) pinchStart = 0;
+    if (touches.size || pinched || event.pointerType === 'mouse') return;
+    const now = Date.now();
+    if (now - lastTap < 300) { toggleSize(); lastTap = 0; } else { lastTap = now; }
+  }
+  zoomScroll.addEventListener('pointerup', lift);
+  zoomScroll.addEventListener('pointercancel', lift);
+
+  /* Ctrl + τροχός στον υπολογιστή, για τον ίδιο λόγο. */
+  zoomScroll.addEventListener('wheel', event => {
+    if (!event.ctrlKey) return;
+    event.preventDefault();
+    const box = zoomScroll.getBoundingClientRect();
+    applyWidth(zoomWidth * (event.deltaY < 0 ? 1.12 : 1 / 1.12), event.clientX - box.left, event.clientY - box.top);
+  }, { passive: false });
+  printButton.addEventListener('click', async () => {
+    if (printing) return;
+    printing = true;
+    printButton.disabled = true;
+    printButton.querySelector('span').textContent = words[lang].printing;
+    try {
+      const images = Array.from(document.querySelectorAll('.lang-pane.active img'));
+      await Promise.all(images.map(image => image.decode ? image.decode().catch(() => {}) : Promise.resolve()));
+      if (document.fonts) await document.fonts.ready;
+      if (viewer.open) viewer.close();
+      window.print();
+    } finally {
+      printing = false;
+      printButton.disabled = false;
+      printButton.querySelector('span').textContent = words[lang].print;
+    }
+  });
+  let initial = new URLSearchParams(location.search).get('lang');
+  if (!['el', 'de'].includes(initial)) {
+    try { initial = localStorage.getItem('consulates-map-lang'); } catch (_) { /* offline */ }
+  }
+  setLanguage(initial, false);
+})();
+
+</script>
+</body>
+</html>
