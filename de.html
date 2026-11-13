@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Griechische Konsulate in Deutschland</title>
+<meta name="description" content="Finden Sie mit Ihrer Postleitzahl das zuständige griechische Konsulat in Deutschland und stellen Sie Ihren Antrag online über e-proxeneio.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Griechische Konsulate in Deutschland">
+<meta property="og:description" content="Finden Sie Ihr zuständiges Konsulat über die Postleitzahl und stellen Sie Ihren Antrag online über e-proxeneio.">
+<meta property="og:url" content="https://kts26.github.io/conspl/de.html">
+<meta property="og:image" content="https://kts26.github.io/conspl/img/og-image-de.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Deutschlandkarte mit den Zuständigkeitsbereichen der griechischen Konsulate">
+<meta property="og:locale" content="de_DE">
+<meta property="og:locale:alternate" content="el_GR">
+<meta name="twitter:card" content="summary_large_image">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; form-action 'none'; base-uri 'none'">
+<style>
+  body { margin: 0; padding: 48px 20px; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: #1a2433; background: #fff; text-align: center; }
+  a { color: #003476; font-weight: 600; }
+</style>
+<script>
+/* Diese Seite existiert nur, damit ein geteilter Link eine deutsche Vorschau (Titel, Text, Bild)
+   bekommt. Besucher werden sofort zur eigentlichen Seite auf Deutsch weitergeleitet;
+   ein mitgegebenes ?plz=12345 bleibt erhalten. */
+(function () {
+  var target = 'index.html?lang=de';
+  try {
+    var params = new URLSearchParams(window.location.search);
+    params.set('lang', 'de');
+    target = 'index.html?' + params.toString();
+  } catch (e) { /* alter Browser: ohne zusätzliche Parameter weiter */ }
+  window.location.replace(target);
+})();
+</script>
+</head>
+<body>
+  <p>Sie werden weitergeleitet …</p>
+  <p><a href="index.html?lang=de">Griechische Konsulate in Deutschland öffnen</a></p>
+</body>
+</html>
