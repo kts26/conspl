@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Δικαιολογητικά | Unterlagen</title>
+<style>
+
+:root {
+  --green-dark:   #003476;
+  --green-mid:    #0055aa;
+  --green-light:  #e8f0f8;
+  --blue-soft:    #e8f0f8;
+  --orange:       #e65c00;
+  --orange-deep:  #a84300;
+  --orange-bg:    #fff4ec;
+  --text:         #1a1a1a;
+  --text-muted:   #555;
+  --border:       #cdd5de;
+  --white:        #ffffff;
+  --page-bg:      #f2f5f8;
+  --section-gap:  2rem;
+  --content-width:1040px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--page-bg);
+}
+a { color: #003476; text-underline-offset: 3px; }
+button, input { font: inherit; color: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 3px solid #f2a900; outline-offset: 3px; }
+
+/* ===== HEADER (όπως στον οδηγό) ===== */
+.doc-header-wrap { background: var(--green-dark); padding: 0 16px; }
+.doc-header {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 1.5rem 0 1.5rem;
+  color: var(--white);
+  text-align: center;
+}
+.doc-header .site-label { font-size: 0.82rem; letter-spacing: 0.04em; opacity: 0.72; margin-bottom: 0.4rem; }
+.doc-header h1 { font-size: 1.5rem; font-weight: 700; line-height: 1.3; }
+.doc-header h1 span { font-weight: 400; font-size: 1.15rem; }
+.doc-header .subtitle { font-size: 0.9rem; opacity: 0.78; margin-top: 0.4rem; }
+
+/* ===== LANG TABS (όπως στον οδηγό) ===== */
+.lang-tabs-wrap { background: var(--green-mid); border-bottom: 3px solid var(--green-dark); padding: 0 16px; }
+.lang-tabs { max-width: var(--content-width); margin: 0 auto; display: flex; padding: 0 1.5rem; }
+.lang-tab {
+  flex: 0 0 auto;
+  padding: 0.65rem 1.4rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.72);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: background 0.15s, color 0.15s;
+}
+.lang-tab:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.lang-tab.active {
+  background: var(--page-bg);
+  color: var(--green-dark);
+  font-weight: 700;
+  border-top: 3px solid var(--orange);
+  margin-top: -3px;
+}
+
+/* ===== PAGE ===== */
+.page-wrap { max-width: var(--content-width); margin: 0 auto; padding: 1.6rem 1.5rem 3rem; }
+.lead { margin-bottom: 1.2rem; }
+.de-notice { margin: 0 0 1.2rem; }
+
+/* ===== ΑΝΑΖΗΤΗΣΗ ===== */
+.search-box {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.1rem 1.5rem 1.2rem;
+}
+.search-box label { display: block; font-weight: 700; color: var(--green-dark); margin-bottom: 0.45rem; }
+.search-row { display: flex; gap: 8px; }
+.search-row input {
+  flex: 1;
+  min-width: 0;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 1.5px solid #8a97a6;
+  border-radius: 6px;
+  background: var(--white);
+}
+.search-status { margin-top: 0.7rem; font-size: 0.93rem; color: var(--text-muted); }
+.search-results { margin-top: 0.6rem; }
+
+/* ===== SECTION (όπως στον οδηγό) ===== */
+.section-header {
+  background: var(--green-dark);
+  color: var(--white);
+  padding: 0.55rem 1.1rem;
+  border-radius: 4px 4px 0 0;
+  margin-top: var(--section-gap);
+}
+.section-header h2 { font-size: 1rem; font-weight: 700; scroll-margin-top: 16px; }
+.section-header h2[tabindex="-1"]:focus { outline: none; }
+.section-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--orange);
+  color: #fff;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+.section-body {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  padding: 1.3rem 1.5rem 1.5rem;
+}
+.section-body > p { margin-bottom: 0.8rem; }
+.section-body > p:last-child { margin-bottom: 0; }
+.placeholder { color: var(--text-muted); }
+
+/* ===== ΚΟΥΜΠΙΑ ΕΠΙΛΟΓΗΣ ===== */
+.pick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; list-style: none; }
+.pick-list { display: grid; gap: 8px; list-style: none; }
+.pick {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  text-align: left;
+  padding: 0.6rem 0.9rem;
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.pick:hover { background: var(--green-light); border-color: #9fb3c8; }
+.pick .p-title { display: block; font-weight: 700; color: var(--green-dark); line-height: 1.35; }
+.pick .p-sub { display: block; font-size: 0.82rem; color: var(--text-muted); margin-top: 0.1rem; line-height: 1.4; }
+.pick[aria-pressed="true"] { background: var(--green-light); border-color: var(--green-dark); box-shadow: inset 4px 0 0 var(--orange); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 7px 13px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--green-dark);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn:hover { background: var(--green-light); }
+.btn svg { flex-shrink: 0; }
+
+/* ===== Η ΑΙΤΗΣΗ ===== */
+.app-cat { font-size: 0.82rem; font-weight: 400; opacity: 0.8; display: block; }
+.app-header h2 { font-size: 1.15rem; line-height: 1.35; }
+.app-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.1rem; }
+.app-body h3 { font-size: 1.05rem; color: var(--green-dark); margin: 1.6rem 0 0.6rem; padding-bottom: 0.3rem; border-bottom: 2px solid var(--green-light); }
+.app-body .intro p { margin-bottom: 0.8rem; }
+
+.warning-box {
+  background: var(--orange-bg);
+  border-left: 4px solid var(--orange);
+  border-radius: 0 4px 4px 0;
+  padding: 0.85rem 1.1rem;
+  margin: 1.1rem 0;
+}
+.warning-box .w-label { font-weight: 700; color: var(--orange-deep); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+.warning-box p { margin: 0; font-size: 0.93rem; }
+.warning-box p + p { margin-top: 0.35rem; }
+
+.info-box {
+  background: var(--blue-soft);
+  border-left: 4px solid #4a80b8;
+  border-radius: 0 4px 4px 0;
+  padding: 0.85rem 1.1rem;
+  margin: 0.9rem 0 1.1rem;
+  font-size: 0.93rem;
+}
+.info-box p + p, .info-box p + dl, .info-box dl + p { margin-top: 0.5rem; }
+.when-legend div { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.when-legend div + div { margin-top: 0.4rem; }
+.when-legend dd { flex: 1 1 260px; }
+.tips-box .t-label { font-weight: 700; color: var(--green-dark); margin-bottom: 0.3rem; }
+.tips-box ul { margin-left: 1.2rem; }
+.tips-box li + li { margin-top: 0.35rem; }
+
+/* Πότε υποβάλλεται: η ετικέτα γράφει πάντα το κείμενο, το χρώμα μόνο το τονίζει. */
+.when {
+  display: inline-block;
+  padding: 0.12rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.45;
+  white-space: nowrap;
+  border: 1.5px solid #4a80b8;
+  background: var(--white);
+  color: var(--green-dark);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.when.req { border-color: var(--orange-deep); background: var(--orange-deep); color: #fff; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; vertical-align: top; padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border); }
+thead th { background: var(--green-light); color: var(--green-dark); font-size: 0.85rem; border-bottom: 2px solid var(--border); }
+.table-wrap { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.table-wrap tbody tr:last-child td { border-bottom: none; }
+
+.docs-table td.d-when { width: 15.5rem; }
+.docs-table tr.req td:first-child { box-shadow: inset 4px 0 0 var(--orange); }
+.docs-table tr.req td { background: var(--orange-bg); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.d-title { font-weight: 600; }
+.d-notes { margin-top: 0.35rem; font-size: 0.9rem; color: #333; }
+.d-notes p + p { margin-top: 0.3rem; }
+.d-link { margin-top: 0.35rem; font-size: 0.9rem; overflow-wrap: anywhere; }
+.chk { display: none; }
+
+.cost-table td.c-price { white-space: nowrap; font-weight: 700; text-align: right; width: 7rem; font-variant-numeric: tabular-nums; }
+.cost-table th.c-price { text-align: right; }
+.cost-table td.c-unit { width: 10rem; color: var(--text-muted); font-size: 0.9rem; }
+.copy-price { margin-top: 0.8rem; }
+
+.next-steps { margin-top: 1.8rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.93rem; }
+.print-url { display: none; }
+
+/* ===== FOOTER ===== */
+.doc-footer {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--green-dark);
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.doc-footer p + p { margin-top: 0.3rem; }
+
+/* ===== ΜΙΚΡΕΣ ΟΘΟΝΕΣ ===== */
+@media (max-width: 640px) {
+  .page-wrap { padding-left: 16px; padding-right: 16px; }
+  .section-body, .search-box { padding: 16px; }
+  .lang-tabs { padding: 0; }
+  .doc-header h1 { font-size: 1.3rem; }
+  .search-row { flex-wrap: wrap; }
+  .search-row .btn { flex: 1 1 100%; }
+
+  /* Ο πίνακας δικαιολογητικών γίνεται λίστα: ένα δικαιολογητικό ανά μπλοκ. */
+  .docs-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .docs-table, .docs-table tbody, .docs-table tr, .docs-table td { display: block; width: 100%; }
+  .docs-table td { border-bottom: none; }
+  .docs-table td.d-doc { padding-bottom: 0.3rem; }
+  .docs-table td.d-when { width: 100%; padding-top: 0.2rem; }
+  .docs-table tr { border-bottom: 1px solid var(--border); }
+  .docs-table tr:last-child { border-bottom: none; }
+  .docs-table tr.req { border-left: 4px solid var(--orange); }
+  .docs-table tr.req td:first-child { box-shadow: none; }
+
+  .cost-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .cost-table, .cost-table tbody { display: block; }
+  .cost-table tr { display: grid; grid-template-columns: 1fr auto; gap: 0 12px; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); }
+  .cost-table tr:last-child { border-bottom: none; }
+  .cost-table td { padding: 0; border: none; width: auto !important; }
+  .cost-table td.c-label { grid-column: 1; grid-row: 1 / span 2; }
+  .cost-table td.c-unit { grid-column: 2; text-align: right; font-size: 0.8rem; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* ===== ΕΚΤΥΠΩΣΗ: τυπώνεται μόνο η επιλεγμένη αίτηση ===== */
+@page { margin: 1.4cm 1.2cm; }
+@media print {
+  body { background: #fff; font-size: 10.5pt; line-height: 1.45; }
+  .lang-tabs-wrap, .app-actions, .next-steps, .de-notice, noscript { display: none !important; }
+  body.has-app .finder, body.has-app .lead { display: none !important; }
+  .doc-header-wrap { background: none !important; border-bottom: 2pt solid #000; padding: 0; }
+  .doc-header { color: #000 !important; padding: 0 0 0.3cm; }
+  .doc-header .site-label, .doc-header .subtitle { color: #555 !important; opacity: 1 !important; }
+  .page-wrap { padding: 0.4cm 0 0; max-width: 100%; }
+  .section-header { background: none !important; color: #000 !important; border-left: 4pt solid #003476; border-radius: 0; padding: 0.15cm 0.4cm; margin-top: 0.3cm; break-after: avoid; page-break-after: avoid; }
+  .section-num { background: none !important; color: #000 !important; border: 1.5pt solid #000; }
+  .section-body { border: none; padding: 0.3cm 0 0; }
+  .app-header h2 { font-size: 14pt; }
+  .app-cat { opacity: 1; color: #444; }
+  .app-body h3 { color: #000; border-bottom: 1pt solid #000; margin-top: 0.6cm; break-after: avoid; page-break-after: avoid; }
+  .warning-box { background: none !important; border: 1pt solid #bbb; border-left: 4pt solid #000; break-inside: avoid; page-break-inside: avoid; }
+  .warning-box .w-label { color: #000 !important; }
+  .info-box { background: none !important; border: 1pt solid #bbb; break-inside: avoid; page-break-inside: avoid; }
+  .tips-box .t-label { color: #000; }
+  .table-wrap { border: 1pt solid #999; border-radius: 0; overflow: visible; }
+  thead { display: table-header-group; }
+  thead th { background: none !important; color: #000; border-bottom: 1pt solid #000; }
+  th, td { padding: 0.18cm 0.25cm; border-bottom: 0.5pt solid #999; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
+  .docs-table td.d-when { width: 5.4cm; }
+  .docs-table tr.req td { background: none !important; }
+  .docs-table tr.req td:first-child { box-shadow: none; border-left: 3pt solid #000; }
+  .when { border: 1pt solid #000 !important; background: #fff !important; color: #000 !important; font-size: 8.5pt; }
+  .when.req { background: #000 !important; color: #fff !important; }
+  .chk { display: inline-block; width: 0.32cm; height: 0.32cm; border: 1pt solid #000; margin-right: 0.2cm; vertical-align: -0.03cm; }
+  .d-notes { color: #000; font-size: 9.5pt; }
+  .d-link { font-size: 9pt; }
+  .d-link a::after { content: " — " attr(href); }
+  .print-url { display: block; margin-top: 0.5cm; font-size: 8.5pt; color: #444; overflow-wrap: anywhere; }
+  .doc-footer { border-top: 1pt solid #000; margin-top: 0.4cm; padding-top: 0.2cm; break-inside: avoid; page-break-inside: avoid; }
+  .cost-table td.c-price { width: 2.2cm; }
+  .cost-table td.c-unit { width: 3.2cm; }
+  a { color: #000; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="doc-header-wrap">
+  <div class="doc-header">
+    <div class="site-label">e-proxeneio.mfa.gr/ypex</div>
+    <h1>Δείτε τα δικαιολογητικά που χρειάζεστε<br>
+    <span lang="de">Welche Unterlagen Sie benötigen</span></h1>
+    <div class="subtitle">Ελληνικά Προξενεία στη Γερμανία &nbsp;·&nbsp; Griechische Konsulate in Deutschland</div>
+  </div>
+</div>
+
+<div class="lang-tabs-wrap">
+  <div class="lang-tabs" role="group" aria-label="Γλώσσα / Sprache">
+    <button type="button" class="lang-tab active" data-lang="el" lang="el" aria-pressed="true">🇬🇷 Ελληνικά</button>
+    <button type="button" class="lang-tab" data-lang="de" lang="de" aria-pressed="false">🇩🇪 Deutsch</button>
+  </div>
+</div>
+
+<main class="page-wrap">
+
+  <noscript><div class="warning-box"><p>Η σελίδα χρειάζεται JavaScript για να εμφανίσει τα δικαιολογητικά. / Diese Seite benötigt JavaScript.</p></div></noscript>
+  <div class="warning-box" id="loadError" hidden><p></p></div>
+
+  <div class="info-box de-notice" id="deNotice" lang="de" hidden></div>
+
+  <p class="lead" data-t="lead"></p>
+
+  <div class="finder" id="finder">
+
+    <div class="search-box" role="search">
+      <label for="q" data-t="searchLabel"></label>
+      <div class="search-row">
+        <input type="search" id="q" autocomplete="off" spellcheck="false" enterkeyhint="search">
+        <button type="button" class="btn" id="qClear" data-t="searchClear" hidden></button>
+      </div>
+      <p class="search-status" id="qStatus" role="status" hidden></p>
+      <ul class="pick-list search-results" id="qResults" hidden></ul>
+    </div>
+
+    <div id="pickers">
+      <div class="section-header"><h2 id="h-cat"><span class="section-num">1</span><span data-t="step1"></span></h2></div>
+      <div class="section-body">
+        <ul class="pick-grid" id="catList" aria-labelledby="h-cat"></ul>
+      </div>
+
+      <div class="section-header"><h2 id="h-app" tabindex="-1"><span class="section-num">2</span><span data-t="step2"></span></h2></div>
+      <div class="section-body">
+        <p class="placeholder" id="appPlaceholder" data-t="step2Empty"></p>
+        <ul class="pick-list" id="appList" aria-labelledby="h-app" hidden></ul>
+      </div>
+    </div>
+
+  </div>
+
+  <article id="app" hidden>
+    <div class="section-header app-header"><h2 id="appTitle" tabindex="-1"><span class="app-cat" id="appCat"></span><span id="appName"></span></h2></div>
+    <div class="section-body app-body">
+      <div class="app-actions">
+        <button type="button" class="btn" id="btnCopy">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
+          <span></span>
+        </button>
+        <button type="button" class="btn" id="btnPrint">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <span data-t="print"></span>
+        </button>
+      </div>
+      <div id="appContent"></div>
+      <p class="next-steps" id="nextSteps"></p>
+      <p class="print-url" id="printUrl"></p>
+    </div>
+  </article>
+
+  <footer class="doc-footer">
+    <p id="sourceLine"></p>
+    <p>Ελληνική Πρεσβεία Βερολίνου — Προξενικό Τμήμα &nbsp;|&nbsp; Griechische Botschaft Berlin — Konsularabteilung</p>
+  </footer>
+
+</main>
+
+<!-- Το περιεχόμενο (κατηγορίες, αιτήσεις, δικαιολογητικά, κόστος) βρίσκεται μόνο εδώ: -->
+<script src="data/dikaiologitika-data.js"></script>
+<!-- Όταν ετοιμαστεί η γερμανική μετάφραση, αρκεί να ενεργοποιηθεί η επόμενη γραμμή:
+<script src="data/dikaiologitika-data-de.js"></script>
+-->
+
+<script>
+(function () {
+  'use strict';
+
+  const ALL = window.DIKAIOLOGITIKA || {};
+
+  /* Τιμές του πεδίου «when» που σημαίνουν υποχρεωτική επισύναψη στην ηλεκτρονική αίτηση.
+     Κάθε άλλη τιμή θεωρείται «με την αίτηση ή στο ραντεβού». */
+  const WHEN_REQUIRED = ['Με την αίτηση', 'Mit dem Antrag'];
+
+  const GUIDE_PAGE = 'odigos-e-proxeneio.html';
+  const MAP_PAGE = 'index.html';
+  const LANG_KEY = 'consulates-map-lang';   // ίδιο κλειδί με τον χάρτη και τον οδηγό
+
+  /* Τα κείμενα της ίδιας της σελίδας. Το περιεχόμενο των αιτήσεων έρχεται από το αρχείο δεδομένων. */
+  const T = {
+    el: {
+      pageTitle: 'Δικαιολογητικά',
+      lead: 'Διαλέξτε την αίτηση που σας ενδιαφέρει, για να δείτε τι δικαιολογητικά χρειάζεται και πόσο κοστίζει.',
+      searchLabel: 'Δεν ξέρετε σε ποια κατηγορία ανήκει; Γράψτε τι χρειάζεστε',
+      searchPlaceholder: 'π.χ. διαβατήριο, πληρεξούσιο, γέννηση',
+      searchClear: 'Καθαρισμός',
+      found: n => n === 1 ? 'Βρέθηκε 1 αίτηση:' : 'Βρέθηκαν ' + n + ' αιτήσεις:',
+      notFound: q => 'Δεν βρέθηκε αίτηση για «' + q + '». Δοκιμάστε άλλη λέξη ή πατήστε «Καθαρισμός» και διαλέξτε κατηγορία.',
+      step1: 'Διαλέξτε κατηγορία',
+      step2: 'Διαλέξτε αίτηση',
+      step2Empty: 'Διαλέξτε πρώτα μια κατηγορία.',
+      appCount: n => n === 1 ? '1 αίτηση' : n + ' αιτήσεις',
+      copy: 'Αντιγραφή συνδέσμου αυτής της αίτησης',
+      copied: 'Ο σύνδεσμος αντιγράφηκε',
+      copyPrompt: 'Αντιγράψτε τον σύνδεσμο:',
+      print: 'Εκτύπωση / Αποθήκευση ως PDF',
+      warn: '⚠ Προσοχή',
+      docs: 'Δικαιολογητικά',
+      docsNone: 'Δεν αναφέρονται δικαιολογητικά για αυτή την αίτηση.',
+      whenIntro: 'Όλα τα δικαιολογητικά του πίνακα είναι απαραίτητα για την πράξη. Η ετικέτα κάθε δικαιολογητικού δείχνει μόνο πότε το υποβάλλετε:',
+      whenReq: 'Με την αίτηση',
+      whenReqText: 'Το επισυνάπτετε υποχρεωτικά στην ηλεκτρονική αίτηση. Χωρίς αυτό η αίτηση δεν μπορεί να υποβληθεί.',
+      whenOpt: 'Με την αίτηση ή στο ραντεβού',
+      whenOptText: 'Το επισυνάπτετε στην αίτηση ή το φέρνετε μαζί σας στο ραντεβού.',
+      whenOutro: 'Όσο περισσότερα επισυνάψετε από την αρχή, τόσο πιο γρήγορα προχωρά η αίτησή σας.',
+      colDoc: 'Δικαιολογητικό',
+      colWhen: 'Πότε το υποβάλλετε',
+      cost: 'Κόστος',
+      colAct: 'Πράξη',
+      colPrice: 'Κόστος',
+      colUnit: 'Μονάδα χρέωσης',
+      copyPrice: 'Κόστος αντιγράφου:',
+      tips: 'Συχνά προβλήματα',
+      nextLead: 'Επόμενο βήμα:',
+      nextGuide: 'Πώς υποβάλλετε την αίτηση στο e-proxeneio',
+      nextMap: 'Βρείτε το προξενείο σας',
+      printUrl: 'Η σελίδα αυτή: ',
+      source: d => 'Πηγή: e-proxeneio.mfa.gr' + (d ? '. Τελευταίος έλεγχος στοιχείων: ' + d : ''),
+      noData: 'Τα στοιχεία δεν φορτώθηκαν. Δοκιμάστε να ανανεώσετε τη σελίδα.'
+    },
+    de: {
+      pageTitle: 'Unterlagen',
+      lead: 'Wählen Sie den Antrag, der Sie betrifft, um die erforderlichen Unterlagen und die Gebühren zu sehen.',
+      searchLabel: 'Sie kennen die Kategorie nicht? Geben Sie ein, was Sie benötigen',
+      searchPlaceholder: 'z. B. Reisepass, Vollmacht, Geburt',
+      searchClear: 'Zurücksetzen',
+      found: n => n === 1 ? '1 Antrag gefunden:' : n + ' Anträge gefunden:',
+      notFound: q => 'Kein Antrag zu „' + q + '“ gefunden. Versuchen Sie ein anderes Wort oder klicken Sie auf „Zurücksetzen“ und wählen Sie eine Kategorie.',
+      step1: 'Kategorie wählen',
+      step2: 'Antrag wählen',
+      step2Empty: 'Wählen Sie zuerst eine Kategorie.',
+      appCount: n => n === 1 ? '1 Antrag' : n + ' Anträge',
+      copy: 'Link zu diesem Antrag kopieren',
+      copied: 'Link wurde kopiert',
+      copyPrompt: 'Kopieren Sie den Link:',
+      print: 'Drucken / Als PDF speichern',
+      warn: '⚠ Wichtig',
+      docs: 'Unterlagen',
+      docsNone: 'Für diesen Antrag sind keine Unterlagen angegeben.',
+      whenIntro: 'Alle Unterlagen in der Tabelle sind für den Vorgang erforderlich. Die Kennzeichnung zeigt nur, wann Sie die jeweilige Unterlage einreichen:',
+      whenReq: 'Mit dem Antrag',
+      whenReqText: 'Sie müssen die Unterlage dem Online-Antrag beifügen. Ohne sie kann der Antrag nicht eingereicht werden.',
+      whenOpt: 'Mit dem Antrag oder beim Termin',
+      whenOptText: 'Sie fügen die Unterlage dem Antrag bei oder bringen sie zum Termin mit.',
+      whenOutro: 'Je mehr Unterlagen Sie von Anfang an beifügen, desto schneller wird Ihr Antrag bearbeitet.',
+      colDoc: 'Unterlage',
+      colWhen: 'Wann einzureichen',
+      cost: 'Gebühren',
+      colAct: 'Vorgang',
+      colPrice: 'Gebühr',
+      colUnit: 'Berechnet pro',
+      copyPrice: 'Gebühr pro Kopie:',
+      tips: 'Häufige Probleme',
+      nextLead: 'Nächster Schritt:',
+      nextGuide: 'So stellen Sie den Antrag im e-proxeneio',
+      nextMap: 'Finden Sie Ihr Konsulat',
+      printUrl: 'Diese Seite: ',
+      source: d => 'Quelle: e-proxeneio.mfa.gr' + (d ? '. Letzte Prüfung der Angaben: ' + d : ''),
+      noData: 'Die Angaben konnten nicht geladen werden. Bitte laden Sie die Seite neu.',
+      notTranslated: 'Die deutsche Fassung dieser Seite ist in Vorbereitung. Die Angaben zu den Anträgen werden vorerst auf Griechisch angezeigt.'
+    }
+  };
+
+  const $ = id => document.getElementById(id);
+  const tabs = Array.from(document.querySelectorAll('.lang-tab'));
+  const state = { lang: 'el', cat: null, code: null, query: '' };
+  let copyTimer = 0;
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined && text !== null) node.textContent = text;
+    return node;
+  }
+
+  /* Τα δεδομένα της τρέχουσας γλώσσας. Όσο δεν υπάρχει γερμανικό αρχείο, δείχνουμε τα ελληνικά. */
+  function data() { return ALL[state.lang] || ALL.el || null; }
+  function contentLang() { return ALL[state.lang] ? state.lang : 'el'; }
+  function t() { return T[state.lang]; }
+
+  function findApp(code) {
+    const d = data();
+    if (!d || !code) return null;
+    const wanted = String(code).toUpperCase();
+    for (let c = 0; c < d.categories.length; c++) {
+      const app = d.categories[c].apps.find(a => String(a.code).toUpperCase() === wanted);
+      if (app) return { app: app, cat: c };
+    }
+    return null;
+  }
+
+  function money(value) {
+    const n = Number(value);
+    if (!isFinite(n)) return String(value);
+    return new Intl.NumberFormat(state.lang === 'de' ? 'de-DE' : 'el-GR', {
+      style: 'currency', currency: 'EUR',
+      minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2
+    }).format(n);
+  }
+
+  function dateText(iso) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+    return m ? m[3] + '.' + m[2] + '.' + m[1] : '';
+  }
+
+  /* ── Αναζήτηση ─────────────────────────────────────────────────────
+     Αγνοεί τόνους και κεφαλαία και κόβει την κατάληξη, ώστε το «διαβατήριο»
+     να βρίσκει και το «διαβατηρίου». Ψάχνει στο όνομα της αίτησης, στην
+     κατηγορία, στις πράξεις του πίνακα κόστους και σε ένα προαιρετικό πεδίο
+     «keywords» της αίτησης (λέξεις που γράφει ο κόσμος, π.χ. «παιδί»). */
+  function norm(text) {
+    return String(text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ς/g, 'σ');
+  }
+  function stems(query) {
+    return norm(query).split(/[^a-zα-ω0-9]+/).filter(Boolean).map(word => {
+      const cut = word.replace(/[αεηιουωσν]{1,2}$/, '');
+      return word.length >= 4 && cut.length >= 3 ? cut : word;
+    });
+  }
+  function search(query) {
+    const d = data();
+    const words = stems(query);
+    if (!d || !words.length) return [];
+    const hits = [];
+    d.categories.forEach((cat, c) => {
+      cat.apps.forEach(app => {
+        const fields = [{ rank: 0, text: app.name }, { rank: 1, text: (app.keywords || []).join(' ') }, { rank: 2, text: cat.title }]
+          .concat((app.cost || []).map(row => ({ rank: 3, text: row.label, show: row.label })));
+        let best = null;
+        fields.forEach(field => {
+          const hay = norm(field.text);
+          if (words.every(w => hay.includes(w)) && (!best || field.rank < best.rank)) best = field;
+        });
+        if (!best) {
+          const hay = norm(fields.map(f => f.text).join(' '));
+          if (words.every(w => hay.includes(w))) best = { rank: 4 };
+        }
+        if (best) hits.push({ app: app, cat: c, rank: best.rank, show: best.show });
+      });
+    });
+    return hits.sort((a, b) => a.rank - b.rank);
+  }
+
+  /* ── Κουμπιά επιλογής ─────────────────────────────────────────────── */
+  function pickButton(title, sub, pressed, onClick) {
+    const li = el('li');
+    const button = el('button', 'pick');
+    button.type = 'button';
+    button.setAttribute('aria-pressed', String(!!pressed));
+    button.appendChild(el('span', 'p-title', title));
+    if (sub) button.appendChild(el('span', 'p-sub', sub));
+    button.addEventListener('click', onClick);
+    li.appendChild(button);
+    return li;
+  }
+
+  function renderCats() {
+    const d = data();
+    const list = $('catList');
+    list.textContent = '';
+    list.lang = contentLang();
+    d.categories.forEach((cat, c) => {
+      list.appendChild(pickButton(cat.title, t().appCount(cat.apps.length), state.cat === c, () => chooseCat(c)));
+    });
+  }
+
+  function renderApps() {
+    const d = data();
+    const list = $('appList');
+    list.textContent = '';
+    list.lang = contentLang();
+    const has = state.cat !== null && d.categories[state.cat];
+    list.hidden = !has;
+    $('appPlaceholder').hidden = !!has;
+    if (!has) return;
+    d.categories[state.cat].apps.forEach(app => {
+      list.appendChild(pickButton(app.name, '', state.code === app.code, () => openApp(app.code)));
+    });
+  }
+
+  function renderSearch() {
+    const query = state.query.trim();
+    const active = query.length > 0;
+    const list = $('qResults');
+    const status = $('qStatus');
+    $('pickers').hidden = active;
+    $('qClear').hidden = !active;
+    list.textContent = '';
+    list.lang = contentLang();
+    list.hidden = true;
+    status.hidden = !active;
+    if (!active) return;
+    const hits = search(query);
+    if (!hits.length) { status.textContent = t().notFound(query); return; }
+    status.textContent = t().found(hits.length);
+    const d = data();
+    hits.forEach(hit => {
+      const sub = d.categories[hit.cat].title + (hit.show ? ' — ' + hit.show : '');
+      list.appendChild(pickButton(hit.app.name, sub, state.code === hit.app.code, () => openApp(hit.app.code)));
+    });
+    list.hidden = false;
+  }
+
+  /* ── Η επιλεγμένη αίτηση ──────────────────────────────────────────── */
+  function isRequired(when) { return WHEN_REQUIRED.includes(String(when || '').trim()); }
+
+  function whenBadge(required) {
+    return el('span', 'when' + (required ? ' req' : ''), required ? t().whenReq : t().whenOpt);
+  }
+
+  function safeLink(link) {
+    if (!link || !/^https?:\/\//i.test(link.url || '')) return null;
+    const a = el('a', '', link.text || link.url);
+    a.href = link.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    return a;
+  }
+
+  function buildDocs(app) {
+    const box = document.createDocumentFragment();
+    box.appendChild(el('h3', '', t().docs));
+    const docs = app.docs || [];
+    if (!docs.length) { box.appendChild(el('p', '', t().docsNone)); return box; }
+
+    const legend = el('div', 'info-box');
+    legend.lang = state.lang;
+    legend.appendChild(el('p', '', t().whenIntro));
+    const dl = el('dl', 'when-legend');
+    [[true, t().whenReqText], [false, t().whenOptText]].forEach(pair => {
+      const row = el('div');
+      const dt = el('dt');
+      dt.appendChild(whenBadge(pair[0]));
+      row.appendChild(dt);
+      row.appendChild(el('dd', '', pair[1]));
+      dl.appendChild(row);
+    });
+    legend.appendChild(dl);
+    legend.appendChild(el('p', '', t().whenOutro));
+    box.appendChild(legend);
+
+    const wrap = el('div', 'table-wrap');
+    const table = el('table', 'docs-table');
+    const head = el('tr');
+    const thDoc = el('th', '', t().colDoc); thDoc.scope = 'col'; thDoc.lang = state.lang;
+    const thWhen = el('th', '', t().colWhen); thWhen.scope = 'col'; thWhen.lang = state.lang;
+    head.appendChild(thDoc); head.appendChild(thWhen);
+    const thead = el('thead'); thead.appendChild(head); table.appendChild(thead);
+    const body = el('tbody');
+    docs.forEach(doc => {
+      const required = isRequired(doc.when);
+      const tr = el('tr', required ? 'req' : '');
+      const td = el('td', 'd-doc');
+      const title = el('div', 'd-title');
+      title.appendChild(el('span', 'chk'));
+      title.appendChild(document.createTextNode(doc.title || ''));
+      td.appendChild(title);
+      const notes = (doc.notes || []).filter(Boolean);
+      if (notes.length) {
+        const n = el('div', 'd-notes');
+        notes.forEach(note => n.appendChild(el('p', '', note)));
+        td.appendChild(n);
+      }
+      const link = safeLink(doc.link);
+      if (link) { const p = el('p', 'd-link'); p.appendChild(link); td.appendChild(p); }
+      tr.appendChild(td);
+      const tdWhen = el('td', 'd-when');
+      tdWhen.lang = state.lang;
+      tdWhen.appendChild(whenBadge(required));
+      tr.appendChild(tdWhen);
+      body.appendChild(tr);
+    });
+    table.appendChild(body);
+    wrap.appendChild(table);
+    box.appendChild(wrap);
+    return box;
+  }
+
+  function buildCost(app) {
+    const box = document.createDocumentFragment();
+    const rows = app.cost || [];
+    const hasCopy = app.copyPrice !== undefined && app.copyPrice !== null && app.copyPrice !== '';
+    if (!rows.length && !hasCopy) return box;
+    box.appendChild(el('h3', '', t().cost));
+    if (rows.length) {
+      const wrap = el('div', 'table-wrap');
+      const table = el('table', 'cost-table');
+      const head = el('tr');
+      [['c-label', t().colAct], ['c-price', t().colPrice], ['c-unit', t().colUnit]].forEach(col => {
+        const th = el('th', col[0], col[1]); th.scope = 'col'; th.lang = state.lang; head.appendChild(th);
+      });
+      const thead = el('thead'); thead.appendChild(head); table.appendChild(thead);
+      const body = el('tbody');
+      rows.forEach(row => {
+        const tr = el('tr');
+        tr.appendChild(el('td', 'c-label', row.label));
+        tr.appendChild(el('td', 'c-price', money(row.price)));
+        tr.appendChild(el('td', 'c-unit', row.unit || ''));
+        body.appendChild(tr);
+      });
+      table.appendChild(body);
+      wrap.appendChild(table);
+      box.appendChild(wrap);
+    }
+    if (hasCopy) {
+      const p = el('p', 'copy-price');
+      const label = el('span', '', t().copyPrice + ' '); label.lang = state.lang;
+      p.appendChild(label);
+      p.appendChild(el('strong', '', money(app.copyPrice)));
+      box.appendChild(p);
+    }
+    return box;
+  }
+
+  /* «Συχνά προβλήματα»: το πλαίσιο εμφανίζεται μόνο αν το πεδίο tips έχει περιεχόμενο.
+     Κάθε στοιχείο είναι είτε σκέτο κείμενο είτε { "title": "...", "text": "..." }. */
+  function buildTips(app) {
+    const tips = (app.tips || []).filter(tip => tip && (typeof tip === 'string' ? tip.trim() : (tip.title || tip.text)));
+    if (!tips.length) return null;
+    const box = el('div', 'info-box tips-box');
+    const label = el('p', 't-label', t().tips); label.lang = state.lang;
+    box.appendChild(label);
+    const ul = el('ul');
+    tips.forEach(tip => {
+      const li = el('li');
+      if (typeof tip === 'string') li.textContent = tip;
+      else {
+        if (tip.title) li.appendChild(el('strong', '', tip.title + (tip.text ? ' ' : '')));
+        if (tip.text) li.appendChild(document.createTextNode(tip.text));
+      }
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+    return box;
+  }
+
+  function appUrl(code) {
+    const base = location.href.split('#')[0].split('?')[0];
+    return base + (state.lang === 'de' ? '?lang=de' : '') + '#' + code;
+  }
+
+  function renderApp() {
+    const found = findApp(state.code);
+    const article = $('app');
+    article.hidden = !found;
+    document.body.classList.toggle('has-app', !!found);
+    document.title = (found ? found.app.name + ' – ' : '') + T.el.pageTitle + ' | ' + T.de.pageTitle;
+    if (!found) return;
+    const d = data();
+    const app = found.app;
+    const content = $('appContent');
+    content.textContent = '';
+    content.lang = contentLang();
+    $('appTitle').lang = contentLang();
+    $('appCat').textContent = d.categories[found.cat].title;
+    $('appName').textContent = app.name;
+
+    const intro = (app.intro || []).filter(part => part && part.text);
+    if (intro.length) {
+      const box = el('div', 'intro');
+      intro.forEach(part => {
+        const p = el('p');
+        if (part.bold) p.appendChild(el('strong', '', part.text)); else p.textContent = part.text;
+        box.appendChild(p);
+      });
+      content.appendChild(box);
+    }
+    if (app.warn) {
+      const box = el('div', 'warning-box');
+      const label = el('div', 'w-label', t().warn); label.lang = state.lang;
+      box.appendChild(label);
+      box.appendChild(el('p', '', app.warn));
+      content.appendChild(box);
+    }
+    content.appendChild(buildDocs(app));
+    content.appendChild(buildCost(app));
+    const tips = buildTips(app);
+    if (tips) content.appendChild(tips);
+
+    const next = $('nextSteps');
+    next.textContent = '';
+    next.appendChild(el('strong', '', t().nextLead + ' '));
+    const guide = el('a', '', t().nextGuide); guide.href = GUIDE_PAGE + '?lang=' + state.lang;
+    next.appendChild(guide);
+    next.appendChild(document.createTextNode(' | '));
+    const map = el('a', '', t().nextMap); map.href = MAP_PAGE + '?lang=' + state.lang;
+    next.appendChild(map);
+
+    $('printUrl').textContent = t().printUrl + appUrl(app.code);
+    resetCopyButton();
+  }
+
+  function resetCopyButton() {
+    clearTimeout(copyTimer);
+    $('btnCopy').querySelector('span').textContent = t().copy;
+  }
+
+  /* ── Κείμενα σελίδας και γλώσσα ───────────────────────────────────── */
+  function renderAll() {
+    const d = data();
+    document.documentElement.lang = state.lang;
+    document.querySelectorAll('[data-t]').forEach(node => { node.textContent = t()[node.dataset.t]; });
+    $('q').placeholder = t().searchPlaceholder;
+    tabs.forEach(tab => {
+      const active = tab.dataset.lang === state.lang;
+      tab.classList.toggle('active', active);
+      tab.setAttribute('aria-pressed', String(active));
+    });
+    const notice = $('deNotice');
+    notice.hidden = !(state.lang === 'de' && !ALL.de);
+    notice.textContent = T.de.notTranslated;
+    $('sourceLine').textContent = d ? t().source(dateText(d.retrieved)) : '';
+    if (!d) {
+      $('finder').hidden = true;
+      $('app').hidden = true;
+      $('loadError').hidden = false;
+      $('loadError').querySelector('p').textContent = t().noData;
+      return;
+    }
+    renderCats();
+    renderApps();
+    renderSearch();
+    renderApp();
+  }
+
+  function setLanguage(value) {
+    state.lang = value === 'de' ? 'de' : 'el';
+    try { localStorage.setItem(LANG_KEY, state.lang); } catch (_) { /* file/private mode */ }
+    try {
+      const url = new URL(location.href);
+      url.searchParams.set('lang', state.lang);
+      history.replaceState(null, '', url);
+    } catch (_) { /* Some browsers restrict history changes on file: URLs. */ }
+    renderAll();
+  }
+
+  /* ── Επιλογές του πολίτη ──────────────────────────────────────────── */
+  function scrollTo(node) {
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    node.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+    node.focus({ preventScroll: true });
+  }
+
+  function clearHash() {
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (_) { /* file: URLs */ }
+  }
+
+  function chooseCat(index) {
+    const apps = data().categories[index].apps;
+    if (apps.length === 1) { openApp(apps[0].code); return; }   // κατηγορία με μία μόνο αίτηση
+    state.cat = index;
+    if (state.code) { state.code = null; clearHash(); }
+    renderCats(); renderApps(); renderApp();
+    scrollTo($('h-app'));
+  }
+
+  /* Η επιλεγμένη αίτηση ζει στο #RTxx της διεύθυνσης. Έτσι ο ίδιος κώδικας
+     εξυπηρετεί το κλικ, το κουμπί «πίσω» και τον σύνδεσμο που στέλνουμε. */
+  function openApp(code) {
+    if (location.hash.slice(1).toUpperCase() === String(code).toUpperCase()) route(true);
+    else location.hash = code;
+  }
+
+  function route(scroll) {
+    const found = findApp(decodeURIComponent(location.hash.slice(1)));
+    if (found) { state.cat = found.cat; state.code = found.app.code; }
+    else state.code = null;
+    renderCats(); renderApps(); renderSearch(); renderApp();
+    if (found && scroll) scrollTo($('appTitle'));
+  }
+
+  /* ── Συνδέσεις ────────────────────────────────────────────────────── */
+  tabs.forEach(tab => tab.addEventListener('click', () => setLanguage(tab.dataset.lang)));
+  window.addEventListener('hashchange', () => route(true));
+
+  $('q').addEventListener('input', event => { state.query = event.target.value; renderSearch(); });
+  $('qClear').addEventListener('click', () => {
+    state.query = ''; $('q').value = ''; renderSearch(); $('q').focus();
+  });
+
+  $('btnPrint').addEventListener('click', () => window.print());
+  $('btnCopy').addEventListener('click', () => {
+    const url = appUrl(state.code);
+    const done = () => {
+      $('btnCopy').querySelector('span').textContent = t().copied;
+      copyTimer = setTimeout(resetCopyButton, 2500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done, () => window.prompt(t().copyPrompt, url));
+    } else {
+      window.prompt(t().copyPrompt, url);
+    }
+  });
+
+  let initial = new URLSearchParams(location.search).get('lang');
+  if (!['el', 'de'].includes(initial)) {
+    try { initial = localStorage.getItem(LANG_KEY); } catch (_) { /* offline */ }
+  }
+  setLanguage(initial);
+  if (data()) route(!!location.hash);
+})();
+</script>
+</body>
+</html>
