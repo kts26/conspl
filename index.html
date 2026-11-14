@@ -8,14 +8,9 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ελληνικά Προξενεία στη Γερμανία">
 <meta property="og:description" content="Βρείτε το αρμόδιο προξενείο με τον ΤΚ σας και υποβάλετε την αίτησή σας online μέσω e-proxeneio.">
-<meta property="og:url" content="https://kts26.github.io/conspl/">
-<meta property="og:image" content="https://kts26.github.io/conspl/img/og-image-el.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Χάρτης της Γερμανίας με τις περιοχές αρμοδιότητας των ελληνικών προξενείων">
 <meta property="og:locale" content="el_GR">
 <meta property="og:locale:alternate" content="de_DE">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' file:; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; connect-src 'none'; form-action 'none'; base-uri 'none'">
 <link rel="stylesheet" href="lib/leaflet.css">
 <script src="lib/leaflet.js"></script>
@@ -145,6 +140,16 @@
   .guide-cta small { display: block; font-size: 0.78rem; color: #555; margin-top: 1px; }
   /* Στο steps δεν προηγείται το μπλε κουμπί, άρα θέλει δικό του κενό από πάνω. */
   .steps .guide-cta { margin: 16px 0 0; }
+  /* Στην πρώτη οθόνη τα βοηθήματα είναι απλοί σύνδεσμοι, για να μένει η προσοχή στον ΤΚ. */
+  .help-links { margin-top: 14px; padding-top: 10px; border-top: 1px solid #e3e7ef; font-size: 0.82rem; color: #666; }
+  .help-links a { color: #185fa5; text-underline-offset: 2px; }
+  header h1 .home-link { color: inherit; text-decoration: none; }
+  header h1 .home-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+  /* Το πεδίο ΤΚ: απαλό πλαίσιο, μεγαλύτερα γράμματα, πιο σκούρο περίγραμμα. */
+  .search-box { background: #f2f6fc; border: 1px solid #c9d6ea; border-radius: 10px; padding: 16px 18px; }
+  .search-box .field-label { font-size: 1rem; font-weight: 700; color: #003476; }
+  .search-row input { font-size: 1.15rem; padding: 12px 14px; border-color: #aebbd0; background: white; }
+  .search-row button { min-width: 54px; }
 
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 
@@ -189,7 +194,7 @@
 <header>
   <div class="header-inner">
     <div>
-      <h1 data-i18n="title">Ελληνικά Προξενεία στη Γερμανία</h1>
+      <h1><a class="home-link" data-home-link href="index.html?lang=el" title="Αρχική σελίδα" data-i18n="title">Ελληνικά Προξενεία στη Γερμανία</a></h1>
       <p data-i18n="subtitle">Βρείτε το αρμόδιο προξενείο και υποβάλετε την αίτησή σας online</p>
     </div>
     <div class="lang-switch" role="group" aria-label="Γλώσσα / Sprache">
@@ -226,7 +231,7 @@
         <li><span class="num">2</span><span data-i18n="step2">Μεταβείτε στο e-proxeneio του προξενείου σας.</span></li>
         <li><span class="num">3</span><span data-i18n="step3">Υποβάλετε την αίτησή σας online· αν χρειάζεται αυτοπρόσωπη παρουσία, το ραντεβού κλείνεται μέσα από την αίτηση.</span></li>
       </ol>
-      <a class="guide-cta" data-guide-link href="odigos-e-proxeneio.html?lang=el" target="_blank" rel="noopener noreferrer"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M4 19.5A2 2 0 0 1 6 18h13"/><path d="M8 7h7"/><path d="M8 11h5"/></svg><span class="txt"><strong data-i18n="guideCtaTitle">Πώς υποβάλλετε αίτηση στο e-proxeneio</strong><small data-i18n="guideCtaSub">Αναλυτικός οδηγός με εικόνες · αποθήκευση ως PDF</small></span><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+      <p class="help-links"><a data-docs-link href="dikaiologitika.html?lang=el" data-i18n="docsLinkShort">Δικαιολογητικά ανά αίτηση</a><span aria-hidden="true"> · </span><a data-guide-link href="odigos-e-proxeneio.html?lang=el" data-i18n="guideLinkShort">Οδηγός χρήσης e-proxeneio</a></p>
     </div>
 
     <div class="result-card" id="resultCard" aria-live="polite">
@@ -239,7 +244,8 @@
         <span class="txt"><strong data-i18n="eproxTitle">Μετάβαση στο e-proxeneio</strong><small data-i18n="eproxSub">Υποβολή αιτήσεων online· το ραντεβού κλείνεται μέσα από την αίτηση</small></span>
         <svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
       </a>
-      <a class="guide-cta" data-guide-link href="odigos-e-proxeneio.html?lang=el" target="_blank" rel="noopener noreferrer"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M4 19.5A2 2 0 0 1 6 18h13"/><path d="M8 7h7"/><path d="M8 11h5"/></svg><span class="txt"><strong data-i18n="guideCtaTitle">Πώς υποβάλλετε αίτηση στο e-proxeneio</strong><small data-i18n="guideCtaSub">Αναλυτικός οδηγός με εικόνες · αποθήκευση ως PDF</small></span><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+      <a class="guide-cta" data-docs-link href="dikaiologitika.html?lang=el"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6v3H9z"/><path d="M15 5h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2"/><path d="M9 12l2 2 4-4"/><path d="M9 17h6"/></svg><span class="txt"><strong data-i18n="docsCtaTitle">Δείτε τα δικαιολογητικά που χρειάζεστε</strong><small data-i18n="docsCtaSub">Δικαιολογητικά και κόστος για κάθε αίτηση</small></span><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+      <a class="guide-cta" data-guide-link href="odigos-e-proxeneio.html?lang=el"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M4 19.5A2 2 0 0 1 6 18h13"/><path d="M8 7h7"/><path d="M8 11h5"/></svg><span class="txt"><strong data-i18n="guideCtaTitle">Πώς υποβάλλετε αίτηση στο e-proxeneio</strong><small data-i18n="guideCtaSub">Αναλυτικός οδηγός με εικόνες · αποθήκευση ως PDF</small></span><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
 
       <div class="contact">
         <div class="detail"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span id="resultAddress"></span></div>
@@ -251,10 +257,6 @@
         </div>
       </div>
       <p class="note"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg><span data-i18n="note">Σε περίπτωση αμφιβολίας για την αρμοδιότητα, επικοινωνήστε με το προξενείο.</span></p>
-    </div>
-
-    <div class="reset-row" id="resetRow" hidden>
-      <button type="button" class="map-reset" id="resetBtn" aria-label="Επαναφορά σελίδας" data-i18n-aria="resetAria"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span data-i18n="reset">Επαναφορά</span></button>
     </div>
 
     <div class="consulates">
@@ -291,10 +293,6 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
   const MOBILE = window.matchMedia('(max-width: 760px)');
   const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  // Month of the postal-code table. update.html writes it into data/plz-data.js together with the table;
-  // a file without it is the table of November 2026.
-  const DATA_DATE = (typeof plzDataDate === 'object' && plzDataDate) || { el: 'Νοεμβρίου 2026', de: 'November 2026' };
-
   // ---- Texts (ΕΛ / DE)
   const TEXT = {
     el: {
@@ -317,6 +315,11 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
       more: '+{n} ακόμη',
       eproxTitle: 'Μετάβαση στο e-proxeneio',
       eproxSub: 'Υποβολή αιτήσεων online· το ραντεβού κλείνεται μέσα από την αίτηση',
+      homeTitle: 'Αρχική σελίδα',
+      docsLinkShort: 'Δικαιολογητικά ανά αίτηση',
+      guideLinkShort: 'Οδηγός χρήσης e-proxeneio',
+      docsCtaTitle: 'Δείτε τα δικαιολογητικά που χρειάζεστε',
+      docsCtaSub: 'Δικαιολογητικά και κόστος για κάθε αίτηση',
       guideCtaTitle: 'Πώς υποβάλλετε αίτηση στο e-proxeneio',
       guideCtaSub: 'Αναλυτικός οδηγός με εικόνες · αποθήκευση ως PDF',
       nav: 'Οδηγίες μετάβασης',
@@ -327,7 +330,7 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
       step1: 'Βρείτε το αρμόδιο προξενείο με τον ταχυδρομικό σας κώδικα.',
       step2: 'Μεταβείτε στο e-proxeneio του προξενείου σας.',
       step3: 'Υποβάλετε την αίτησή σας online· αν χρειάζεται αυτοπρόσωπη παρουσία, το ραντεβού κλείνεται μέσα από την αίτηση.',
-      dataLead: 'Ταχυδρομικοί κώδικες (ενημέρωση ' + DATA_DATE.el + '):',
+      dataLead: 'Ταχυδρομικοί κώδικες (ενημέρωση Νοεμβρίου 2026):',
       via: 'μέσω',
       dataLicense: 'Ο πίνακας ΤΚ της σελίδας διατίθεται με άδεια ODbL.',
       jurisdictionSource: 'Επίσημες προξενικές περιφέρειες (ΥΠΕΞ)',
@@ -354,6 +357,11 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
       more: '+{n} weitere',
       eproxTitle: 'Weiter zu e-proxeneio',
       eproxSub: 'Anträge online stellen – Termine werden über den Antrag vereinbart',
+      homeTitle: 'Startseite',
+      docsLinkShort: 'Unterlagen je Antrag',
+      guideLinkShort: 'Anleitung zu e-proxeneio',
+      docsCtaTitle: 'Welche Unterlagen Sie benötigen',
+      docsCtaSub: 'Unterlagen und Gebühren für jeden Antrag',
       guideCtaTitle: 'So stellen Sie einen Antrag bei e-proxeneio',
       guideCtaSub: 'Ausführliche Anleitung mit Bildern · als PDF',
       nav: 'Route planen',
@@ -364,7 +372,7 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
       step1: 'Finden Sie das zuständige Konsulat über Ihre Postleitzahl.',
       step2: 'Öffnen Sie e-proxeneio für Ihr Konsulat.',
       step3: 'Stellen Sie Ihren Antrag online; ist persönliches Erscheinen nötig, wird der Termin über den Antrag vereinbart.',
-      dataLead: 'Postleitzahlen (Stand: ' + DATA_DATE.de + '):',
+      dataLead: 'Postleitzahlen (Stand: November 2026):',
       via: 'über',
       dataLicense: 'Die Postleitzahlen-Tabelle dieser Seite steht unter der ODbL.',
       jurisdictionSource: 'Offizielle Konsularbezirke (Außenministerium)',
@@ -374,7 +382,8 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
   };
 
   let lang = initialLang();
-  const linkedPLZ = initialPLZ();
+  // Η διεύθυνση όπως άνοιξε η σελίδα, πριν την ενημερώσει το πρώτο render().
+  const openingSearch = window.location.search;
   // mode: null | 'error' | 'disambig' | 'result' (postal code) | 'consulate' (button) | 'state' (map click)
   let state = { mode: null };
   let activePin = null;
@@ -387,23 +396,52 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
     return (l === 'de' || l === 'el') ? l : 'el';
   }
 
-  /* Ένας σύνδεσμος της μορφής ?plz=47051 ανοίγει τη σελίδα με το
-     αποτέλεσμα ήδη εμφανισμένο, ώστε να μπορεί να σταλεί σε κάποιον. */
-  function initialPLZ() {
-    let p = null;
-    try { p = new URLSearchParams(window.location.search).get('plz'); } catch (e) { /* ignore */ }
-    return /^\d{5}$/.test(p || '') ? p : null;
-  }
-
   /* Η διεύθυνση ακολουθεί πάντα το τι δείχνει η σελίδα, ώστε ό,τι
      αντιγράψει ο χρήστης από τη γραμμή διευθύνσεων να είναι σωστό. */
+  /* Τι δείχνει η σελίδα, όπως γράφεται στη διεύθυνση: ?plz=80331 (αναζήτηση ΤΚ),
+     ?bl=Bayern (κλικ σε κρατίδιο στον χάρτη) ή ?c=muenchen (κουμπί προξενείου). */
+  const SELECTION_PARAMS = ['plz', 'bl', 'c'];
+  function selectionOf(params) {
+    for (const name of SELECTION_PARAMS) { if (params.get(name)) return name + '=' + params.get(name); }
+    return null;
+  }
+
+  /* Λατινικό όνομα του προξενείου για τη διεύθυνση, π.χ. «Μόναχο» → muenchen. */
+  function consulateSlug(key) {
+    return consulateInfo[key].de.city.toLowerCase()
+      .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+  function consulateFromSlug(slug) {
+    return Object.keys(consulateInfo).find(key => consulateSlug(key) === slug) || null;
+  }
+
   function syncURL() {
     const plz = ['result', 'disambig'].includes(state.mode) ? state.plz : null;
+    const bl = state.mode === 'state' ? state.bl : null;
+    const c = state.mode === 'consulate' ? consulateSlug(state.key) : null;
     try {
       const url = new URL(window.location.href);
-      if (plz) url.searchParams.set('plz', plz); else url.searchParams.delete('plz');
-      if (url.href !== window.location.href) window.history.replaceState(null, '', url);
+      const before = selectionOf(url.searchParams);
+      [['plz', plz], ['bl', bl], ['c', c]].forEach(([name, value]) => {
+        if (value) url.searchParams.set(name, value); else url.searchParams.delete(name);
+      });
+      const after = selectionOf(url.searchParams);
+      if (url.href !== window.location.href) {
+        /* Νέα επιλογή (ΤΚ, κρατίδιο ή προξενείο): νέα θέση στο ιστορικό, ώστε το «πίσω»
+           να γυρίζει στην προηγούμενη οθόνη. Όλα τα άλλα απλώς διορθώνουν την τρέχουσα θέση.
+           Το depth μετρά πόσες επιλογές απέχουμε από την αρχική οθόνη. */
+        if (after && after !== before) {
+          window.history.pushState({ depth: historyDepth() + 1 }, '', url);
+        } else {
+          window.history.replaceState(window.history.state, '', url);
+        }
+      }
     } catch (e) { /* π.χ. file:// — ο σύνδεσμος απλώς δεν ενημερώνεται */ }
+  }
+
+  function historyDepth() {
+    return (window.history.state && window.history.state.depth) || 0;
   }
 
   function t(key, vars) {
@@ -769,7 +807,6 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
     $('plzInput').setAttribute('aria-invalid', String(state.mode === 'error'));
     const shownKey = ['result', 'consulate', 'state'].includes(state.mode) ? state.key : null;
     $('stepsBox').hidden = shownKey !== null;
-    $('resetRow').hidden = state.mode === null;   // nothing to reset on a fresh page   // the card takes the place of "How it works"
     Object.keys(consulateButtons).forEach(key => consulateButtons[key].setAttribute('aria-pressed', String(key === shownKey)));
     syncURL();
   }
@@ -794,16 +831,18 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
     const label = document.createElement('span');
     btn.appendChild(dot);
     btn.appendChild(label);
-    btn.addEventListener('click', () => {
-      state = { mode: 'consulate', key: key };
-      render();
-      highlight(key);
-      revealResult();
-    });
+    btn.addEventListener('click', () => selectConsulate(key));
     consulateButtons[key] = btn;
     consulateLabels[key] = label;
     $('consulateButtons').appendChild(btn);
   });
+
+  function selectConsulate(key) {
+    state = { mode: 'consulate', key: key };
+    render();
+    highlight(key);
+    revealResult();
+  }
 
   // ---- Click on a state of the map
   function selectState(name) {
@@ -867,6 +906,8 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
     document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
     document.querySelectorAll('.lang-switch button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
     document.querySelectorAll('[data-guide-link]').forEach(a => { a.href = 'odigos-e-proxeneio.html?lang=' + lang; });
+    document.querySelectorAll('[data-docs-link]').forEach(a => { a.href = 'dikaiologitika.html?lang=' + lang; });
+    document.querySelectorAll('[data-home-link]').forEach(a => { a.href = 'index.html?lang=' + lang; a.title = t('homeTitle'); });
     Object.keys(consulateLabels).forEach(key => { consulateLabels[key].textContent = info(key).city; });
     Object.keys(pins).forEach(key => pins[key].setIcon(pinIcon(key)));
     cityMarkers.forEach((m, i) => m.setIcon(cityIcon(CITIES[i])));
@@ -887,16 +928,40 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
 
   document.querySelectorAll('.lang-switch button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
   $('plzBtn').addEventListener('click', searchPLZ);
-  $('resetBtn').addEventListener('click', resetAll);
+  // Ο τίτλος του site κάνει την επαναφορά. Με Ctrl/μεσαίο κλικ ανοίγει την αρχική σε νέα καρτέλα.
+  document.querySelector('[data-home-link]').addEventListener('click', e => {
+    if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    const depth = historyDepth();
+    if (depth > 0) { goingHome = true; window.history.go(-depth); } else resetAll();
+  });
+
+  /* «Πίσω» / «εμπρός» του browser: η σελίδα δείχνει ό,τι λέει η διεύθυνση. */
+  let goingHome = false;
+  window.addEventListener('popstate', () => {
+    if (goingHome) { goingHome = false; resetAll(); return; }
+    if (!restoreFromURL(window.location.search)) resetAll();
+  });
+
+  /* Δείχνει ό,τι γράφει η διεύθυνση, ώστε ένας σύνδεσμος (π.χ. ?plz=47051) να μπορεί
+     να σταλεί σε κάποιον. Επιστρέφει false αν η διεύθυνση δεν γράφει καμία επιλογή. */
+  function restoreFromURL(search) {
+    let params;
+    try { params = new URLSearchParams(search); } catch (e) { return false; }
+    const plz = params.get('plz');
+    if (/^\d{5}$/.test(plz || '')) { $('plzInput').value = plz; searchPLZ(); return true; }
+    const bl = params.get('bl');
+    if (bl && blConsulate[bl]) { selectState(bl); return true; }
+    const key = consulateFromSlug(params.get('c'));
+    if (key) { selectConsulate(key); return true; }
+    return false;
+  }
   $('plzInput').addEventListener('keydown', e => { if (e.key === 'Enter') searchPLZ(); });
 
   applyLanguage();
   document.addEventListener('DOMContentLoaded', applyLanguage, { once: true });
 
-  if (linkedPLZ) {
-    $('plzInput').value = linkedPLZ;
-    searchPLZ();
-  }
+  restoreFromURL(openingSearch);   // ένας σύνδεσμος με ?plz=, ?bl= ή ?c= ανοίγει κατευθείαν το αποτέλεσμα
 })();
 </script>
 </body>

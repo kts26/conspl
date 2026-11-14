@@ -292,7 +292,8 @@ thead th { background: var(--green-light); color: var(--green-dark); font-size: 
 @page { margin: 1.4cm 1.2cm; }
 @media print {
   body { background: #fff; font-size: 10.5pt; line-height: 1.45; }
-  .lang-tabs-wrap, .app-actions, .next-steps, .de-notice, noscript { display: none !important; }
+  .lang-tabs-wrap, .app-actions, .next-steps, noscript { display: none !important; }
+  .de-notice { font-size: 9pt; margin-bottom: 0.3cm; }
   body.has-app .finder, body.has-app .lead { display: none !important; }
   .doc-header-wrap { background: none !important; border-bottom: 2pt solid #000; padding: 0; }
   .doc-header { color: #000 !important; padding: 0 0 0.3cm; }
@@ -510,7 +511,8 @@ thead th { background: var(--green-light); color: var(--green-dark); font-size: 
       printUrl: 'Diese Seite: ',
       source: d => 'Quelle: e-proxeneio.mfa.gr' + (d ? '. Letzte Prüfung der Angaben: ' + d : ''),
       noData: 'Die Angaben konnten nicht geladen werden. Bitte laden Sie die Seite neu.',
-      notTranslated: 'Die deutsche Fassung dieser Seite ist in Vorbereitung. Die Angaben zu den Anträgen werden vorerst auf Griechisch angezeigt.'
+      notTranslated: 'Die deutsche Fassung dieser Seite ist in Vorbereitung. Die Angaben zu den Anträgen werden vorerst auf Griechisch angezeigt.',
+      translated: 'Die Angaben auf dieser Seite sind eine Übersetzung aus dem Griechischen. Bei Abweichungen ist die griechische Fassung maßgeblich.'
     }
   };
 
@@ -860,8 +862,9 @@ thead th { background: var(--green-light); color: var(--green-dark); font-size: 
       tab.setAttribute('aria-pressed', String(active));
     });
     const notice = $('deNotice');
-    notice.hidden = !(state.lang === 'de' && !ALL.de);
-    notice.textContent = T.de.notTranslated;
+    /* Στα γερμανικά: είτε ότι η μετάφραση ετοιμάζεται είτε ότι ισχύει το ελληνικό κείμενο. */
+    notice.hidden = state.lang !== 'de';
+    notice.textContent = ALL.de ? T.de.translated : T.de.notTranslated;
     $('sourceLine').textContent = d ? t().source(dateText(d.retrieved)) : '';
     if (!d) {
       $('finder').hidden = true;
