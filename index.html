@@ -229,7 +229,7 @@
       <ol>
         <li><span class="num">1</span><span data-i18n="step1">Βρείτε το αρμόδιο προξενείο με τον ταχυδρομικό σας κώδικα.</span></li>
         <li><span class="num">2</span><span data-i18n="step2">Μεταβείτε στο e-proxeneio του προξενείου σας.</span></li>
-        <li><span class="num">3</span><span data-i18n="step3">Υποβάλετε την αίτησή σας online· αν χρειάζεται αυτοπρόσωπη παρουσία, το ραντεβού κλείνεται μέσα από την αίτηση.</span></li>
+        <li><span class="num">3</span><span data-i18n="step3">Υποβάλετε την αίτησή σας online μαζί με τα δικαιολογητικά· αν χρειάζεται αυτοπρόσωπη παρουσία, το ραντεβού κλείνεται μέσα από την αίτηση.</span></li>
       </ol>
       <p class="help-links"><a data-docs-link href="dikaiologitika.html?lang=el" data-i18n="docsLinkShort">Δικαιολογητικά ανά αίτηση</a><span aria-hidden="true"> · </span><a data-guide-link href="odigos-e-proxeneio.html?lang=el" data-i18n="guideLinkShort">Οδηγός χρήσης e-proxeneio</a></p>
     </div>
@@ -329,7 +329,7 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
       stepsTitle: 'Πώς λειτουργεί',
       step1: 'Βρείτε το αρμόδιο προξενείο με τον ταχυδρομικό σας κώδικα.',
       step2: 'Μεταβείτε στο e-proxeneio του προξενείου σας.',
-      step3: 'Υποβάλετε την αίτησή σας online· αν χρειάζεται αυτοπρόσωπη παρουσία, το ραντεβού κλείνεται μέσα από την αίτηση.',
+      step3: 'Υποβάλετε την αίτησή σας online μαζί με τα δικαιολογητικά· αν χρειάζεται αυτοπρόσωπη παρουσία, το ραντεβού κλείνεται μέσα από την αίτηση.',
       dataLead: 'Ταχυδρομικοί κώδικες (ενημέρωση Νοεμβρίου 2026):',
       via: 'μέσω',
       dataLicense: 'Ο πίνακας ΤΚ της σελίδας διατίθεται με άδεια ODbL.',
@@ -371,7 +371,7 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
       stepsTitle: 'So funktioniert es',
       step1: 'Finden Sie das zuständige Konsulat über Ihre Postleitzahl.',
       step2: 'Öffnen Sie e-proxeneio für Ihr Konsulat.',
-      step3: 'Stellen Sie Ihren Antrag online; ist persönliches Erscheinen nötig, wird der Termin über den Antrag vereinbart.',
+      step3: 'Stellen Sie Ihren Antrag online und fügen Sie die Unterlagen bei; ist persönliches Erscheinen nötig, wird der Termin über den Antrag vereinbart.',
       dataLead: 'Postleitzahlen (Stand: November 2026):',
       via: 'über',
       dataLicense: 'Die Postleitzahlen-Tabelle dieser Seite steht unter der ODbL.',
@@ -925,6 +925,8 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
     if (l === lang) return;
     lang = l;
     try { window.localStorage.setItem(LANG_KEY, l); } catch (e) { /* ignore */ }
+    // Η γλώσσα γράφεται και στη διεύθυνση, χωρίς νέα θέση στο ιστορικό· το state (depth) μένει ίδιο.
+    try { const url = new URL(window.location.href); url.searchParams.set('lang', l); window.history.replaceState(window.history.state, '', url); } catch (e) { /* π.χ. file:// */ }
     applyLanguage();
   }
 
