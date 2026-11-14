@@ -356,6 +356,14 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 1.3
   .guide-toc { background: #e8f0f8; border: 1px solid #cdd5de; border-radius: 8px; padding: 16px 20px; }
   .guide-toc ol { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 8px 0 0 20px; }
   .guide-toc a { display: inline-block; padding: 6px 0; }
+  /* Επόμενο βήμα: κουμπί για το e-proxeneio του προξενείου του πολίτη ή «Βρείτε το προξενείο σας». */
+  .next-step { margin: 16px 0 0; padding: 14px 20px; background: #fff; border: 1px solid #cdd5de; border-left: 4px solid #003476; border-radius: 0 8px 8px 0; font-size: .93rem; }
+  .next-step p + p, .next-step p + a, .next-step a + p { margin-top: 8px; }
+  .next-eprox { display: inline-flex; flex-direction: column; padding: 10px 18px; background: #003476; color: #fff; border-radius: 6px; text-decoration: none; transition: background .15s; }
+  .next-eprox:hover { background: #0055aa; }
+  .next-eprox strong { font-size: 1rem; }
+  .next-eprox small { font-size: .82rem; opacity: .9; }
+  .lang-pane > .next-step:last-child { margin-top: var(--section-gap); }
   .section-header h2 { scroll-margin-top: 16px; }
   .translation-note { margin-top: 16px; font-size: .9rem; color: #444; }
   .image-zoom { display: block; width: 100%; padding: 0; background: white; border: 0; cursor: zoom-in; }
@@ -377,6 +385,7 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 1.3
     #zoomHint { display: block; padding: 6px 16px; background: #f4f6f9; color: #555; font-size: .82rem; }
   }
   @media (max-width: 600px) {
+    .next-eprox { display: flex; }
     .page-wrap { padding-left: 16px; padding-right: 16px; }
     .section-body { padding: 16px; }
     .screenshot-wrap, .screenshot-wrap.medium, .screenshot-wrap.narrow { max-width: 100%; }
@@ -387,7 +396,7 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 1.3
   }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
   @media print {
-    #imageViewer, .guide-toc { display: none !important; }
+    #imageViewer, .guide-toc, .next-step { display: none !important; }
     .image-zoom { cursor: default; }
     .translation-note { font-size: 9pt; }
     .translated-badge { background: none; font-size: 8pt; }
@@ -423,7 +432,7 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 1.3
 
 <!-- ===== GREEK ===== -->
 <div id="pane-el" class="lang-pane active" lang="el" role="tabpanel" aria-labelledby="tab-el" tabindex="0">
-<nav class="guide-toc" aria-label="Περιεχόμενα οδηγού"><strong>Περιεχόμενα οδηγού</strong><ol><li><a href="#el-section-1">Υποβολή αίτησης</a></li><li><a href="#el-section-2">Ραντεβού</a></li><li><a href="#el-section-3">Διόρθωση αίτησης</a></li></ol></nav>
+<nav class="guide-toc" aria-label="Περιεχόμενα οδηγού"><strong>Περιεχόμενα οδηγού</strong><ol><li><a href="#el-section-1">Υποβολή αίτησης</a></li><li><a href="#el-section-2">Ραντεβού</a></li><li><a href="#el-section-3">Διόρθωση αίτησης</a></li></ol></nav><div class="next-step" data-next-step hidden></div>
 
   <div class="section-header"><h2 id="el-section-1" tabindex="-1"><span class="section-num">1</span>Υποβολή Αίτησης</h2></div>
   <div class="section-body">
@@ -517,11 +526,13 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 1.3
     </div>
   </div>
 
+  <div class="next-step" data-next-step hidden></div>
+
 </div><!-- end pane-el -->
 
 <!-- ===== GERMAN ===== -->
 <div id="pane-de" class="lang-pane" lang="de" role="tabpanel" aria-labelledby="tab-de" tabindex="0" hidden>
-<nav class="guide-toc" aria-label="Inhalt der Anleitung"><strong>Inhalt der Anleitung</strong><ol><li><a href="#de-section-1">Antrag stellen</a></li><li><a href="#de-section-2">Termin</a></li><li><a href="#de-section-3">Antrag korrigieren</a></li></ol></nav><p class="translation-note">Die Bilder sind übersetzte Darstellungen zu Informationszwecken. In der tatsächlichen Anwendung können die deutschen Beschriftungen etwas anders formuliert oder in einer anderen Reihenfolge angeordnet sein.</p>
+<nav class="guide-toc" aria-label="Inhalt der Anleitung"><strong>Inhalt der Anleitung</strong><ol><li><a href="#de-section-1">Antrag stellen</a></li><li><a href="#de-section-2">Termin</a></li><li><a href="#de-section-3">Antrag korrigieren</a></li></ol></nav><div class="next-step" data-next-step hidden></div><p class="translation-note">Die Bilder sind übersetzte Darstellungen zu Informationszwecken. In der tatsächlichen Anwendung können die deutschen Beschriftungen etwas anders formuliert oder in einer anderen Reihenfolge angeordnet sein.</p>
 
   <div class="section-header"><h2 id="de-section-1" tabindex="-1"><span class="section-num">1</span>Antrag stellen</h2></div>
   <div class="section-body">
@@ -614,6 +625,8 @@ hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 1.3
       <p>Wenn Sie nicht auf <strong>„Υποβολή"</strong> klicken, wird <strong>keine Korrektur</strong> an Ihrem Antrag vorgenommen und die Behörde kann das Verfahren nicht fortsetzen.</p>
     </div>
   </div>
+
+  <div class="next-step" data-next-step hidden></div>
 
 </div><!-- end pane-de -->
 
@@ -879,6 +892,59 @@ const SHOTS_DE = {
   setLanguage(initial, false);
 })();
 
+</script>
+
+<!-- Τα στοιχεία των προξενείων (για το κουμπί «Μετάβαση στο e-proxeneio»): -->
+<script src="data/consulates.js"></script>
+<script>
+/* Επόμενο βήμα: αν ο πολίτης ήρθε από την κάρτα της αρχικής (?c=muenchen), κουμπί
+   κατευθείαν στο e-proxeneio του προξενείου του. Αλλιώς, «Βρείτε το προξενείο σας». */
+(function () {
+  'use strict';
+  const TEXT = {
+    el: { lead: 'Επόμενο βήμα:', eprox: 'Μετάβαση στο e-proxeneio', find: 'Βρείτε το προξενείο σας και μεταβείτε στο e-proxeneio του', other: 'Άλλο προξενείο;', map: 'Βρείτε το προξενείο σας' },
+    de: { lead: 'Nächster Schritt:', eprox: 'Weiter zu e-proxeneio', find: 'Finden Sie Ihr Konsulat und wechseln Sie zu dessen e-proxeneio', other: 'Anderes Konsulat?', map: 'Finden Sie Ihr Konsulat' }
+  };
+  let key = null;
+  try {
+    const slug = new URLSearchParams(location.search).get('c');
+    if (slug && typeof consulateFromSlug === 'function') key = consulateFromSlug(slug);
+  } catch (_) { /* χωρίς προξενείο */ }
+
+  // Ο σύνδεσμος προς τα δικαιολογητικά κρατά κι αυτός το προξενείο.
+  if (key) {
+    document.querySelectorAll('a[href^="dikaiologitika.html"]').forEach(a => { a.href += '&c=' + consulateSlug(key); });
+  }
+
+  function add(parent, tag, text) {
+    const node = document.createElement(tag);
+    if (text) node.textContent = text;
+    parent.appendChild(node);
+    return node;
+  }
+
+  document.querySelectorAll('[data-next-step]').forEach(box => {
+    const lang = box.closest('.lang-pane').lang === 'de' ? 'de' : 'el';
+    const w = TEXT[lang];
+    add(add(box, 'p'), 'strong', w.lead);
+    const button = add(box, 'a');
+    button.className = 'next-eprox';
+    if (key) {
+      const info = consulateInfo[key];
+      button.href = info.eproxeneio;
+      button.target = '_blank';
+      button.rel = 'noopener noreferrer';
+      add(button, 'strong', w.eprox);
+      add(button, 'small', lang === 'de' ? info.de.full : info.full);
+      const other = add(box, 'p', w.other + ' ');
+      add(other, 'a', w.map).href = 'index.html?lang=' + lang;
+    } else {
+      button.href = 'index.html?lang=' + lang;
+      add(button, 'strong', w.find);
+    }
+    box.hidden = false;
+  });
+})();
 </script>
 </body>
 </html>

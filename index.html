@@ -276,8 +276,8 @@
 
 <script src="data/plz-data.js"></script>
 <script src="data/bundeslaender.js"></script>
+<script src="data/consulates.js"></script>
 <script id="app-data">
-const consulateInfo = {"Βερολίνο":{"full":"Προξενικό Γραφείο Βερολίνου","city":"Βερολίνο","address":"Hiroshimastr. 11-15, 10785 Berlin","nav":"Hiroshimastr. 11-15, 10785 Berlin, Germany","phones":["+49 30 208387200"],"email":"grcon.ber@mfa.gr","eproxeneio":"https://e-proxeneio.mfa.gr/ypex/consulate-request-categories/110","color":"#1a73e8","latlng":[52.50848,13.35852],"de":{"full":"Konsularabteilung in Berlin","city":"Berlin","web":"https://www.mfa.gr/germany/de/contact/contact-our-missions-in-germany/konsularabteilung-berlin.html"},"web":"https://www.mfa.gr/germany/presveia/sections/proxeniko-grapheio.html"},"Αμβούργο":{"full":"Γενικό Προξενείο Αμβούργου","city":"Αμβούργο","address":"Neue ABC Str. 10, 20354 Hamburg","nav":"Neue ABC Str. 10, 20354 Hamburg, Germany","phones":["+49 40 4132430"],"email":"grgencon.ham@mfa.gr","eproxeneio":"https://e-proxeneio.mfa.gr/ypex/consulate-request-categories/112","color":"#e53935","latlng":[53.55525,9.98622],"de":{"full":"Griechisches Generalkonsulat Hamburg","city":"Hamburg","web":"https://www.mfa.gr/germany/de/das-generalkonsulat-in-hamburg/"},"web":"https://www.mfa.gr/germany/geniko-proxeneio-amvourgou/"},"Ντύσσελντορφ":{"full":"Γενικό Προξενείο Ντύσσελντορφ","city":"Ντύσσελντορφ","address":"Willi Becker Allee 11, 40227 Düsseldorf","nav":"Willi Becker Allee 11, 40227 Düsseldorf, Germany","phones":["+49 211 6878500"],"email":"grgencon.ddf@mfa.gr","eproxeneio":"https://e-proxeneio.mfa.gr/ypex/consulate-request-categories/115","color":"#43a047","latlng":[51.21848,6.79639],"de":{"full":"Griechisches Generalkonsulat Düsseldorf","city":"Düsseldorf","web":"https://www.mfa.gr/germany/de/das-generalkonsulat-in-dusseldorf/"},"web":"https://www.mfa.gr/germany/geniko-proxeneio-ntusselntorf/"},"Φραγκφούρτη":{"full":"Γενικό Προξενείο Φραγκφούρτης","city":"Φραγκφούρτη","address":"Zeppelinallee 43, 60325 Frankfurt am Main","nav":"Zeppelinallee 43, 60325 Frankfurt am Main, Germany","phones":["+49 69 97991211","+49 69 97991215"],"email":"grgencon.fra@mfa.gr","eproxeneio":"https://e-proxeneio.mfa.gr/ypex/consulate-request-categories/116","color":"#fb8c00","latlng":[50.12372,8.65234],"de":{"full":"Griechisches Generalkonsulat Frankfurt am Main","city":"Frankfurt","web":"https://www.mfa.gr/germany/de/das-generalkonsulat-in-frankfurt/"},"web":"https://www.mfa.gr/germany/geniko-proxeneio-fragfourtis/"},"Στουτγάρδη":{"full":"Γενικό Προξενείο Στουτγάρδης","city":"Στουτγάρδη","address":"Leuschnerstr. 12 (2ος όροφος), 70174 Stuttgart","nav":"Leuschnerstr. 12, 70174 Stuttgart, Germany","phones":["+49 711 22298713","+49 711 22298714"],"email":"grgencon.stu@mfa.gr","eproxeneio":"https://e-proxeneio.mfa.gr/ypex/consulate-request-categories/74","color":"#8e24aa","latlng":[48.77819,9.16965],"de":{"full":"Griechisches Generalkonsulat Stuttgart","city":"Stuttgart","address":"Leuschnerstr. 12 (2. OG), 70174 Stuttgart","web":"https://www.mfa.gr/germany/de/das-generalkonsulat-in-stuttgart/"},"web":"https://www.mfa.gr/germany/geniko-proxeneio-stoutgardis/"},"Μόναχο":{"full":"Γενικό Προξενείο Μονάχου","city":"Μόναχο","address":"Möhlstr. 22, 81675 München","nav":"Möhlstr. 22, 81675 München, Germany","phones":["+49 89 99886722","+49 89 99886723","+49 89 99886710"],"email":"grgencon.mun@mfa.gr","eproxeneio":"https://e-proxeneio.mfa.gr/ypex/consulate-request-categories/113","color":"#00897b","latlng":[48.14411,11.60069],"de":{"full":"Griechisches Generalkonsulat München","city":"München","web":"https://www.mfa.gr/germany/de/das-generalkonsulat-in-munchen/"},"web":"https://www.mfa.gr/germany/geniko-proxeneio-monahou/"}};
 const blGreek = {"Hamburg":"Αμβούργο (Hamburg)","Bremen":"Βρέμη (Bremen)","Niedersachsen":"Κάτω Σαξωνία (Niedersachsen)","Schleswig-Holstein":"Σλέσβιχ-Χόλσταϊν (Schleswig-Holstein)","Bayern":"Βαυαρία (Bayern)","Nordrhein-Westfalen":"Βόρεια Ρηνανία-Βεστφαλία (Nordrhein-Westfalen)","Baden-Württemberg":"Βάδη-Βυρτεμβέργη (Baden-Württemberg)","Rheinland-Pfalz":"Ρηνανία-Παλατινάτο (Rheinland-Pfalz)","Hessen":"Έσση (Hessen)","Saarland":"Σάαρλαντ (Saarland)","Berlin":"Βερολίνο (Berlin)","Brandenburg":"Βρανδεμβούργο (Brandenburg)","Mecklenburg-Vorpommern":"Μεκλεμβούργο-Πομερανία (Mecklenburg-Vorpommern)","Sachsen":"Σαξωνία (Sachsen)","Sachsen-Anhalt":"Σαξωνία-Άνχαλτ (Sachsen-Anhalt)","Thüringen":"Θουριγγία (Thüringen)"};
 const blConsulate = {"Hamburg":"Αμβούργο","Bremen":"Αμβούργο","Niedersachsen":"Αμβούργο","Schleswig-Holstein":"Αμβούργο","Bayern":"Μόναχο","Nordrhein-Westfalen":"Ντύσσελντορφ","Baden-Württemberg":"Στουτγάρδη","Rheinland-Pfalz":"Φραγκφούρτη","Hessen":"Φραγκφούρτη","Saarland":"Φραγκφούρτη","Berlin":"Βερολίνο","Brandenburg":"Βερολίνο","Mecklenburg-Vorpommern":"Βερολίνο","Sachsen":"Βερολίνο","Sachsen-Anhalt":"Βερολίνο","Thüringen":"Βερολίνο"};
 const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachsen"},{"ort":"Bleckede","bl":"Niedersachsen"},{"ort":"Brahlstorf","bl":"Mecklenburg-Vorpommern"},{"ort":"Teldau","bl":"Mecklenburg-Vorpommern"}],"src":"OpenPLZ (zahlreiche Straßen in beiden Ländern)"},"34355":{"choices":[{"ort":"Staufenberg","bl":"Niedersachsen"},{"ort":"Kassel (Wolfsanger/Hasenhecke)","bl":"Hessen"}],"src":"Deutsche Post PLZ-Suche (Kassel Wolfsanger/Hasenhecke), 10/2026"},"37194":{"choices":[{"ort":"Bodenfelde","bl":"Niedersachsen"},{"ort":"Wesertal (Lippoldsberg, Vernawahlshausen)","bl":"Hessen"}],"src":"Wikipedia (Wahlsburg, seit 2020 Wesertal)"},"59969":{"choices":[{"ort":"Hallenberg","bl":"Nordrhein-Westfalen"},{"ort":"Bromskirchen","bl":"Hessen"}],"src":"Wikipedia, GeoNames"},"63928":{"choices":[{"ort":"Eichenbühl","bl":"Bayern"},{"ort":"Walldürn (Spritzenmühle)","bl":"Baden-Württemberg"}],"src":"Wikipedia (Walldürn: PLZ 63928 Spritzenmühle)"},"64754":{"choices":[{"ort":"Eberbach (Badisch Schöllenbach)","bl":"Baden-Württemberg"},{"ort":"Oberzent (Hesseneck)","bl":"Hessen"}],"src":"Wikipedia (Hesseneck, Eberbach)"},"69412":{"choices":[{"ort":"Eberbach","bl":"Baden-Württemberg"},{"ort":"Hirschhorn (Hessisch-Igelsbach)","bl":"Hessen"}],"src":"Deutsche Post PLZ-Suche (Igelsbach), Wikipedia (Hirschhorn: 69412 Igelsbach)"},"69434":{"choices":[{"ort":"Hirschhorn","bl":"Hessen"},{"ort":"Heddesbach","bl":"Baden-Württemberg"},{"ort":"Eberbach (Brombach)","bl":"Baden-Württemberg"}],"src":"OpenPLZ (zahlreiche Straßen in beiden Ländern)"},"89081":{"choices":[{"ort":"Ulm","bl":"Baden-Württemberg"},{"ort":"Elchingen (Seligweiler)","bl":"Bayern"}],"src":"Deutsche Post PLZ-Suche (Seligweiler), Wikipedia (Elchingen)"},"97896":{"choices":[{"ort":"Freudenberg","bl":"Baden-Württemberg"},{"ort":"Collenberg","bl":"Bayern"},{"ort":"Eichenbühl","bl":"Bayern"}],"src":"OpenPLZ (zahlreiche Straßen in beiden Ländern)"},"32825":{"single":"Nordrhein-Westfalen","src":"Nur Blomberg (Lippe); Blomberg (Ostfriesland) hat PLZ 26487"},"74731":{"single":"Baden-Württemberg","src":"Deutsche Post PLZ-Suche: Storchhof gehört zu Walldürn"},"64646":{"single":"Hessen","src":"Deutsche Post: Laudenbach Kirchstraße = 69514 (Randrauschen in OpenPLZ)"},"57319":{"single":"Nordrhein-Westfalen","src":"Deutsche Post: Straßen in Allendorf (Eder) nicht unter 57319 (Randrauschen in OpenPLZ)"},"32361":{"single":"Nordrhein-Westfalen","src":"Deutsche Post: Bad Essen Im Glanetal = 49152 (Randrauschen in OpenPLZ)"},"25867":{"single":"Schleswig-Holstein","ort":["Langeneß"],"src":"Hallig Langeneß; fehlt in OpenPLZ und GeoNames"}};
@@ -404,16 +404,6 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
   function selectionOf(params) {
     for (const name of SELECTION_PARAMS) { if (params.get(name)) return name + '=' + params.get(name); }
     return null;
-  }
-
-  /* Λατινικό όνομα του προξενείου για τη διεύθυνση, π.χ. «Μόναχο» → muenchen. */
-  function consulateSlug(key) {
-    return consulateInfo[key].de.city.toLowerCase()
-      .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
-      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  }
-  function consulateFromSlug(slug) {
-    return Object.keys(consulateInfo).find(key => consulateSlug(key) === slug) || null;
   }
 
   function syncURL() {
@@ -733,8 +723,21 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
     el.appendChild(btn);
   }
 
+  /* Σύνδεσμοι προς δικαιολογητικά και οδηγό. Όσοι είναι μέσα στην κάρτα παίρνουν
+     μαζί και το προξενείο (&c=muenchen), ώστε εκεί να εμφανιστεί το σωστό e-proxeneio. */
+  function updatePageLinks() {
+    const c = state.key ? '&c=' + consulateSlug(state.key) : '';
+    const pages = { 'data-guide-link': 'odigos-e-proxeneio.html', 'data-docs-link': 'dikaiologitika.html' };
+    Object.keys(pages).forEach(attr => {
+      document.querySelectorAll('[' + attr + ']').forEach(a => {
+        a.href = pages[attr] + '?lang=' + lang + (a.closest('#resultCard') ? c : '');
+      });
+    });
+  }
+
   function renderCard(key, bundesland) {
     const i = info(key);
+    updatePageLinks();
     fillPlace($('resultPlace'));
     $('resultName').textContent = i.full;
     $('resultBundesland').textContent = bundeslandLabel(bundesland);
@@ -905,8 +908,7 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
     document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
     document.querySelectorAll('.lang-switch button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
-    document.querySelectorAll('[data-guide-link]').forEach(a => { a.href = 'odigos-e-proxeneio.html?lang=' + lang; });
-    document.querySelectorAll('[data-docs-link]').forEach(a => { a.href = 'dikaiologitika.html?lang=' + lang; });
+    updatePageLinks();
     document.querySelectorAll('[data-home-link]').forEach(a => { a.href = 'index.html?lang=' + lang; a.title = t('homeTitle'); });
     Object.keys(consulateLabels).forEach(key => { consulateLabels[key].textContent = info(key).city; });
     Object.keys(pins).forEach(key => pins[key].setIcon(pinIcon(key)));

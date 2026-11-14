@@ -245,6 +245,23 @@ thead th { background: var(--green-light); color: var(--green-dark); font-size: 
 .copy-price { margin-top: 0.8rem; }
 
 .next-steps { margin-top: 1.8rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.93rem; }
+.next-steps p + p, .next-steps .next-eprox + p { margin-top: 0.6rem; }
+/* Το κουμπί του επόμενου βήματος: e-proxeneio του προξενείου του πολίτη ή «Βρείτε το προξενείο σας». */
+.next-eprox {
+  display: inline-flex;
+  flex-direction: column;
+  margin-top: 0.4rem;
+  padding: 0.7rem 1.1rem;
+  background: var(--green-dark);
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.next-eprox:hover { background: var(--green-mid); }
+.next-eprox strong { font-size: 1rem; }
+.next-eprox small { font-size: 0.82rem; opacity: 0.9; }
+@media (max-width: 640px) { .next-eprox { display: flex; } }
 .print-url { display: none; }
 
 /* ===== FOOTER ===== */
@@ -399,7 +416,7 @@ thead th { background: var(--green-light); color: var(--green-dark); font-size: 
         </button>
       </div>
       <div id="appContent"></div>
-      <p class="next-steps" id="nextSteps"></p>
+      <div class="next-steps" id="nextSteps"></div>
       <p class="print-url" id="printUrl"></p>
     </div>
   </article>
@@ -412,6 +429,8 @@ thead th { background: var(--green-light); color: var(--green-dark); font-size: 
 </main>
 
 <!-- Το περιεχόμενο (κατηγορίες, αιτήσεις, δικαιολογητικά, κόστος) βρίσκεται μόνο εδώ: -->
+<!-- Τα στοιχεία των προξενείων (για το κουμπί «Μετάβαση στο e-proxeneio»): -->
+<script src="data/consulates.js"></script>
 <script src="data/dikaiologitika-data.js"></script>
 <!-- Η γερμανική μετάφραση. Αν λείπει αυτό το αρχείο, η σελίδα δείχνει τα ελληνικά. -->
 <script src="data/dikaiologitika-data-de.js"></script>
@@ -466,7 +485,11 @@ thead th { background: var(--green-light); color: var(--green-dark); font-size: 
       copyPrice: 'Κόστος αντιγράφου:',
       tips: 'Συχνά προβλήματα',
       nextLead: 'Επόμενο βήμα:',
-      nextGuide: 'Πώς υποβάλλετε την αίτηση στο e-proxeneio',
+      nextEprox: 'Μετάβαση στο e-proxeneio',
+      nextFind: 'Βρείτε το προξενείο σας και μεταβείτε στο e-proxeneio του',
+      nextHelp: 'Χρειάζεστε βοήθεια με την αίτηση;',
+      nextGuide: 'Οδηγός χρήσης e-proxeneio',
+      nextOther: 'Άλλο προξενείο;',
       nextMap: 'Βρείτε το προξενείο σας',
       printUrl: 'Η σελίδα αυτή: ',
       source: d => 'Πηγή: e-proxeneio.mfa.gr' + (d ? '. Τελευταίος έλεγχος στοιχείων: ' + d : ''),
@@ -506,7 +529,11 @@ thead th { background: var(--green-light); color: var(--green-dark); font-size: 
       copyPrice: 'Gebühr pro Kopie:',
       tips: 'Häufige Probleme',
       nextLead: 'Nächster Schritt:',
-      nextGuide: 'So stellen Sie den Antrag im e-proxeneio',
+      nextEprox: 'Weiter zu e-proxeneio',
+      nextFind: 'Finden Sie Ihr Konsulat und wechseln Sie zu dessen e-proxeneio',
+      nextHelp: 'Brauchen Sie Hilfe beim Antrag?',
+      nextGuide: 'Anleitung zu e-proxeneio',
+      nextOther: 'Anderes Konsulat?',
       nextMap: 'Finden Sie Ihr Konsulat',
       printUrl: 'Diese Seite: ',
       source: d => 'Quelle: e-proxeneio.mfa.gr' + (d ? '. Letzte Prüfung der Angaben: ' + d : ''),
@@ -794,6 +821,48 @@ thead th { background: var(--green-light); color: var(--green-dark); font-size: 
     return base + (state.lang === 'de' ? '?lang=de' : '') + '#' + code;
   }
 
+  /* Το προξενείο του πολίτη, αν ήρθε από την κάρτα της αρχικής (?c=muenchen). */
+  function myConsulate() {
+    try {
+      const slug = new URLSearchParams(location.search).get('c');
+      return slug && typeof consulateFromSlug === 'function' ? consulateFromSlug(slug) : null;
+    } catch (_) { return null; }
+  }
+
+  /* Επόμενο βήμα: με γνωστό προξενείο, κουμπί κατευθείαν στο e-proxeneio του.
+     Αλλιώς, «Βρείτε το προξενείο σας» στην αρχική. Και στις δύο περιπτώσεις,
+     σύνδεσμος στον οδηγό, που κρατά το προξενείο. */
+  function buildNextSteps(box) {
+    const key = myConsulate();
+    const c = key ? '&c=' + consulateSlug(key) : '';
+    box.textContent = '';
+    box.appendChild(el('p')).appendChild(el('strong', '', t().nextLead));
+    const button = el('a', 'next-eprox');
+    if (key) {
+      const info = consulateInfo[key];
+      button.href = info.eproxeneio;
+      button.target = '_blank';
+      button.rel = 'noopener noreferrer';
+      button.appendChild(el('strong', '', t().nextEprox));
+      button.appendChild(el('small', '', state.lang === 'de' ? info.de.full : info.full));
+    } else {
+      button.href = MAP_PAGE + '?lang=' + state.lang;
+      button.appendChild(el('strong', '', t().nextFind));
+    }
+    box.appendChild(button);
+    const help = el('p', '', t().nextHelp + ' ');
+    const guide = el('a', '', t().nextGuide);
+    guide.href = GUIDE_PAGE + '?lang=' + state.lang + c;
+    help.appendChild(guide);
+    if (key) {
+      help.appendChild(document.createTextNode(' · ' + t().nextOther + ' '));
+      const map = el('a', '', t().nextMap);
+      map.href = MAP_PAGE + '?lang=' + state.lang;
+      help.appendChild(map);
+    }
+    box.appendChild(help);
+  }
+
   function renderApp() {
     const found = findApp(state.code);
     const article = $('app');
@@ -832,14 +901,7 @@ thead th { background: var(--green-light); color: var(--green-dark); font-size: 
     const tips = buildTips(app);
     if (tips) content.appendChild(tips);
 
-    const next = $('nextSteps');
-    next.textContent = '';
-    next.appendChild(el('strong', '', t().nextLead + ' '));
-    const guide = el('a', '', t().nextGuide); guide.href = GUIDE_PAGE + '?lang=' + state.lang;
-    next.appendChild(guide);
-    next.appendChild(document.createTextNode(' | '));
-    const map = el('a', '', t().nextMap); map.href = MAP_PAGE + '?lang=' + state.lang;
-    next.appendChild(map);
+    buildNextSteps($('nextSteps'));
 
     $('printUrl').textContent = t().printUrl + appUrl(app.code);
     resetCopyButton();
