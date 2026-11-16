@@ -143,6 +143,10 @@
   /* Στην πρώτη οθόνη τα βοηθήματα είναι απλοί σύνδεσμοι, για να μένει η προσοχή στον ΤΚ. */
   .help-links { margin-top: 14px; padding-top: 10px; border-top: 1px solid #e3e7ef; font-size: 0.82rem; color: #666; }
   .help-links a { color: #185fa5; text-underline-offset: 2px; }
+  /* Κάθε σύνδεσμος σε δική του γραμμή, με βελάκι, ώστε να μη μπερδεύονται στο κινητό. */
+  .help-links a { display: block; width: fit-content; padding: 5px 0; font-size: 0.88rem; }
+  .help-links a::before { content: "→"; display: inline-block; margin-right: 6px; text-decoration: none; }
+  .help-links span[aria-hidden] { display: none; }
   header h1 .home-link { color: inherit; text-decoration: none; }
   header h1 .home-link:hover { text-decoration: underline; text-underline-offset: 3px; }
   /* Το πεδίο ΤΚ: απαλό πλαίσιο, μεγαλύτερα γράμματα, πιο σκούρο περίγραμμα. */
@@ -229,7 +233,7 @@
       <ol>
         <li><span class="num">1</span><span data-i18n="step1">Βρείτε το αρμόδιο προξενείο με τον ταχυδρομικό σας κώδικα.</span></li>
         <li><span class="num">2</span><span data-i18n="step2">Μεταβείτε στο e-proxeneio του προξενείου σας.</span></li>
-        <li><span class="num">3</span><span data-i18n="step3">Υποβάλετε την αίτησή σας online μαζί με τα δικαιολογητικά· αν χρειάζεται αυτοπρόσωπη παρουσία, το ραντεβού κλείνεται μέσα από την αίτηση.</span></li>
+        <li><span class="num">3</span><span data-i18n="step3">Υποβάλετε την αίτησή σας online μαζί με τα δικαιολογητικά· μετά κλείνετε ραντεβού μέσα από την αίτηση.</span></li>
       </ol>
       <p class="help-links"><a data-docs-link href="dikaiologitika.html?lang=el" data-i18n="docsLinkShort">Δικαιολογητικά ανά αίτηση</a><span aria-hidden="true"> · </span><a data-guide-link href="odigos-e-proxeneio.html?lang=el" data-i18n="guideLinkShort">Οδηγός χρήσης e-proxeneio</a></p>
     </div>
@@ -329,7 +333,7 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
       stepsTitle: 'Πώς λειτουργεί',
       step1: 'Βρείτε το αρμόδιο προξενείο με τον ταχυδρομικό σας κώδικα.',
       step2: 'Μεταβείτε στο e-proxeneio του προξενείου σας.',
-      step3: 'Υποβάλετε την αίτησή σας online μαζί με τα δικαιολογητικά· αν χρειάζεται αυτοπρόσωπη παρουσία, το ραντεβού κλείνεται μέσα από την αίτηση.',
+      step3: 'Υποβάλετε την αίτησή σας online μαζί με τα δικαιολογητικά· μετά κλείνετε ραντεβού μέσα από την αίτηση.',
       dataLead: 'Ταχυδρομικοί κώδικες (ενημέρωση Νοεμβρίου 2026):',
       via: 'μέσω',
       dataLicense: 'Ο πίνακας ΤΚ της σελίδας διατίθεται με άδεια ODbL.',
@@ -371,7 +375,7 @@ const plzOverrides = {"19273":{"choices":[{"ort":"Amt Neuhaus","bl":"Niedersachs
       stepsTitle: 'So funktioniert es',
       step1: 'Finden Sie das zuständige Konsulat über Ihre Postleitzahl.',
       step2: 'Öffnen Sie e-proxeneio für Ihr Konsulat.',
-      step3: 'Stellen Sie Ihren Antrag online und fügen Sie die Unterlagen bei; ist persönliches Erscheinen nötig, wird der Termin über den Antrag vereinbart.',
+      step3: 'Stellen Sie Ihren Antrag online und fügen Sie die Unterlagen bei; danach buchen Sie den Termin über den Antrag.',
       dataLead: 'Postleitzahlen (Stand: November 2026):',
       via: 'über',
       dataLicense: 'Die Postleitzahlen-Tabelle dieser Seite steht unter der ODbL.',
